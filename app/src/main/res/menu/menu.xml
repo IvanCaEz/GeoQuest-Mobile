@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/usuario"
+        android:title="Profile"/>
+    <item
+        android:id="@+id/mapFragment"
+        android:icon="@drawable/ubi"
+        android:title="Map"/>
+    <item
+        android:id="@+id/listAndSearchFragment"
+        android:icon="@drawable/lista"
+        android:title="List"/>
+    <item
+        android:id="@+id/logOutFragment"
+        android:icon="@drawable/logout"
+        android:title="Log Out"/>
+</menu>
