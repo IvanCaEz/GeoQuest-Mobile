@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/logInFragment"
-        android:name="com.example.geoquest_app.viewmodel.LogInFragment"
+        android:name="com.example.geoquest_app.view.LogInFragment"
         android:label="fragment_log_in"
         tools:layout="@layout/fragment_log_in" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.geoquest_app.viewmodel.SignUpFragment"
+        android:name="com.example.geoquest_app.view.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
@@ -28,12 +28,12 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.example.geoquest_app.viewmodel.MapFragment"
+        android:name="com.example.geoquest_app.view.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.geoquest_app.viewmodel.ProfileFragment"
+        android:name="com.example.geoquest_app.view.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/listAndSearchFragment"
-        android:name="com.example.geoquest_app.viewmodel.ListAndSearchFragment"
+        android:name="com.example.geoquest_app.view.ListAndSearchFragment"
         android:label="fragment_list_and_search"
         tools:layout="@layout/fragment_list_and_search" >
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.geoquest_app.viewmodel.EditProfileFragment"
+        android:name="com.example.geoquest_app.view.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" >
         <action
@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/treasureDetailFragment"
-        android:name="com.example.geoquest_app.viewmodel.TreasureDetailFragment"
+        android:name="com.example.geoquest_app.view.TreasureDetailFragment"
         android:label="fragment_treasure_detail"
         tools:layout="@layout/fragment_treasure_detail" >
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/startGameFragment"
-        android:name="com.example.geoquest_app.viewmodel.StartGameFragment"
+        android:name="com.example.geoquest_app.view.StartGameFragment"
         android:label="fragment_start_game"
         tools:layout="@layout/fragment_start_game" >
         <action
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/endGameFragment"
-        android:name="com.example.geoquest_app.viewmodel.EndGameFragment"
+        android:name="com.example.geoquest_app.view.EndGameFragment"
         android:label="fragment_end_game"
         tools:layout="@layout/fragment_end_game" >
         <action
@@ -90,7 +90,7 @@
     </fragment>
     <fragment
         android:id="@+id/logOutFragment"
-        android:name="com.example.geoquest_app.viewmodel.LogOutFragment"
+        android:name="com.example.geoquest_app.view.LogOutFragment"
         android:label="fragment_log_out"
         tools:layout="@layout/fragment_log_out" />
 </navigation>

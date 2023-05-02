@@ -1,4 +1,4 @@
-package com.example.geoquest_app.viewmodel
+package com.example.geoquest_app.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,17 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
-import com.example.geoquest_app.databinding.FragmentListAndSearchBinding
-import com.example.geoquest_app.databinding.FragmentSignUpBinding
+import com.example.geoquest_app.databinding.FragmentEditProfileBinding
 
-class ListAndSearchFragment : Fragment() {
-
-    lateinit var binding: FragmentListAndSearchBinding
+class EditProfileFragment : Fragment() {
+    lateinit var binding: FragmentEditProfileBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentListAndSearchBinding.inflate(layoutInflater)
+        binding = FragmentEditProfileBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -26,8 +24,8 @@ class ListAndSearchFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
-        binding.detail.setOnClickListener {
-            findNavController().navigate(R.id.action_listAndSearchFragment_to_treasureDetailFragment)
+        binding.edit.setOnClickListener {
+            findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
         }
     }
 

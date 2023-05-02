@@ -1,4 +1,4 @@
-package com.example.geoquest_app.viewmodel
+package com.example.geoquest_app.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,7 +19,7 @@ class SplashScreen : AppCompatActivity() {
 
         //Coroutine
         CoroutineScope(Dispatchers.IO).launch {
-            delay(2500L)
+            delay(2000L)
             startActivity(Intent(this@SplashScreen, MainActivity::class.java))
         }
 

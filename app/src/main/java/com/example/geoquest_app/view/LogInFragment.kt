@@ -1,22 +1,23 @@
-package com.example.geoquest_app.viewmodel
+package com.example.geoquest_app.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentLogInBinding
-import com.example.geoquest_app.databinding.FragmentSignUpBinding
 
-class SignUpFragment : Fragment() {
-    lateinit var binding: FragmentSignUpBinding
+
+class LogInFragment : Fragment() {
+
+    lateinit var binding:FragmentLogInBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSignUpBinding.inflate(layoutInflater)
+        binding=FragmentLogInBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -25,8 +26,12 @@ class SignUpFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(false)
 
+        binding.login.setOnClickListener {
+            findNavController().navigate(R.id.action_logInFragment_to_mapFragment)
+        }
         binding.signup.setOnClickListener {
-            findNavController().navigate(R.id.action_signUpFragment_to_logInFragment)
+            findNavController().navigate(R.id.action_logInFragment_to_signUpFragment)
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.geoquest_app.viewmodel
+package com.example.geoquest_app.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

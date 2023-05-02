@@ -1,4 +1,4 @@
-package com.example.geoquest_app.viewmodel
+package com.example.geoquest_app.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,17 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
-import com.example.geoquest_app.databinding.FragmentEndGameBinding
-import com.example.geoquest_app.databinding.FragmentStartGameBinding
+import com.example.geoquest_app.databinding.FragmentListAndSearchBinding
 
-class EndGameFragment : Fragment() {
+class ListAndSearchFragment : Fragment() {
 
-    lateinit var binding: FragmentEndGameBinding
+    lateinit var binding: FragmentListAndSearchBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentEndGameBinding.inflate(layoutInflater)
+        binding = FragmentListAndSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -26,8 +25,8 @@ class EndGameFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
-        binding.publish.setOnClickListener {
-            findNavController().navigate(R.id.action_endGameFragment_to_listAndSearchFragment)
+        binding.detail.setOnClickListener {
+            findNavController().navigate(R.id.action_listAndSearchFragment_to_treasureDetailFragment)
         }
     }
 
