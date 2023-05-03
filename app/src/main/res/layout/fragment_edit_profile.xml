@@ -6,23 +6,100 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.EditProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Edit Profile" />
+        android:id="@+id/background"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:background="@color/color3"
+        android:layout_margin="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/userImg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/usuario"
+        android:background="@color/color1"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintEnd_toEndOf="@id/background"
+        app:layout_constraintTop_toTopOf="@id/background"
+        app:layout_constraintBottom_toBottomOf="@id/background"
+        android:layout_marginBottom="30dp"
+        />
+
+    <Button
+        android:id="@+id/editImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit profile photo"
+        android:fontFamily="@raw/manrope"
+        android:backgroundTint="@color/color1"
+        android:textColor="@color/color4"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintEnd_toEndOf="@id/background"
+        app:layout_constraintBottom_toBottomOf="@id/background"
+        app:layout_constraintTop_toBottomOf="@id/userImg"
+        />
+
+    <EditText
+        android:id="@+id/nikname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Nickname"
+        android:fontFamily="@raw/manrope"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:singleLine="true"
+        app:layout_constraintTop_toBottomOf="@id/background"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintBottom_toTopOf="@id/email"
+        />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:fontFamily="@raw/manrope"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:singleLine="true"
+        app:layout_constraintTop_toBottomOf="@id/nikname"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintBottom_toTopOf="@id/password"
+        />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:password="true"
+        android:singleLine="true"
+        android:fontFamily="@raw/manrope"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        app:layout_constraintTop_toBottomOf="@id/email"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintBottom_toTopOf="@id/edit"
+        />
+
 
     <Button
         android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
+        android:text="Save chanes"
+        android:fontFamily="@raw/manrope"
         android:backgroundTint="@color/color4"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="30dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
