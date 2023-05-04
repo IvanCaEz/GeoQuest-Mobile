@@ -29,11 +29,11 @@ class ReviewAdapter (private val reviews: List<Reviews>, val listener: OnClickLi
     }
 
     override fun getItemCount(): Int {
-        return Reviews.size
+        return reviews.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = Reviews[position]
+        val review = reviews[position]
         with(holder){
             setListener(review)
             binding.userName.text = review.idReview.toString()

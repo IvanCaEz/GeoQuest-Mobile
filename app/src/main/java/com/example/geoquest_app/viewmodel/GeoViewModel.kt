@@ -1,10 +1,12 @@
 package com.example.geoquest_app.viewmodel
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.model.Repository
+import com.example.geoquest_app.model.Reviews
 import com.example.models.Treasures
 import com.example.models.User
 import kotlinx.coroutines.CoroutineScope
@@ -89,7 +91,6 @@ class GeoViewModel : ViewModel() {
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
                     reviewListData.postValue(response.body())
-                    treasureListData.postValue(response.body())
                 }
             } else {
                 Log.e("Error " + response.code(), response.message())

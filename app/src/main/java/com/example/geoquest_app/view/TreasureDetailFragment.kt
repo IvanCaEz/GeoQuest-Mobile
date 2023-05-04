@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,12 +19,12 @@ import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
 
 
-class TreasureDetailFragment : Fragment() {
+class TreasureDetailFragment : Fragment(), OnClickListenerReview {
 
     lateinit var binding: FragmentTreasureDetailBinding
-    private lateinit var userAdapter: UserAdapter
+    private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
-    val viewModel: GeoViewModel by activityViewModels()
+    private lateinit var viewModel: GeoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +39,7 @@ class TreasureDetailFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
-        val viewModel = ViewModelProvider(requireActivity())[GeoViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[GeoViewModel::class.java]
         viewModel.getAllReviews(3)
         viewModel.reviewListData.observe(viewLifecycleOwner){
             setUpRecyclerView(it!!)
