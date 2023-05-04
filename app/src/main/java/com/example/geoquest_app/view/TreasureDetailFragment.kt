@@ -18,11 +18,13 @@ import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
 
 
-class TreasureDetailFragment : Fragment(), OnClickListenerReview {
+class TreasureDetailFragment : Fragment() {
 
     lateinit var binding: FragmentTreasureDetailBinding
-    private lateinit var reviewAdapter: ReviewAdapter
+    private lateinit var userAdapter: UserAdapter
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
+    val viewModel: GeoViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

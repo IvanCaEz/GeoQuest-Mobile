@@ -36,7 +36,6 @@ class Repository {
 
 
 
-
     // USERS
     suspend fun getAllUsers() = apiInterface.getAllUsers()
     suspend fun postUserForLogin(usernameAndPass: String) = apiInterface.postUserForLogin(usernameAndPass)

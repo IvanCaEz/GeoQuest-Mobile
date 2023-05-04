@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.model.Repository
-import com.example.geoquest_app.model.Reviews
 import com.example.models.Treasures
 import com.example.models.User
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +23,7 @@ class GeoViewModel : ViewModel() {
     // TREASURE VARIABLES
     var treasureListData = MutableLiveData<List<Treasures>>()
     var treasureData = MutableLiveData<Treasures>()
+    var treasureImage = MutableLiveData<Bitmap>()
 
     // REVIEW VARIABLES
     var reviewListData = MutableLiveData<List<Reviews>>()
@@ -89,10 +89,31 @@ class GeoViewModel : ViewModel() {
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
                     reviewListData.postValue(response.body())
+                    treasureListData.postValue(response.body())
                 }
             } else {
                 Log.e("Error " + response.code(), response.message())
             }
         }
     }
+    fun getTreasureImage(treasureID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getPictureByTreasureId(treasureID)
+            if (response.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                    val source = response.body()
+                    val inputStream = source?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                   // mapa de imagenes userImages[userID] = bitmap
+                    treasureImage.postValue(bitmap)
+                }
+            } else {
+                Log.e("Error " + response.code(), response.message())
+            }
+        }
+    }
+
+
+
+
 }
