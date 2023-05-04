@@ -44,7 +44,7 @@ interface ApiInterface {
     suspend fun putTreasure(@Part("id") treasureId: Int, @Part("body") body: RequestBody, @Part image: MultipartBody.Part)
     @Multipart
     @POST("/treasure/{treasureId}/reviews")
-    suspend fun postReviewByTreasureId(@Path("treasureId") treasureId: Int, @Path("body") body: RequestBody, @Part image: MultipartBody.Part)
+    suspend fun postReviewByTreasureId(@Path("treasureId") treasureId: Int, @Part("body") body: RequestBody, @Part image: MultipartBody.Part)
     @Multipart
     @PUT("treasure/{treasureId}/reviews/{reviewId}")
     suspend fun putReviewByTreasureId(@Path("treasureId") treasureId: Int, @Path("reviewId") idReviews: Int, @Part("body") body: RequestBody, @Part image: MultipartBody.Part)
@@ -97,7 +97,7 @@ interface ApiInterface {
     @DELETE("user/{id}/reports/{treasureID}")
     suspend fun deleteUserReport(@Path("id") userId: Int, @Path("treasureID") treasureId: Int)
     @GET("user/{id}/reports/{reportID}")
-    suspend fun getUserReports(@Path("id") userId: Int, @Path("reportID") reportID: Int): Response<Reports>
+    suspend fun getUserReportByID(@Path("id") userId: Int, @Path("reportID") reportID: Int): Response<Reports>
 
     // USER TREASURES
     @GET("user/{id}/treasures")
