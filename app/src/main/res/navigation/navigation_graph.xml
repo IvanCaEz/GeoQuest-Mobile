@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_treasureDetailFragment_to_startGameFragment"
             app:destination="@id/startGameFragment" />
+        <argument
+            android:name="treasureId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/startGameFragment"
