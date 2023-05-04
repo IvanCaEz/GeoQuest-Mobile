@@ -1,5 +1,7 @@
 package com.example.geoquest_app.model.retrofit
 
+import com.example.geoquest_app.model.Reports
+import com.example.geoquest_app.model.Reviews
 import com.example.models.*
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -19,15 +21,41 @@ interface ApiInterface {
     suspend fun getTreasureById(@Path("id") treasureId: Int): Response<Treasures>
     @GET("treasure/{id}/picture")
     suspend fun getPictureByTreasureId(@Path("id") treasureId: Int): Response<ResponseBody>
-
-
-
-
-
-
-
-
-
+    // Treasure Stats queries
+    @GET("treasure/{id}/stats")
+    suspend fun getTreasureStatsById(@Path("id") treasureId: Int): Response<TreasureStats>
+    // Treasure reviews queries
+    @GET("treasure/{id}/reviews")
+    suspend fun getAllReviewsByTreasureId(@Path("id") treasureId: Int): Response<List<Reviews>>
+    @GET("treasure/{treasureId}/reviews/{reviewId}")
+    suspend fun getSpecificReviewFromTreasureById(@Path("treasureId") treasureId: Int, @Path("reviewId") idReviews: Int): Response<Reviews>
+    @GET("treasure/{treasureID}/reviews/{reviewID}/picture")
+    suspend fun getPictureWithSpecificReviewFromTreasureById(@Path("treasureId") treasureId: Int, @Path("reviewId") idReviews: Int): Response<ResponseBody>
+    // Treasure reports queries
+    @GET("treasure/{id}/reports")
+    suspend fun getReportsByTreasureId(@Path("id") treasureId: Int): Response<List<Reports>>
+    @GET("treasure/{id}/reports/{reportId}")
+    suspend fun getReportByIdFromTreasureId(@Path("treasureId") treasureId: Int, @Path("reportId") idReports: Int): Response<Reports>
+    @Multipart
+    @POST
+    suspend fun postTreasure(@Part("body") body: RequestBody, @Part image: MultipartBody.Part)
+    @Multipart
+    @PUT("treasure/{id}")
+    suspend fun putTreasure(@Part("id") treasureId: Int, @Part("body") body: RequestBody, @Part image: MultipartBody.Part)
+    @Multipart
+    @POST("/treasure/{treasureId}/reviews")
+    suspend fun postReviewByTreasureId(@Path("treasureId") treasureId: Int, @Path("body") body: RequestBody, @Part image: MultipartBody.Part)
+    @Multipart
+    @PUT("treasure/{treasureId}/reviews/{reviewId}")
+    suspend fun putReviewByTreasureId(@Path("treasureId") treasureId: Int, @Path("reviewId") idReviews: Int, @Part("body") body: RequestBody, @Part image: MultipartBody.Part)
+    @DELETE("treasure/{id}")
+    suspend fun deleteTreasureById(@Path("id") treasureId: Int)
+    @DELETE("treasure/{treasureId}/reviews/{reviewId}")
+    suspend fun deleteReviewByTreasureId(@Path("treasureId") treasureId: Int, @Path("reviewid") idReviews: Int)
+    @DELETE("treasure/{treasureId}/reports/{reportId}")
+    suspend fun deleteReportByTreasureId(@Path("treasureId") treasureId: Int, @Path("reportId") idReports: Int)
+    @POST("treasure/{id}/games")
+    suspend fun postUserGamesByTreasureId(@Path("treasureId") treasureId: Int)
 
     // USER QUERIES
     @GET("user")
@@ -80,10 +108,6 @@ interface ApiInterface {
     suspend fun getAllReports(): Response<List<Reports>>
     @POST("reports")
     suspend fun postReport()
-
-
-
-
 
 
 

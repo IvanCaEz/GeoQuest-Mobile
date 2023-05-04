@@ -1,4 +1,4 @@
-package com.example.models
+package com.example.geoquest_app.model
 
 import kotlinx.serialization.Serializable
 
