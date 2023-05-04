@@ -1,6 +1,5 @@
 package com.example.geoquest_app.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentTreasureDetailBinding
 import com.example.geoquest_app.model.UserAdapter
-import com.example.geoquest_app.model.review
+import com.example.geoquest_app.model.Review
 
 
 class TreasureDetailFragment : Fragment() {
@@ -51,45 +50,45 @@ class TreasureDetailFragment : Fragment() {
 
     }
 
-    private fun getUsers(): MutableList<review> {
-        val users = mutableListOf<review>()
+    private fun getUsers(): MutableList<Review> {
+        val users = mutableListOf<Review>()
         users.add(
-            review(
+            Review(
                 "Joel",
                 "",
                 "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
             )
         )
         users.add(
-            review(
+            Review(
                 "Alejandro",
                 "",
                 "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
             )
         )
         users.add(
-            review(
+            Review(
                 "Ivan",
                 "",
                 "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
             )
         )
         users.add(
-            review(
+            Review(
                 "Marti",
                 "",
                 "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
             )
         )
         users.add(
-            review(
+            Review(
                 "Raul",
                 "",
                 "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
             )
         )
         users.add(
-            review(
+            Review(
                 "Asier",
                 "",
                 "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
