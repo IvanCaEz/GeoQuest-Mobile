@@ -19,7 +19,7 @@ class SplashScreen : AppCompatActivity() {
 
         //Coroutine
         CoroutineScope(Dispatchers.IO).launch {
-            delay(2000L)
+            delay(1000)
             startActivity(Intent(this@SplashScreen, MainActivity::class.java))
         }
 
