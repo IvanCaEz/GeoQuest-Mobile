@@ -14,8 +14,7 @@ class ListAndSearchFragment : Fragment() {
     lateinit var binding: FragmentListAndSearchBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View {
         binding = FragmentListAndSearchBinding.inflate(layoutInflater)
         return binding.root
     }

@@ -30,97 +30,122 @@
         android:layout_margin="10dp"
         android:buttonTint="@color/color3"/>
 
-    <ImageView
-        android:id="@+id/treasureImg"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_margin="10dp"
-        android:background="@color/color1"
-        android:src="@drawable/subir"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/treasureName" />
-
-    <TextView
-        android:id="@+id/ratingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@raw/manrope"
-        android:text="Rating"
-        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/ratingBar"
-        app:layout_constraintTop_toBottomOf="@id/treasureImg" />
-
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:progressTint="@color/color4"
-        android:rating="3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ratingText" />
-
-    <TextView
-        android:id="@+id/dificulty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@raw/manrope"
-        android:text="Dificulty"
-        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/ratingBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ratingBar"
-        app:layout_constraintTop_toTopOf="@id/ratingBar" />
-
-    <Button
-        android:id="@+id/play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/color4"
-        android:text="Start Hunt"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@id/report"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ratingBar" />
-
-    <Button
-        android:id="@+id/report"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/color4"
-        android:text="Report"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/play"
-        app:layout_constraintTop_toBottomOf="@id/ratingBar" />
-
-    <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:fontFamily="@raw/manrope"
-        android:text="Location"
-        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/play" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
-        android:layout_height="240dp"
-        tools:listitem="@layout/item_review"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/location"
-        android:layout_margin="10dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/treasureName"
 
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/treasureName"
+            >
+
+            <ImageView
+                android:id="@+id/treasureImg"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:background="@color/color1"
+                android:src="@drawable/subir"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ratingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@raw/manrope"
+                android:text="Rating"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/ratingBar"
+                app:layout_constraintTop_toBottomOf="@id/treasureImg" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:progressTint="@color/color4"
+                android:rating="2"
+                android:isIndicator="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingText" />
+
+            <TextView
+                android:id="@+id/dificulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@raw/manrope"
+                android:text="Dificulty"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/ratingBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ratingBar"
+                app:layout_constraintTop_toTopOf="@id/ratingBar" />
+
+            <Button
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/color4"
+                android:text="Start Hunt"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@id/report"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar" />
+
+            <Button
+                android:id="@+id/report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/color4"
+                android:text="Report"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/play"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@raw/manrope"
+                android:text="Location"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/play" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_review"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/location"
+                android:layout_margin="10dp"
+
+                />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
 
 
 

@@ -6,11 +6,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.StartGameFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Start Game" />
+        android:id="@+id/treasureName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10dp"
+        android:fontFamily="@raw/manrope"
+        android:text="Trearure Name"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        />
+
+    <ImageView
+        android:id="@+id/treasureImg"
+        android:layout_width="300dp"
+        android:layout_height="390dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/treasureName"
+        android:layout_margin="10dp"
+        android:src="@drawable/subir"
+        android:background="@color/color1"
+        />
+    <TextView
+        android:id="@+id/elapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@raw/manrope"
+        android:text="Elapsed Time"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/treasureImg"
+        android:layout_margin="10dp"
+        />
+
+   <TextView
+       android:id="@+id/time"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/elapsedTime"
+       android:layout_margin="10dp"
+       android:fontFamily="@raw/manrope"
+       android:text="00:12:46"
+       android:textSize="24dp"
+       android:textStyle="bold"
+       />
+
+    <Button
+        android:id="@+id/showHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Hint"
+        android:backgroundTint="@color/color4"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end"
+        app:layout_constraintTop_toBottomOf="@id/time"
+        android:layout_margin="10dp"
+        />
 
     <Button
         android:id="@+id/end"
@@ -19,10 +78,25 @@
         android:text="End Hunt"
         android:backgroundTint="@color/color4"
         android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/showHint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/time"
+        android:layout_margin="10dp"
+        />
+
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/end"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="10dp"
+        android:fontFamily="@raw/manrope"
+        android:text="Try to search in..."
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:visibility="invisible"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

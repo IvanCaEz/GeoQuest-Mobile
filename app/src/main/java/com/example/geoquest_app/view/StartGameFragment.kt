@@ -29,6 +29,9 @@ class StartGameFragment : Fragment() {
         binding.end.setOnClickListener {
             findNavController().navigate(R.id.action_startGameFragment_to_endGameFragment)
         }
+        binding.showHint.setOnClickListener {
+            binding.hint.visibility=View.VISIBLE
+        }
     }
 
 }
