@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentTreasureDetailBinding
 import com.example.geoquest_app.model.UserAdapter
-import com.example.geoquest_app.model.Review
 
 
 class TreasureDetailFragment : Fragment() {

@@ -1,6 +1,9 @@
-package com.example.geoquest_app.model
+package com.example.models
 
-data class Treasure(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Treasures(
     val idTreasure: Int,
     var name: String,
     var description: String,
