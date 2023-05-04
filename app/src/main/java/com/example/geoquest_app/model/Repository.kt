@@ -11,7 +11,6 @@ import retrofit2.http.*
 class Repository {
     val apiInterface = ApiInterface.create()
 
-
     // TREASURES
     suspend fun getAllTreasures() = apiInterface.getAllTreasures()
 

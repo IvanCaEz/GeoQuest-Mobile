@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.model.Repository
+import com.example.geoquest_app.model.Reviews
 import com.example.models.Treasures
 import com.example.models.User
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +24,10 @@ class GeoViewModel : ViewModel() {
     // TREASURE VARIABLES
     var treasureListData = MutableLiveData<List<Treasures>>()
     var treasureData = MutableLiveData<Treasures>()
+
+    // REVIEW VARIABLES
+    var reviewListData = MutableLiveData<List<Reviews>>()
+    var reviewData = MutableLiveData<Reviews>()
 
 
     // USERS
@@ -52,7 +57,18 @@ class GeoViewModel : ViewModel() {
     }
 
     // TREASURES
-    /*
+    fun getAllTreasures() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getAllTreasures()
+            if (response.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                    treasureListData.postValue(response.body())
+                }
+            } else {
+                Log.e("Error " + response.code(), response.message())
+            }
+        }
+    }
     fun getTreasureByID(treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserByID(treasureID)
@@ -65,20 +81,18 @@ class GeoViewModel : ViewModel() {
             }
         }
     }
-    fun getAllTreasures() {
+
+    // REVIEWS
+    fun getAllReviews(treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getUserByUserName()
+            val response = repository.getAllReviewsByTreasureId(treasureID)
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
-                    userData.postValue(response.body())
+                    reviewListData.postValue(response.body())
                 }
             } else {
                 Log.e("Error " + response.code(), response.message())
             }
         }
     }
-     */
-
-
-
 }
