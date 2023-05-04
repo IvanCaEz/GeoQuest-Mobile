@@ -76,6 +76,7 @@
                 android:layout_marginStart="10dp"
                 android:progressTint="@color/color4"
                 android:rating="2"
+                android:stepSize="0.1"
                 android:isIndicator="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ratingText" />

@@ -1,6 +1,7 @@
 package com.example.geoquest_app.viewmodel
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,7 @@ class GeoViewModel : ViewModel() {
     // TREASURE VARIABLES
     var treasureListData = MutableLiveData<List<Treasures>>()
     var treasureData = MutableLiveData<Treasures>()
+    var treasureImage = MutableLiveData<Bitmap>()
 
 
     // USERS
@@ -52,13 +54,13 @@ class GeoViewModel : ViewModel() {
     }
 
     // TREASURES
-    /*
+
     fun getTreasureByID(treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getUserByID(treasureID)
+            val response = repository.getTreasureById(treasureID)
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
-                    userData.postValue(response.body())
+                    treasureData.postValue(response.body())
                 }
             } else {
                 Log.e("Error " + response.code(), response.message())
@@ -67,17 +69,33 @@ class GeoViewModel : ViewModel() {
     }
     fun getAllTreasures() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getUserByUserName()
+            val response = repository.getAllTreasures()
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
-                    userData.postValue(response.body())
+                    treasureListData.postValue(response.body())
                 }
             } else {
                 Log.e("Error " + response.code(), response.message())
             }
         }
     }
-     */
+    fun getTreasureImage(treasureID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getPictureByTreasureId(treasureID)
+            if (response.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                    val source = response.body()
+                    val inputStream = source?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                   // mapa de imagenes userImages[userID] = bitmap
+                    treasureImage.postValue(bitmap)
+                }
+            } else {
+                Log.e("Error " + response.code(), response.message())
+            }
+        }
+    }
+
 
 
 

@@ -10,7 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.ItemReviewBinding
 
-class UserAdapter (private val Reviews: List<Review>): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+class UserAdapter (private val Reviews: List<Reviews>): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemReviewBinding.bind(view)
     }
@@ -30,10 +30,10 @@ class UserAdapter (private val Reviews: List<Review>): RecyclerView.Adapter<User
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = Reviews[position]
         with(holder){
-            binding.userName.text = user.userName
-            binding.comment.text = user.comment
+            binding.userName.text = user.idUser.toString()
+            binding.comment.text = user.opinion
             Glide.with(context)
-                .load(user.img)
+                .load(user.photo)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.reviewImg)
         }

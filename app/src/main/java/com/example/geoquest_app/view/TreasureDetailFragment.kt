@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentTreasureDetailBinding
 import com.example.geoquest_app.model.UserAdapter
+import com.example.geoquest_app.viewmodel.GeoViewModel
+import com.example.models.Treasures
 
 
 class TreasureDetailFragment : Fragment() {
@@ -18,6 +21,8 @@ class TreasureDetailFragment : Fragment() {
     lateinit var binding: FragmentTreasureDetailBinding
     private lateinit var userAdapter: UserAdapter
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
+    val viewModel: GeoViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,8 +35,22 @@ class TreasureDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
-        userAdapter = UserAdapter(getUsers())
+        userAdapter = UserAdapter(listOf())
         linearLayoutManager = LinearLayoutManager(context)
+
+        viewModel.getTreasureByID(1)
+        viewModel.getTreasureImage(1)
+
+        viewModel.treasureData.observe(viewLifecycleOwner){ treasure ->
+            setTreasureInfo(treasure)
+        }
+        viewModel.treasureImage.observe(viewLifecycleOwner){ image ->
+            binding.treasureImg.setImageBitmap(image)
+
+        }
+
+
+
 
 
         binding.recyclerView.apply {
@@ -48,51 +67,11 @@ class TreasureDetailFragment : Fragment() {
 
 
     }
-
-    private fun getUsers(): MutableList<Review> {
-        val users = mutableListOf<Review>()
-        users.add(
-            Review(
-                "Joel",
-                "",
-                "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
-            )
-        )
-        users.add(
-            Review(
-                "Alejandro",
-                "",
-                "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
-            )
-        )
-        users.add(
-            Review(
-                "Ivan",
-                "",
-                "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
-            )
-        )
-        users.add(
-            Review(
-                "Marti",
-                "",
-                "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
-            )
-        )
-        users.add(
-            Review(
-                "Raul",
-                "",
-                "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
-            )
-        )
-        users.add(
-            Review(
-                "Asier",
-                "",
-                "Lorem ipsum dolor sit amet consectetur adipiscing, elit ultrices facilisis non risus, sem quis sollicitudin nulla blandit. Ad vulputate a cursus tellus parturient porttitor ut est et, aptent eros congue vivamus dis arcu sem blandit semper odio"
-            )
-        )
-        return users
+    fun setTreasureInfo(treasure: Treasures){
+        binding.treasureName.text = treasure.name
+        binding.dificulty.text = treasure.difficulty
+        binding.location.text = treasure.location
+        binding.ratingBar.rating = treasure.score.toFloat()
     }
+
 }

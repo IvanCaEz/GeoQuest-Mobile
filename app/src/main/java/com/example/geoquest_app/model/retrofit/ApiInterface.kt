@@ -112,7 +112,10 @@ interface ApiInterface {
 
 
     companion object {
-        private const val BASE_URL = ""
+        // emulador 10.0.2.16
+        // 192.168.56.1
+        // wifi 172.30.5.163
+        private const val BASE_URL = "http://172.30.5.163:8080/"
         fun create(): ApiInterface {
             val client = OkHttpClient.Builder().build()
             val retrofit = Retrofit.Builder()
