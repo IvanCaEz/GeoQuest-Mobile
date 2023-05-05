@@ -37,13 +37,16 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
 
         viewModel = ViewModelProvider(requireActivity())[GeoViewModel::class.java]
         viewModel.getAllTreasures()
-        viewModel.treasureListData.observe(viewLifecycleOwner){
-            setUpRecyclerView(it!!)
+        viewModel.treasureListData.observe(viewLifecycleOwner){ treasureList ->
+            treasureList.forEach { treasure ->
+                viewModel.getTreasureImage(treasure.idTreasure)
+            }
+            setUpRecyclerView(treasureList!!)
         }
     }
 
     private fun setUpRecyclerView(treasureList: List<Treasures>){
-        treasureAdapter = TreasureAdapter(treasureList, this)
+        treasureAdapter = TreasureAdapter(treasureList, this, viewModel)
         linearLayoutManager = LinearLayoutManager(context)
 
         binding.recyclerView.apply {

@@ -20,12 +20,14 @@ class GeoViewModel : ViewModel() {
     // USER VARIABLES
     var userData = MutableLiveData<User>()
     var userImage = MutableLiveData<Bitmap>()
-    var userImages = mutableMapOf<String, Bitmap>()
+    var userImages = mutableMapOf<Int, Bitmap>()
 
     // TREASURE VARIABLES
     var treasureListData = MutableLiveData<List<Treasures>>()
     var treasureData = MutableLiveData<Treasures>()
     var treasureImage = MutableLiveData<Bitmap>()
+    var treasureImages = mutableMapOf<Int, Bitmap>()
+
 
     // REVIEW VARIABLES
     var reviewListData = MutableLiveData<List<Reviews>>()
@@ -73,10 +75,10 @@ class GeoViewModel : ViewModel() {
     }
     fun getTreasureByID(treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getUserByID(treasureID)
+            val response = repository.getTreasureById(treasureID)
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
-                    userData.postValue(response.body())
+                    treasureData.postValue(response.body())
                 }
             } else {
                 Log.e("Error " + response.code(), response.message())
@@ -105,7 +107,7 @@ class GeoViewModel : ViewModel() {
                     val source = response.body()
                     val inputStream = source?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(inputStream)
-                   // mapa de imagenes userImages[userID] = bitmap
+                    treasureImages[treasureID] = bitmap
                     treasureImage.postValue(bitmap)
                 }
             } else {

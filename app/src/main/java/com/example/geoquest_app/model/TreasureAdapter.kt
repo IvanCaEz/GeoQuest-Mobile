@@ -10,12 +10,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.ItemReviewBinding
 import com.example.geoquest_app.databinding.ItemTreasuresBinding
+import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
 
-class TreasureAdapter (private val treasures: List<Treasures>, val listener: OnClickListenerTreasure): RecyclerView.Adapter<TreasureAdapter.ViewHolder>() {
+class TreasureAdapter(
+    private val treasures: List<Treasures>,
+    val listener: OnClickListenerTreasure,
+    val viewModel: GeoViewModel
+) : RecyclerView.Adapter<TreasureAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemTreasuresBinding.bind(view)
-        fun setListener(treasure: Treasures){
+        fun setListener(treasure: Treasures) {
             binding.root.setOnClickListener {
                 listener.onClick(treasure)
             }
@@ -36,17 +41,20 @@ class TreasureAdapter (private val treasures: List<Treasures>, val listener: OnC
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val treasure = treasures[position]
-        with(holder){
+        with(holder) {
             setListener(treasure)
             binding.treasureName.text = treasure.name
             binding.difficulty.text = treasure.difficulty
             binding.score.text = treasure.score.toString()
+            binding.treasureImg.setImageBitmap(viewModel.treasureImages[treasure.idTreasure])
+            /*
             Glide.with(context)
                 .load(treasure.image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.treasureImg)
-        }
+             */
         }
     }
+}
 
 

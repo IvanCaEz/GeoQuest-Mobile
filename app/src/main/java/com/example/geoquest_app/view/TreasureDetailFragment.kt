@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.example.geoquest_app.model.OnClickListenerReview
 import com.example.geoquest_app.model.ReviewAdapter
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.viewmodel.GeoViewModel
+import com.example.models.Treasures
 
 
 class TreasureDetailFragment : Fragment(), OnClickListenerReview {
@@ -21,7 +23,7 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
     lateinit var binding: FragmentTreasureDetailBinding
     private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
-    private lateinit var viewModel: GeoViewModel
+    private val viewModel: GeoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,16 +39,34 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         activity.setBottomNavigationVisible(true)
 
         val treasureId = arguments?.getInt("treasureId")!!.toInt()
+        viewModel.getTreasureByID(treasureId)
+        viewModel.getTreasureImage(treasureId)
+        viewModel.getAllReviews(treasureId)
         println(treasureId)
 
-        viewModel = ViewModelProvider(requireActivity())[GeoViewModel::class.java]
-        viewModel.getAllReviews(treasureId)
-        viewModel.reviewListData.observe(viewLifecycleOwner){
-            setUpRecyclerView(it!!)
+        viewModel.reviewListData.observe(viewLifecycleOwner) { reviewList ->
+            setUpRecyclerView(reviewList!!)
         }
+
+        viewModel.treasureData.observe(viewLifecycleOwner){ treasure ->
+            println(treasure.name)
+            setTreasureInfo(treasure)
+        }
+
+        viewModel.treasureImage.observe(viewLifecycleOwner){ treasureImage ->
+            binding.treasureImg.setImageBitmap(treasureImage)
+        }
+
+
     }
 
-    private fun setUpRecyclerView(list: List<Reviews>){
+    fun setTreasureInfo(treasure: Treasures){
+        binding.treasureName.text = treasure.name
+        binding.dificulty.text = treasure.difficulty
+        binding.location.text = treasure.location
+    }
+
+    private fun setUpRecyclerView(list: List<Reviews>) {
         reviewAdapter = ReviewAdapter(list, this)
         linearLayoutManager = LinearLayoutManager(context)
 
