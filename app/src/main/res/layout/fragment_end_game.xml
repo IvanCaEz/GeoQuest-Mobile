@@ -1,28 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.EndGameFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="End Game" />
+        android:id="@+id/treasureName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:fontFamily="@raw/manrope"
+        android:text="Trearure Name"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@raw/manrope"
+        android:text="Result"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/treasureName" />
+
+    <Spinner
+        android:id="@+id/resultSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/resultText"
+        app:layout_constraintBottom_toBottomOf="@id/resultText"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        android:entries="@array/spinner_result"
+        />
+
+    <TextView
+        android:id="@+id/elapsedTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@raw/manrope"
+        android:text="Elapsed Time"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/resultText" />
+
+    <TextView
+        android:id="@+id/elapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/elapsedTimeText"
+        app:layout_constraintBottom_toBottomOf="@id/elapsedTimeText"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        android:fontFamily="@raw/manrope"
+        android:text="00:12:46"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        />
+
+
+    <TextView
+        android:id="@+id/rateTheHuntText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@raw/manrope"
+        android:text="Rate the hunt"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/elapsedTimeText" />
+
+    <RatingBar
+        android:id="@+id/rating"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/rateTheHuntText"
+        app:layout_constraintBottom_toBottomOf="@id/rateTheHuntText"
+        android:rating="2.5"
+        android:progressTint="@color/color4"
+        app:layout_constraintStart_toEndOf="@id/rateTheHuntText"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/opinion"
+        android:layout_width="370dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:hint="Opinion"
+        android:background="@color/color4"
+        app:layout_constraintTop_toBottomOf="@id/rateTheHuntText"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color4"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintBottom_toTopOf="@id/publish"
+        app:layout_constraintTop_toBottomOf="@id/opinion"
+        android:src="@drawable/subir"
+        />
 
     <Button
         android:id="@+id/publish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Publish Review"
         android:backgroundTint="@color/color4"
+        android:text="Publish Review"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="15dp"
+ />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05109489" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
