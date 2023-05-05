@@ -57,6 +57,11 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
             binding.treasureImg.setImageBitmap(treasureImage)
         }
 
+        binding.play.setOnClickListener {
+            val toPlay = TreasureDetailFragmentDirections.actionTreasureDetailFragmentToStartGameFragment(treasureId)
+            findNavController().navigate(toPlay)
+        }
+
 
     }
 

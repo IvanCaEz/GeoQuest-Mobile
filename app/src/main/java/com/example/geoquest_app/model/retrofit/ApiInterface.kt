@@ -31,12 +31,12 @@ interface ApiInterface {
     @GET("treasure/{treasureId}/reviews/{reviewId}")
     suspend fun getSpecificReviewFromTreasureById(@Path("treasureId") treasureId: Int, @Path("reviewId") idReviews: Int): Response<Reviews>
     @GET("treasure/{treasureID}/reviews/{reviewID}/picture")
-    suspend fun getPictureWithSpecificReviewFromTreasureById(@Path("treasureId") treasureId: Int, @Path("reviewId") idReviews: Int): Response<ResponseBody>
+    suspend fun getPictureWithSpecificReviewFromTreasureById(@Path("treasureID") treasureId: Int, @Path("reviewID") idReviews: Int): Response<ResponseBody>
     // Treasure reports queries
     @GET("treasure/{id}/reports")
     suspend fun getReportsByTreasureId(@Path("id") treasureId: Int): Response<List<Reports>>
     @GET("treasure/{id}/reports/{reportId}")
-    suspend fun getReportByIdFromTreasureId(@Path("treasureId") treasureId: Int, @Path("reportId") idReports: Int): Response<Reports>
+    suspend fun getReportByIdFromTreasureId(@Path("id") treasureId: Int, @Path("reportId") idReports: Int): Response<Reports>
     @Multipart
     @POST
     suspend fun postTreasure(@Part("body") body: RequestBody, @Part image: MultipartBody.Part)
@@ -56,7 +56,7 @@ interface ApiInterface {
     @DELETE("treasure/{treasureId}/reports/{reportId}")
     suspend fun deleteReportByTreasureId(@Path("treasureId") treasureId: Int, @Path("reportId") idReports: Int)
     @POST("treasure/{id}/games")
-    suspend fun postUserGamesByTreasureId(@Path("treasureId") treasureId: Int, body: Games)
+    suspend fun postUserGamesByTreasureId(@Path("id") treasureId: Int, @Body body: Games)
 
     // USER QUERIES
     @GET("user")
@@ -85,7 +85,7 @@ interface ApiInterface {
     @GET("user/{id}/favs")
     suspend fun getUserFavs(@Path("id") userId: Int): Response<List<Treasures>>
     @POST("user/{id}/favs")
-    suspend fun postUserFav(@Path("id") userId: Int, body: Int)
+    suspend fun postUserFav(@Path("id") userId: Int, @Body body: Int)
     @DELETE("user/{id}/favs/{treasureID}")
     suspend fun deleteUserFav(@Path("id") userId: Int, @Path("treasureID") treasureId: Int)
     // USER REVIEWS
@@ -107,14 +107,14 @@ interface ApiInterface {
     @GET("reports")
     suspend fun getAllReports(): Response<List<Reports>>
     @POST("reports")
-    suspend fun postReport(body: Reports)
+    suspend fun postReport(@Body body: Reports)
 
 
 
     companion object {
         // emulador -> 10.0.2.16
         // itb -> 172.30.5.163
-        private const val BASE_URL = "http://172.30.5.163:8080/"
+        private const val BASE_URL = "http://172.30.5.163:8090/"
         fun create(): ApiInterface {
             val client = OkHttpClient.Builder().build()
             val gsonClient = GsonBuilder().serializeNulls().setLenient().serializeSpecialFloatingPointValues().create()

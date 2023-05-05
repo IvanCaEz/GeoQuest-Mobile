@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/rateTheHuntText"
         app:layout_constraintBottom_toBottomOf="@id/rateTheHuntText"
-        android:rating="2.5"
+        android:stepSize="1.0"
         android:progressTint="@color/color4"
         app:layout_constraintStart_toEndOf="@id/rateTheHuntText"
         />

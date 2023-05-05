@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -121,6 +122,17 @@ class SignUpFragment : Fragment() {
         } else {
             binding.confPassword.error = null
             binding.confPassword.isErrorEnabled = false // Quita el espacio extra
+            true
+        }
+    }
+
+    private fun validateEmail(email: String): Boolean {
+        val emailPattern = Regex(
+            "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$")
+        return if (!emailPattern.matches(email)){
+            Toast.makeText(requireContext(),"Email can't be empty.", Toast.LENGTH_SHORT).show()
+            false
+        } else {
             true
         }
     }

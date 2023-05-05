@@ -150,6 +150,17 @@ class GeoViewModel : ViewModel() {
         }
     }
 
+    fun postReview(review: Reviews, imageFile: File){
+        CoroutineScope(Dispatchers.IO).launch {
+            val json = Gson().toJson(review)
+            val objectBody = json.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val imageRequestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+            val imagePart =
+                MultipartBody.Part.createFormData("image", imageFile.name, imageRequestFile)
+            repository.postReviewByTreasureId(review.idTreasure,objectBody, imagePart)
+        }
+    }
+
     // GAMES
 
     fun postGame(treasureID: Int, game: Games){

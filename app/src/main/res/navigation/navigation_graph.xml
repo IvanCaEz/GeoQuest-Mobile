@@ -93,6 +93,15 @@
         <action
             android:id="@+id/action_endGameFragment_to_listAndSearchFragment"
             app:destination="@id/listAndSearchFragment" />
+        <argument
+            android:name="startDate"
+            app:argType="string" />
+        <argument
+            android:name="endDate"
+            app:argType="string" />
+        <argument
+            android:name="treasureID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/logOutFragment"
