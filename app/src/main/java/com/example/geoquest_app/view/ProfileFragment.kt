@@ -5,13 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentProfileBinding
 import com.example.geoquest_app.view.MainActivity
+import com.example.geoquest_app.viewmodel.GeoViewModel
 
 class ProfileFragment : Fragment() {
     lateinit var binding: FragmentProfileBinding
+    private val viewModel: GeoViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,6 +28,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
+
 
         binding.editProfile.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
