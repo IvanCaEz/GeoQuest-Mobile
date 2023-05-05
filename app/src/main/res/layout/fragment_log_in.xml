@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@id/password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
+        app:errorEnabled="false"
         android:hint="Nickname">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -45,13 +45,13 @@
         app:endIconMode="password_toggle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:errorEnabled="false"
         android:hint="Password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:password="true"
             android:inputType="textPassword"
             android:backgroundTint="@color/color4"
             />

@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
+
         bottomNavigationView = binding.bottomNavigation
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
@@ -29,6 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.mapFragment,    R.id.profileFragment, R.id.listAndSearchFragment, R.id.logOutFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        if (supportActionBar != null){
+            supportActionBar?.hide()
+        }
+
 
 
     }

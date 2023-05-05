@@ -3,6 +3,7 @@ package com.example.geoquest_app.model.retrofit
 import com.example.geoquest_app.model.Reports
 import com.example.geoquest_app.model.Reviews
 import com.example.models.*
+import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -55,7 +56,7 @@ interface ApiInterface {
     @DELETE("treasure/{treasureId}/reports/{reportId}")
     suspend fun deleteReportByTreasureId(@Path("treasureId") treasureId: Int, @Path("reportId") idReports: Int)
     @POST("treasure/{id}/games")
-    suspend fun postUserGamesByTreasureId(@Path("treasureId") treasureId: Int)
+    suspend fun postUserGamesByTreasureId(@Path("treasureId") treasureId: Int, body: Games)
 
     // USER QUERIES
     @GET("user")
@@ -66,11 +67,10 @@ interface ApiInterface {
     suspend fun postUserForLogin(usernameAndPass: String)
     @GET("user/{id}")
     suspend fun getUserByID(@Path("id") userId: Int): Response<User>
-    @GET("user/{userName}")
+    @GET("user/username/{userName}")
     suspend fun getUserByUserName(@Path("userName") userName: String): Response<User>
-    @Multipart
     @POST("user")
-    suspend fun postUser(@Part("body") body: RequestBody, @Part image: MultipartBody.Part)
+    suspend fun postUser(@Body body: User)
     @Multipart
     @PUT("user")
     suspend fun putUser(@Part("body") body: RequestBody, @Part image: MultipartBody.Part)
@@ -85,7 +85,7 @@ interface ApiInterface {
     @GET("user/{id}/favs")
     suspend fun getUserFavs(@Path("id") userId: Int): Response<List<Treasures>>
     @POST("user/{id}/favs")
-    suspend fun postUserFav(@Path("id") userId: Int)
+    suspend fun postUserFav(@Path("id") userId: Int, body: Int)
     @DELETE("user/{id}/favs/{treasureID}")
     suspend fun deleteUserFav(@Path("id") userId: Int, @Path("treasureID") treasureId: Int)
     // USER REVIEWS
@@ -107,19 +107,21 @@ interface ApiInterface {
     @GET("reports")
     suspend fun getAllReports(): Response<List<Reports>>
     @POST("reports")
-    suspend fun postReport()
+    suspend fun postReport(body: Reports)
 
 
 
     companion object {
         // emulador -> 10.0.2.16
-        // itb -> 172.30.3.105
-        private const val BASE_URL = "http://192.168.56.1:8080/"
+        // itb -> 172.30.5.163
+        private const val BASE_URL = "http://172.30.5.163:8080/"
         fun create(): ApiInterface {
             val client = OkHttpClient.Builder().build()
+            val gsonClient = GsonBuilder().serializeNulls().setLenient().serializeSpecialFloatingPointValues().create()
+
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gsonClient))
                 .client(client)
                 .build()
             return retrofit.create(ApiInterface::class.java)

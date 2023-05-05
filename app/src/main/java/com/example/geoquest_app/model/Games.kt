@@ -10,7 +10,7 @@ data class Games(
     val idTreasure: Int,
     val idUser: Int,
     var solved: Boolean,
-    @Contextual var timeStart: Instant,
-    @Contextual var timeEnd: Instant
+    var timeStart: String,
+    var timeEnd: String
 
 )

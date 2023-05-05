@@ -24,6 +24,7 @@
         app:layout_constraintTop_toBottomOf="@id/logo"
         app:layout_constraintBottom_toTopOf="@id/email"
         app:layout_constraintStart_toStartOf="parent"
+        app:errorEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
 
         android:hint="Nickname">
@@ -45,7 +46,7 @@
         app:layout_constraintBottom_toTopOf="@id/password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
+        app:errorEnabled="false"
         android:hint="E-mail">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -53,6 +54,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:backgroundTint="@color/color4"
+            android:inputType="textEmailAddress"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -61,6 +63,7 @@
         android:id="@+id/password"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        app:errorEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/email"
         app:layout_constraintBottom_toTopOf="@id/confPassword"
         app:endIconMode="password_toggle"
@@ -86,6 +89,7 @@
         app:layout_constraintTop_toBottomOf="@id/password"
         app:layout_constraintBottom_toTopOf="@id/signup"
         app:endIconMode="password_toggle"
+        app:errorEnabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:hint="Confirm Password">

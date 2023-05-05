@@ -7,12 +7,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.model.Repository
 import com.example.geoquest_app.model.Reviews
+import com.example.models.Games
 import com.example.models.Treasures
 import com.example.models.User
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 class GeoViewModel : ViewModel() {
     val repository = Repository()
@@ -21,6 +28,8 @@ class GeoViewModel : ViewModel() {
     var userData = MutableLiveData<User>()
     var userImage = MutableLiveData<Bitmap>()
     var userImages = mutableMapOf<Int, Bitmap>()
+    var isNewUser = MutableLiveData<Boolean>()
+
 
     // TREASURE VARIABLES
     var treasureListData = MutableLiveData<List<Treasures>>()
@@ -53,10 +62,35 @@ class GeoViewModel : ViewModel() {
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
                     userData.postValue(response.body())
+                    isNewUser.postValue(false)
+
                 }
             } else {
+                isNewUser.postValue(true)
                 Log.e("Error " + response.code(), response.message())
             }
+        }
+    }
+
+    fun postUser(newUser: User) {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.postUser(newUser)
+        }
+    }
+
+    fun putUser(userToUpdate: User, imageFile: File) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val json = Gson().toJson(userToUpdate)
+            val objectBody = json.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val imageRequestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+            val imagePart =
+                MultipartBody.Part.createFormData("image", imageFile.name, imageRequestFile)
+            repository.putUser(objectBody, imagePart)
+        }
+    }
+    fun deleteUser(userID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.deleteUserByID(userID)
         }
     }
 
@@ -114,6 +148,15 @@ class GeoViewModel : ViewModel() {
                 Log.e("Error " + response.code(), response.message())
             }
         }
+    }
+
+    // GAMES
+
+    fun postGame(treasureID: Int, game: Games){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.postUserGamesByTreasureId(treasureID, game)
+        }
+
     }
 
 

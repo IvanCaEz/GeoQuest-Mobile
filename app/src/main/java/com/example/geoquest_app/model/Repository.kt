@@ -25,14 +25,14 @@ class Repository {
     // Treasure REPORTS
     suspend fun getReportsByTreasureId(treasureId: Int) = apiInterface.getReportsByTreasureId(treasureId)
     suspend fun getReportByIdFromTreasureId( treasureId: Int, idReports: Int) = apiInterface.getReportByIdFromTreasureId(treasureId, idReports)
-    suspend fun postTreasure(body: RequestBody, @Part image: MultipartBody.Part)  = apiInterface.postTreasure(body, image)
-    suspend fun putTreasure(treasureId: Int, body: RequestBody, @Part image: MultipartBody.Part)  = apiInterface.putTreasure(treasureId, body, image)
-    suspend fun postReviewByTreasureId(treasureId: Int, body: RequestBody, @Part image: MultipartBody.Part)  = apiInterface.postReviewByTreasureId(treasureId, body, image)
+    suspend fun postTreasure(body: RequestBody,  image: MultipartBody.Part)  = apiInterface.postTreasure(body, image)
+    suspend fun putTreasure(treasureId: Int, body: RequestBody, image: MultipartBody.Part)  = apiInterface.putTreasure(treasureId, body, image)
+    suspend fun postReviewByTreasureId(treasureId: Int, body: RequestBody,  image: MultipartBody.Part)  = apiInterface.postReviewByTreasureId(treasureId, body, image)
     suspend fun putReviewByTreasureId(treasureId: Int, idReviews: Int, body: RequestBody, @Part image: MultipartBody.Part)  = apiInterface.putReviewByTreasureId(treasureId, idReviews, body, image)
     suspend fun deleteTreasureById(treasureId: Int) = apiInterface.deleteTreasureById(treasureId)
     suspend fun deleteReviewByTreasureId(treasureId: Int, idReviews: Int) = apiInterface.deleteReviewByTreasureId(treasureId, idReviews)
     suspend fun deleteReportByTreasureId(treasureId: Int,  idReports: Int) = apiInterface.deleteReportByTreasureId(treasureId, idReports)
-    suspend fun postUserGamesByTreasureId(treasureId: Int)  = apiInterface.postUserGamesByTreasureId(treasureId)
+    suspend fun postUserGamesByTreasureId(treasureId: Int, body: Games)  = apiInterface.postUserGamesByTreasureId(treasureId, body)
 
 
 
@@ -41,15 +41,15 @@ class Repository {
     suspend fun postUserForLogin(usernameAndPass: String) = apiInterface.postUserForLogin(usernameAndPass)
     suspend fun getUserByID(userId: Int) = apiInterface.getUserByID(userId)
     suspend fun getUserByUserName(userName: String) = apiInterface.getUserByUserName(userName)
-    suspend fun postUser(body: RequestBody, @Part image: MultipartBody.Part) = apiInterface.postUser(body, image)
-    suspend fun putUser(body: RequestBody, @Part image: MultipartBody.Part) = apiInterface.putUser(body, image)
+    suspend fun postUser(body:User) = apiInterface.postUser(body)
+    suspend fun putUser(body: RequestBody, image: MultipartBody.Part) = apiInterface.putUser(body, image)
     suspend fun deleteUserByID(userId: Int) = apiInterface.deleteUserByID(userId)
     suspend fun getUserPicture(userId: Int) = apiInterface.getUserPicture(userId)
     // USER STATS
     suspend fun getUserStats(userId: Int) = apiInterface.getUserStats(userId)
     // USER FAVS
     suspend fun getUserFavs(userId: Int) = apiInterface.getUserFavs(userId)
-    suspend fun postUserFav( userId: Int) = apiInterface.postUserFav(userId)
+    suspend fun postUserFav(userId: Int, body: Int) = apiInterface.postUserFav(userId, body)
     suspend fun deleteUserFav(userId: Int, treasureId: Int) = apiInterface.deleteUserFav(userId, treasureId)
     // USER REVIEWS
     suspend fun getUserReviews(userId: Int) = apiInterface.getUserReviews(userId)
@@ -61,7 +61,7 @@ class Repository {
     suspend fun getUserTreasures(userId: Int)  = apiInterface.getUserTreasures(userId)
     // REPORT QUERIES
     suspend fun getAllReports() = apiInterface.getAllReports()
-    suspend fun postReport() = apiInterface.postReport()
+    suspend fun postReport(body: Reports) = apiInterface.postReport(body)
 
 
 
