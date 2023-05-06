@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.retrofit.Repository
 import com.example.geoquest_app.model.Reviews
+import com.example.geoquest_app.model.RouteResponse
 import com.example.models.Favourites
 import com.example.models.Games
 import com.example.models.Treasures
@@ -215,6 +216,24 @@ class GeoViewModel : ViewModel() {
     fun checkIfTreasureIsFav(userID: Int, treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             isFav.postValue(repository.checkIfFav(userID, treasureID))
+        }
+    }
+
+    // ROUTES
+
+    val route = MutableLiveData<RouteResponse>()
+
+    fun getRoute(key: String, start: String, end: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getRoutes(key, start, end)
+            if (response.isSuccessful){
+                println("Ruta creada")
+                Log.i("ruta", "CREADA")
+                route.postValue(response.body())
+            } else {
+                println("Ruta no creada")
+                Log.i("ruta", "MAL")
+            }
         }
     }
 

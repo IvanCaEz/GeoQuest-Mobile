@@ -7,6 +7,10 @@ import okhttp3.RequestBody
 
 class Repository {
     val apiInterface = ApiInterface.create()
+    val directionsInterface = DirectionsApiInterface.create()
+
+    // ROUTES
+    suspend fun getRoutes(key: String, start: String, end: String) = directionsInterface.getRoute(key, start, end)
 
     // TREASURES
     suspend fun getAllTreasures() = apiInterface.getAllTreasures()
