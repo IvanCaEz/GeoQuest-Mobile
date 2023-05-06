@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +25,7 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
     private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
     private val viewModel: GeoViewModel by activityViewModels()
+    var isFav = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,9 +41,30 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         activity.setBottomNavigationVisible(true)
 
         val treasureID = arguments?.getInt("treasureID")!!
+        val userID = viewModel.userData.value?.idUser!!
         viewModel.getTreasureByID(treasureID)
         viewModel.getTreasureImage(treasureID)
         viewModel.getAllReviews(treasureID)
+        viewModel.getUserFavs(userID)
+
+
+        viewModel.userFavs.observe(viewLifecycleOwner){ favList ->
+            if (favList.isNotEmpty()){
+                val favourite = favList.filter { it.idTreasure == treasureID }
+                binding.favorite.isChecked = favourite.isNotEmpty()
+                isFav = true
+            } else {
+                binding.favorite.isChecked = false
+                isFav = false
+            }
+        }
+
+        binding.favorite.setOnClickListener{
+            if (isFav) viewModel.addFavTreasure(userID, treasureID)
+            else viewModel.deleteFavTreasure(userID, treasureID)
+        }
+
+
         println("ID TESORO: $treasureID")
 
         viewModel.reviewListData.observe(viewLifecycleOwner) { reviewList ->

@@ -24,6 +24,7 @@ class Repository {
     suspend fun getReportByIdFromTreasureId( treasureId: Int, idReports: Int) = apiInterface.getReportByIdFromTreasureId(treasureId, idReports)
     suspend fun postTreasure(body: RequestBody,  image: MultipartBody.Part)  = apiInterface.postTreasure(body, image)
     suspend fun putTreasure(treasureId: Int, body: RequestBody, image: MultipartBody.Part)  = apiInterface.putTreasure(treasureId, body, image)
+    suspend fun updateTreasureScore(treasureId: Int, body: Treasures) = apiInterface.updateTreasureScore(treasureId, body)
     suspend fun postReviewByTreasureId(treasureId: Int, body: RequestBody, image: MultipartBody.Part)  = apiInterface.postReviewByTreasureId(treasureId, body, image)
     suspend fun putReviewByTreasureId(treasureId: Int, idReviews: Int, body: RequestBody, image: MultipartBody.Part)  = apiInterface.putReviewByTreasureId(treasureId, idReviews, body, image)
     suspend fun deleteTreasureById(treasureId: Int) = apiInterface.deleteTreasureById(treasureId)
@@ -46,6 +47,7 @@ class Repository {
     suspend fun getUserStats(userId: Int) = apiInterface.getUserStats(userId)
     // USER FAVS
     suspend fun getUserFavs(userId: Int) = apiInterface.getUserFavs(userId)
+    suspend fun checkIfFav(userId: Int, treasureId: Int) = apiInterface.checkIfFav(userId, treasureId)
     suspend fun postUserFav(userId: Int, body: Int) = apiInterface.postUserFav(userId, body)
     suspend fun deleteUserFav(userId: Int, treasureId: Int) = apiInterface.deleteUserFav(userId, treasureId)
     // USER REVIEWS

@@ -87,7 +87,9 @@ class EndGameFragment : Fragment() {
 
         val elapsedTime = timeFormatting(startTime, endTime)
 
-        binding.treasureName.text = viewModel.treasureData.value?.name
+        val treasure = viewModel.treasureData.value
+
+        binding.treasureName.text = treasure?.name
         binding.elapsedTime.text = elapsedTime
 
 
@@ -113,10 +115,8 @@ class EndGameFragment : Fragment() {
             val solved = result == "FOUND"
 
             val game = Games(0, treasureID, userID!!, solved,startTime,endTime)
-            println(game)
 
             viewModel.postGame(treasureID, game)
-
 
             if (imageUri != null){
                 val review = Reviews(0, treasureID,userID,opinion,rating,newImageName)
@@ -128,9 +128,8 @@ class EndGameFragment : Fragment() {
                 }
                 val imageFile = File(imagePath)
 
-                println( "idtreasure en la review ${review.idTreasure}")
-                println(review)
                 viewModel.postReview(review, imageFile)
+                viewModel.updateTreasureScore(treasureID, treasure!!)
 
             } else {
                 val placeholderDrawable = resources.getDrawable(R.drawable.placeholder_review)
@@ -142,16 +141,10 @@ class EndGameFragment : Fragment() {
                 val filePath = file.absolutePath
                 val imageFile = File(filePath)
                 val review = Reviews(0, treasureID,userID,opinion,rating,"placeholder_review.png")
-                println( "idtreasure en la review ${review.idTreasure}")
-                println(review)
 
                 viewModel.postReview(review, imageFile)
+                viewModel.updateTreasureScore(treasureID, treasure!!)
             }
-
-
-
-
-
 
             findNavController().navigate(R.id.action_endGameFragment_to_listAndSearchFragment)
         }

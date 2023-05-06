@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,8 +22,9 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
 
     private lateinit var treasureAdapter: TreasureAdapter
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
-    private lateinit var viewModel: GeoViewModel
     lateinit var binding: FragmentListAndSearchBinding
+    private val viewModel: GeoViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
@@ -35,7 +37,6 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
-        viewModel = ViewModelProvider(requireActivity())[GeoViewModel::class.java]
         viewModel.getAllTreasures()
         viewModel.treasureListData.observe(viewLifecycleOwner){ treasureList ->
             treasureList.forEach { treasure ->

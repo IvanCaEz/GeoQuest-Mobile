@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.retrofit.Repository
 import com.example.geoquest_app.model.Reviews
+import com.example.models.Favourites
 import com.example.models.Games
 import com.example.models.Treasures
 import com.example.models.User
@@ -29,6 +30,8 @@ class GeoViewModel : ViewModel() {
     var userImage = MutableLiveData<Bitmap>()
     var userImages = mutableMapOf<Int, Bitmap>()
     var isNewUser = MutableLiveData<Boolean>()
+    var userFavs = MutableLiveData<List<Treasures>>()
+    var isFav = MutableLiveData<Boolean>()
 
 
     // TREASURE VARIABLES
@@ -161,13 +164,59 @@ class GeoViewModel : ViewModel() {
         }
     }
 
+    fun updateTreasureScore(treasureID: Int, treasure: Treasures){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.updateTreasureScore(treasureID,treasure)
+        }
+    }
+
     // GAMES
 
     fun postGame(treasureID: Int, game: Games){
         CoroutineScope(Dispatchers.IO).launch {
             repository.postUserGamesByTreasureId(treasureID, game)
         }
+    }
 
+    // FAVS
+
+    fun getUserFavs(userID: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = repository.getUserFavs(userID)
+                println(response)
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        withContext(Dispatchers.Main) {
+                            userFavs.postValue(response.body())
+                        }
+                    } else {
+                        userFavs.postValue(listOf())
+                        Log.e("Error " + response.code(), response.message())
+                    }
+                }
+            } catch (e: java.lang.IllegalStateException){
+                println(e.message)
+            }
+
+        }
+    }
+
+    fun addFavTreasure(userID: Int, treasureID: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.postUserFav(userID, treasureID)
+        }
+    }
+    fun deleteFavTreasure(userID: Int, treasureID: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.deleteUserFav(userID, treasureID)
+        }
+    }
+
+    fun checkIfTreasureIsFav(userID: Int, treasureID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            isFav.postValue(repository.checkIfFav(userID, treasureID))
+        }
     }
 
 
