@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.geoquest_app.model.Repository
+import com.example.geoquest_app.retrofit.Repository
 import com.example.geoquest_app.model.Reviews
 import com.example.models.Games
 import com.example.models.Treasures

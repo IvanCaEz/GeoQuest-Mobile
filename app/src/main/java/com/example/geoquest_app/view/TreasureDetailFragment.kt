@@ -38,11 +38,11 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
-        val treasureId = arguments?.getInt("treasureId")!!.toInt()
-        viewModel.getTreasureByID(treasureId)
-        viewModel.getTreasureImage(treasureId)
-        viewModel.getAllReviews(treasureId)
-        println(treasureId)
+        val treasureID = arguments?.getInt("treasureID")!!
+        viewModel.getTreasureByID(treasureID)
+        viewModel.getTreasureImage(treasureID)
+        viewModel.getAllReviews(treasureID)
+        println("ID TESORO: $treasureID")
 
         viewModel.reviewListData.observe(viewLifecycleOwner) { reviewList ->
             setUpRecyclerView(reviewList!!)
@@ -58,7 +58,7 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         }
 
         binding.play.setOnClickListener {
-            val toPlay = TreasureDetailFragmentDirections.actionTreasureDetailFragmentToStartGameFragment(treasureId)
+            val toPlay = TreasureDetailFragmentDirections.actionTreasureDetailFragmentToStartGameFragment(treasureID)
             findNavController().navigate(toPlay)
         }
 

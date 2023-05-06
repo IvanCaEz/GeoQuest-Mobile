@@ -1,12 +1,9 @@
-package com.example.geoquest_app.model
+package com.example.geoquest_app.retrofit
 
-import com.example.geoquest_app.model.retrofit.ApiInterface
+import com.example.geoquest_app.model.Reports
 import com.example.models.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Response
-import retrofit2.http.*
 
 class Repository {
     val apiInterface = ApiInterface.create()

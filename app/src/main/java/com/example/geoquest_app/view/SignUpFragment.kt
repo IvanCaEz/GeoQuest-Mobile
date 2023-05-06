@@ -45,7 +45,6 @@ class SignUpFragment : Fragment() {
             val nickname = binding.nickname.editText?.text.toString()
             val email = binding.email.editText?.text.toString()
             val password = binding.password.editText?.text.toString()
-            val confirmpass = binding.confPassword.editText?.text.toString()
             if (nickname.isNotEmpty()) {
                 if (validatePassword(password) && confirmPassword(password)) {
 
@@ -54,7 +53,7 @@ class SignUpFragment : Fragment() {
                         0, nickname, email, password,
                         "placeholder_user.png", "Noob", "Player", listOf()
                     )
-
+                    // Utilizar este code para el put
                     val placeholderDrawable = resources.getDrawable(R.drawable.usuario)
                     val file = File(context?.cacheDir, "usuario.png")
                     val fileOutputStream = FileOutputStream(file)
@@ -130,14 +129,14 @@ class SignUpFragment : Fragment() {
         val emailPattern = Regex(
             "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$")
         return if (!emailPattern.matches(email)){
-            Toast.makeText(requireContext(),"Email can't be empty.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),"This is not a valid email.", Toast.LENGTH_SHORT).show()
             false
         } else {
             true
         }
     }
 
-    }
+}
 
 
 

@@ -58,9 +58,11 @@ class StartGameFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
-        val treasureId = arguments?.getInt("treasureId")!!.toInt()
-        viewModel.getTreasureByID(treasureId)
-        viewModel.getTreasureImage(treasureId)
+        val treasureID = arguments?.getInt("treasureID")!!
+        println("ID TESORO: $treasureID")
+
+        viewModel.getTreasureByID(treasureID)
+        viewModel.getTreasureImage(treasureID)
 
 
         val startTime = System.currentTimeMillis()
@@ -98,7 +100,7 @@ class StartGameFragment : Fragment() {
             val currentEndDate = LocalDateTime.now()
             val endDateString = currentEndDate.format(formatter)
             val toEndGame = StartGameFragmentDirections
-                .actionStartGameFragmentToEndGameFragment(startDateString,endDateString, treasureId)
+                .actionStartGameFragmentToEndGameFragment(startDateString,endDateString, treasureID)
             findNavController().navigate(toEndGame)
         }
         binding.showHint.setOnClickListener {

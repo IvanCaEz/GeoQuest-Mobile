@@ -57,6 +57,8 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
     }
 
     override fun onClick(treasures: Treasures) {
+        println("ID TESORO : ${treasures.idTreasure}")
+
         val action = ListAndSearchFragmentDirections.actionListAndSearchFragmentToTreasureDetailFragment(treasures.idTreasure)
         findNavController().navigate(action)
     }

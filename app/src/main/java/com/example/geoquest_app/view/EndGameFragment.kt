@@ -75,16 +75,15 @@ class EndGameFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
-        val treasureId = arguments?.getInt("treasureId")!!.toInt()
+        val treasureID = arguments?.getInt("treasureID")!!
         val startTime = arguments?.getString("startDate")!!
         val endTime = arguments?.getString("endDate")!!
 
+        println("id tesoro:$treasureID")
+        println("iid tesoro del viewmodel: ${viewModel.treasureData.value?.idTreasure}")
         val userID = viewModel.userData.value?.idUser
 
-        val options = arrayOf("FOUND", "NOT FOUND")
-        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.spinner_found_notfound, options)
-        spinnerAdapter.setDropDownViewResource(R.layout.spinner_found_notfound)
-        binding.resultSpinner.adapter = spinnerAdapter
+       setUpSpinner()
 
         val elapsedTime = timeFormatting(startTime, endTime)
 
@@ -113,12 +112,14 @@ class EndGameFragment : Fragment() {
 
             val solved = result == "FOUND"
 
-            val game = Games(0, treasureId, userID!!, solved,startTime,endTime)
-            viewModel.postGame(treasureId, game)
+            val game = Games(0, treasureID, userID!!, solved,startTime,endTime)
+            println(game)
+
+            viewModel.postGame(treasureID, game)
 
 
             if (imageUri != null){
-                val review = Reviews(0, treasureId,userID,opinion,rating,newImageName)
+                val review = Reviews(0, treasureID,userID,opinion,rating,newImageName)
 
                 try {
                     imagePath = getPathFromUri(requireContext(), imageUri!!)!!
@@ -127,6 +128,8 @@ class EndGameFragment : Fragment() {
                 }
                 val imageFile = File(imagePath)
 
+                println( "idtreasure en la review ${review.idTreasure}")
+                println(review)
                 viewModel.postReview(review, imageFile)
 
             } else {
@@ -138,7 +141,9 @@ class EndGameFragment : Fragment() {
                 fileOutputStream.close()
                 val filePath = file.absolutePath
                 val imageFile = File(filePath)
-                val review = Reviews(0, treasureId,1,opinion,rating,"placeholder_review.png")
+                val review = Reviews(0, treasureID,userID,opinion,rating,"placeholder_review.png")
+                println( "idtreasure en la review ${review.idTreasure}")
+                println(review)
 
                 viewModel.postReview(review, imageFile)
             }
@@ -150,6 +155,13 @@ class EndGameFragment : Fragment() {
 
             findNavController().navigate(R.id.action_endGameFragment_to_listAndSearchFragment)
         }
+    }
+
+    fun setUpSpinner(){
+        val options = arrayOf("FOUND", "NOT FOUND")
+        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.spinner_found_notfound, options)
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_found_notfound)
+        binding.resultSpinner.adapter = spinnerAdapter
     }
 
     fun timeFormatting(startTime: String, endTime: String): String {
