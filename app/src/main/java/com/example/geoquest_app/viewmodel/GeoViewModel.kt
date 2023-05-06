@@ -184,19 +184,18 @@ class GeoViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = repository.getUserFavs(userID)
-                println(response)
-                if (response != null) {
-                    if (response.isSuccessful) {
-                        withContext(Dispatchers.Main) {
-                            userFavs.postValue(response.body())
-                        }
-                    } else {
-                        userFavs.postValue(listOf())
-                        Log.e("Error " + response.code(), response.message())
+                if (response.isSuccessful) {
+                    withContext(Dispatchers.Main) {
+                        userFavs.postValue(response.body())
+                        println(response.body())
                     }
+                } else {
+                    userFavs.postValue(listOf())
+                    println("No tiene favs")
+                    Log.e("Error " + response.code(), response.message())
                 }
             } catch (e: java.lang.IllegalStateException){
-                println(e.message)
+                println("ERROR " + e.message)
             }
 
         }

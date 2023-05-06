@@ -45,27 +45,24 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         viewModel.getTreasureByID(treasureID)
         viewModel.getTreasureImage(treasureID)
         viewModel.getAllReviews(treasureID)
-        viewModel.getUserFavs(userID)
+        viewModel.checkIfTreasureIsFav(userID, treasureID)
+
+        viewModel.isFav.observe(viewLifecycleOwner){
+            isFav = it
+            binding.favorite.isChecked = isFav
+        }
 
 
-        viewModel.userFavs.observe(viewLifecycleOwner){ favList ->
-            if (favList.isNotEmpty()){
-                val favourite = favList.filter { it.idTreasure == treasureID }
-                binding.favorite.isChecked = favourite.isNotEmpty()
-                isFav = true
-            } else {
-                binding.favorite.isChecked = false
-                isFav = false
+        binding.favorite.setOnClickListener{
+            if (!isFav){
+                viewModel.addFavTreasure(userID, treasureID)
+                viewModel.checkIfTreasureIsFav(userID, treasureID)
+            } else{
+                viewModel.deleteFavTreasure(userID, treasureID)
+                viewModel.checkIfTreasureIsFav(userID, treasureID)
             }
         }
 
-        binding.favorite.setOnClickListener{
-            if (isFav) viewModel.addFavTreasure(userID, treasureID)
-            else viewModel.deleteFavTreasure(userID, treasureID)
-        }
-
-
-        println("ID TESORO: $treasureID")
 
         viewModel.reviewListData.observe(viewLifecycleOwner) { reviewList ->
             setUpRecyclerView(reviewList!!)

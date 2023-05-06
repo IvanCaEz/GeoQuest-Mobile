@@ -38,10 +38,7 @@ class ReviewAdapter (private val reviews: List<Reviews>, val listener: OnClickLi
             setListener(review)
             binding.userName.text = review.idReview.toString()
             binding.comment.text = review.opinion
-            Glide.with(context)
-                .load(review.photo)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.reviewImg)
+
         }
         }
     }

@@ -85,7 +85,7 @@ interface ApiInterface {
     suspend fun getUserStats(@Path("id") userId: Int): Response<UserStats>
     // USER FAVS
     @GET("user/{id}/favs")
-    suspend fun getUserFavs(@Path("id") userId: Int): Response<List<Treasures>>?
+    suspend fun getUserFavs(@Path("id") userId: Int): Response<List<Treasures>>
     @GET("user/{id}/favs/{treasureID}")
     suspend fun checkIfFav(@Path("id") userId: Int, @Path("treasureID") treasureId: Int): Boolean
     @POST("user/{id}/favs")
