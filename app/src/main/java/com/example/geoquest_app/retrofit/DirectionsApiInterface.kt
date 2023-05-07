@@ -1,5 +1,6 @@
 package com.example.geoquest_app.retrofit
 
+import com.example.geoquest_app.model.Feature
 import com.example.geoquest_app.model.RouteResponse
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -29,5 +30,17 @@ interface DirectionsApiInterface {
         @Query("start", encoded = true) start: String,
         @Query("end", encoded = true) end: String
     ): Response<RouteResponse>
+
+    @GET("v2/directions/search")
+    suspend fun filterLocation(
+        @Query("api_key") key: String,
+        @Query("text", encoded = true) start: String,
+        @Query("focus.point.lon") userLon: String,
+        @Query("focus.point.lat") userLat: String,
+        @Query("size") results: Int,
+
+    ): Response<Feature>
+
+
 
 }
