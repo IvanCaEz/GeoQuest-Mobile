@@ -40,7 +40,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var currentCoordinates: LatLng
     var route: Polyline? = null
-
+    var endLatitude = 0.0
+    var endLongitude = 0.0
 
 
     @SuppressLint("MissingPermission")
@@ -81,16 +82,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null){
+                if (query != null) {
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
                     try {
                         val locationResults = geocoder.getFromLocationName(query, 1)
-                        if (locationResults!!.isNotEmpty()){
-                            val searchCoordinates = LatLng(locationResults[0].latitude, locationResults[0].longitude)
-                            map.animateCamera( CameraUpdateFactory.newLatLngZoom(searchCoordinates, 12f),
-                                2000, null)
+                        if (locationResults!!.isNotEmpty()) {
+                            val searchCoordinates =
+                                LatLng(locationResults[0].latitude, locationResults[0].longitude)
+                            map.animateCamera(
+                                CameraUpdateFactory.newLatLngZoom(searchCoordinates, 12f),
+                                2000, null
+                            )
                         }
-                    } catch (e: IOException){
+                    } catch (e: IOException) {
 
                     }
 
@@ -106,7 +110,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
             }
 
         })
-
 
 
     }
@@ -142,7 +145,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
         val itb = LatLng(41.413182, 2.227171)
         map.animateCamera(
             CameraUpdateFactory.newLatLngZoom(currentCoordinates, 14f),
-            1500, null)
+            1500, null
+        )
 
 
         map.setOnPolylineClickListener(this)
@@ -211,15 +215,32 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
     override fun onMarkerClick(treasureMarker: Marker): Boolean {
         // Borra la ruta anterior
 
-        val start =  "${currentCoordinates.longitude},${currentCoordinates.latitude}"
-        val end = "${treasureMarker.position.longitude},${treasureMarker.position.latitude}"
+
+
+        val start = "${currentCoordinates.longitude},${currentCoordinates.latitude}"
+      val end = "${treasureMarker.position.longitude},${treasureMarker.position.latitude}"
         viewModel.getRoute("5b3ce3597851110001cf624877a97a68b1a84fa2bcb01fb0aa655b89", start, end)
         drawRoute()
+       // endLongitude = treasureMarker.position.longitude
+        // endLatitude = treasureMarker.position.latitude
         return false
     }
 
-    fun drawRoute(){
+    fun drawRoute() {
+
         val polyLineOptions = PolylineOptions()
+            .width(10f)
+            .color(ContextCompat.getColor(requireContext(), R.color.color4))
+        if (polyLineOptions.points.isNotEmpty()){
+            route?.remove()
+            polyLineOptions.points.remove(LatLng(endLatitude,endLongitude))
+        }
+
+        /*
+        if (polyLineOptions.points.size >= 1){
+            polyLineOptions.points.removeLast()
+        }
+         */
 
 
         // Personalización de la ruta
@@ -231,14 +252,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
          .pattern(listOf((Dot(), Gap(10f), Dash(50f), Gap(10f)))
          */
 
-        viewModel.route.observe(viewLifecycleOwner){ routeResponse ->
-            route?.remove()
+        viewModel.route.observe(viewLifecycleOwner) { routeResponse ->
+
             // mapear coordenadas?
             // devuelve las coordenadas alreves
             routeResponse.features.first().geometry.coordinates.forEach {
+                route?.remove()
+                endLatitude = it[1]
+                endLongitude = it[0]
+
                 polyLineOptions.add(LatLng(it[1], it[0]))
             }
-             route = map.addPolyline(polyLineOptions)
+            route?.remove()
+            route = map.addPolyline(polyLineOptions)
             route!!.isClickable = true
         }
     }
