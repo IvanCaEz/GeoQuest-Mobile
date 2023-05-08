@@ -34,6 +34,7 @@ class GeoViewModel : ViewModel() {
     var isNewUser = MutableLiveData<Boolean>()
     var userFavs = MutableLiveData<List<Treasures>>()
     var isFav = MutableLiveData<Boolean>()
+    var userReviews = MutableLiveData<List<Reviews>>()
 
 
     // TREASURE VARIABLES
@@ -41,6 +42,7 @@ class GeoViewModel : ViewModel() {
     var treasureData = MutableLiveData<Treasures>()
     var treasureImage = MutableLiveData<Bitmap>()
     var treasureImages = mutableMapOf<Int, Bitmap>()
+    var treasureName = mutableMapOf<Int, String>()
 
 
     // REVIEW VARIABLES
@@ -135,7 +137,7 @@ class GeoViewModel : ViewModel() {
             val response = repository.getTreasureById(treasureID)
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
-                    //treasureNames[treasureID] = response.body()!!.name
+                    treasureName[treasureID] = response.body()!!.name
                     treasureData.postValue(response.body())
                 }
             } else {
@@ -188,6 +190,15 @@ class GeoViewModel : ViewModel() {
     fun updateTreasureScore(treasureID: Int, treasure: Treasures){
         CoroutineScope(Dispatchers.IO).launch {
             repository.updateTreasureScore(treasureID,treasure)
+        }
+    }
+
+    fun getReviewsByUserId(userId: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getUserReviews(userId)
+            if (response.isSuccessful){
+                userReviews.postValue(response.body())
+            } else Log.e("Error " + response.code(), response.message())
         }
     }
 

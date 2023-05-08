@@ -1,6 +1,8 @@
 package com.example.geoquest_app.view
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +32,35 @@ class LogInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(false)
+
+        val slideConstraint = binding.loginConstraintSlider
+        val mainText = binding.loginTitle
+        val firstEditText = binding.nickname
+        val secondEditText = binding.password
+        val firstTextSignUp = binding.text
+        val secondTextSignUp = binding.signup
+        val logInButton = binding.login
+        val logoImage = binding.logo
+
+        mainText.alpha = 0.0f
+        firstEditText.alpha = 0.0f
+        secondEditText.alpha = 0.0f
+        firstTextSignUp.alpha = 0.0f
+        secondTextSignUp.alpha = 0.0f
+        logInButton.alpha = 0.0f
+        logoImage.alpha = 0.0f
+
+        slideConstraint.y = 2200.0f
+        slideConstraint.animate().translationY(0.0f).duration = 1500
+        Handler(Looper.getMainLooper()).postDelayed({
+            mainText.animate().alpha(1.0f).duration = 350
+            firstEditText.animate().alpha(1.0f).duration = 350
+            secondEditText.animate().alpha(1.0f).duration = 350
+            firstTextSignUp.animate().alpha(1.0f).duration = 350
+            secondTextSignUp.animate().alpha(1.0f).duration = 350
+            logInButton.animate().alpha(1.0f).duration = 350
+            logoImage.animate().alpha(1.0f).duration = 350
+        }, 1800)
 
         binding.login.setOnClickListener {
             val userName = binding.nickname.editText?.text.toString()
