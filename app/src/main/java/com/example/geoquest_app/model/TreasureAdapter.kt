@@ -12,6 +12,7 @@ import com.example.geoquest_app.databinding.ItemReviewBinding
 import com.example.geoquest_app.databinding.ItemTreasuresBinding
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
+import okhttp3.internal.wait
 
 class TreasureAdapter(
     private val treasures: List<Treasures>,
@@ -48,12 +49,7 @@ class TreasureAdapter(
             binding.scoreTV.text = treasure.score.toString()
             binding.locationTag.text = treasure.location
             binding.treasureIV.setImageBitmap(viewModel.treasureImages[treasure.idTreasure])
-            /*
-            Glide.with(context)
-                .load(treasure.image)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.treasureImg)
-             */
+
         }
     }
 }

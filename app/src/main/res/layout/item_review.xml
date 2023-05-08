@@ -54,15 +54,17 @@
 
         <TextView
             android:id="@+id/reviewBox"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textSize="18dp"
             android:gravity="left"
             android:maxLines="4"
             android:singleLine="false"
             app:layout_constraintTop_toBottomOf="@id/review_TV"
             app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Review text" />
 

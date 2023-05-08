@@ -9,10 +9,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.ItemReviewBinding
+import com.example.geoquest_app.viewmodel.GeoViewModel
 
-class ReviewAdapter (private val reviews: List<Reviews>, val listener: OnClickListenerReview): RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
+class ReviewAdapter (private val reviews: List<Reviews>,
+                     val listener: OnClickListenerReview,
+                     val viewModel: GeoViewModel
+                     ): RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemReviewBinding.bind(view)
+
+
         fun setListener(review: Reviews){
             binding.root.setOnClickListener {
                 listener.onClick(review)
@@ -36,9 +42,9 @@ class ReviewAdapter (private val reviews: List<Reviews>, val listener: OnClickLi
         val review = reviews[position]
         with(holder){
             setListener(review)
-            binding.userTV.text = review.idReview.toString()
+            binding.userTV.text = viewModel.userNames[review.idUser]
             binding.reviewBox.text = review.opinion
-
+            binding.userIV.setImageBitmap(viewModel.userImages[review.idUser])
         }
         }
     }

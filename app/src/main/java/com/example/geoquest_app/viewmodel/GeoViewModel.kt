@@ -30,6 +30,7 @@ class GeoViewModel : ViewModel() {
     var userData = MutableLiveData<User>()
     var userImage = MutableLiveData<Bitmap>()
     var userImages = mutableMapOf<Int, Bitmap>()
+    var userNames = mutableMapOf<Int, String>()
     var isNewUser = MutableLiveData<Boolean>()
     var userFavs = MutableLiveData<List<Treasures>>()
     var isFav = MutableLiveData<Boolean>()
@@ -48,12 +49,13 @@ class GeoViewModel : ViewModel() {
 
 
     // USERS
+    // USAR ESTA FUNCION PARA CARGAR LOS USERS QUE NO SEAN EL PROPIO USER
     fun getUserByID(userID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserByID(userID)
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
-                    userData.postValue(response.body())
+                    userNames[userID] = response.body()!!.nickName
                 }
             } else {
                 Log.e("Error " + response.code(), response.message())
@@ -71,6 +73,23 @@ class GeoViewModel : ViewModel() {
                 }
             } else {
                 isNewUser.postValue(true)
+                Log.e("Error " + response.code(), response.message())
+            }
+        }
+    }
+
+    fun getUserImage(userID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            // Devuelve la portada del libro con la ID indicada
+            val response = repository.getUserPicture(userID)
+            if (response.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                    val source = response.body()
+                    val inputStream = source?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    userImages[userID] = bitmap
+                }
+            } else {
                 Log.e("Error " + response.code(), response.message())
             }
         }
@@ -116,6 +135,7 @@ class GeoViewModel : ViewModel() {
             val response = repository.getTreasureById(treasureID)
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
+                    //treasureNames[treasureID] = response.body()!!.name
                     treasureData.postValue(response.body())
                 }
             } else {

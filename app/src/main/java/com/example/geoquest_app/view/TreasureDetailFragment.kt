@@ -66,11 +66,14 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
 
 
         viewModel.reviewListData.observe(viewLifecycleOwner) { reviewList ->
+            reviewList.forEach { review ->
+                viewModel.getUserByID(review.idUser)
+                viewModel.getUserImage(review.idUser)
+            }
             setUpRecyclerView(reviewList!!)
         }
 
         viewModel.treasureData.observe(viewLifecycleOwner) { treasure ->
-            println(treasure.name)
             setTreasureInfo(treasure)
         }
 
@@ -95,7 +98,7 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
 
     }
     fun setUpRecyclerView(list: List<Reviews>) {
-        reviewAdapter = ReviewAdapter(list, this)
+        reviewAdapter = ReviewAdapter(list, this, viewModel)
         linearLayoutManager = LinearLayoutManager(context)
 
         binding.recyclerView.apply {
@@ -108,6 +111,7 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         binding.treasureName.text = treasure.name
         binding.dificulty.text = treasure.difficulty
         binding.location.text = treasure.location
+        binding.ratingBar.rating = treasure.score.toFloat()
     }
     fun showDialogReport() {
         val newFragment = ReportDialog()
