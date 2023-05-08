@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="spn_title">Choose a search mode</string>
+
+    <string-array name="spinner_search">
+        <item>Location</item>
+        <item>Name</item>
+        <item>Difficulty</item>
+        <item>Score</item>
+    </string-array>
+
+</resources>

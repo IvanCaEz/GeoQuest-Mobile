@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="spn_title">Choose a language</string>
+    <string name="spn_title">Choose a result</string>
 
     <string-array name="spinner_result">
         <item>Found</item>
