@@ -12,9 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentProfileBinding
-import com.example.geoquest_app.model.OnClickListenerReview
+import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
 import com.example.geoquest_app.model.Reviews
-import com.example.geoquest_app.model.UserProfileReviewAdapter
+import com.example.geoquest_app.adapters.UserProfileReviewAdapter
 import com.example.geoquest_app.viewmodel.GeoViewModel
 
 class ProfileFragment : Fragment(), OnClickListenerReview {

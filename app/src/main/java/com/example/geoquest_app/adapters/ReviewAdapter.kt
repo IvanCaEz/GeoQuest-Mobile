@@ -1,14 +1,14 @@
-package com.example.geoquest_app.model
+package com.example.geoquest_app.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.ItemReviewBinding
+import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
+import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.viewmodel.GeoViewModel
 
 class ReviewAdapter (private val reviews: List<Reviews>,

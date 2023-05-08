@@ -1,19 +1,17 @@
 package com.example.geoquest_app.view
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.databinding.FragmentTreasureDetailBinding
-import com.example.geoquest_app.model.OnClickListenerReview
-import com.example.geoquest_app.model.ReviewAdapter
+import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
+import com.example.geoquest_app.adapters.ReviewAdapter
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.utils.ReportDialog
 import com.example.geoquest_app.viewmodel.GeoViewModel
@@ -114,8 +112,8 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         binding.ratingBar.rating = treasure.score.toFloat()
     }
     fun showDialogReport() {
-        val newFragment = ReportDialog()
-        newFragment.show(parentFragmentManager, "report")
+        val dialog = ReportDialog()
+        dialog.show(parentFragmentManager, "report")
     }
 
     override fun onClick(review: Reviews) {

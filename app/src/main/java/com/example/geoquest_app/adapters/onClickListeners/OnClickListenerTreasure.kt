@@ -1,4 +1,4 @@
-package com.example.geoquest_app.model
+package com.example.geoquest_app.adapters.onClickListeners
 
 import com.example.models.Treasures
 

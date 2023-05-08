@@ -1,4 +1,4 @@
-package com.example.geoquest_app.model
+package com.example.geoquest_app.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.ItemReviewsUserBinding
+import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
+import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.viewmodel.GeoViewModel
 
 class UserProfileReviewAdapter(private val viewModel: GeoViewModel, private val reviews: List<Reviews>, val listener: OnClickListenerReview): RecyclerView.Adapter<UserProfileReviewAdapter.ViewHolder>() {

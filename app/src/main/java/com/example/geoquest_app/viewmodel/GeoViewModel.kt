@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.geoquest_app.model.Reports
 import com.example.geoquest_app.retrofit.Repository
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.model.RouteResponse
@@ -247,6 +248,13 @@ class GeoViewModel : ViewModel() {
     fun checkIfTreasureIsFav(userID: Int, treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             isFav.postValue(repository.checkIfFav(userID, treasureID))
+        }
+    }
+
+    // REPORTS
+    fun postReport(report: Reports){
+        CoroutineScope(Dispatchers.IO).launch{
+            repository.postReport(report)
         }
     }
 

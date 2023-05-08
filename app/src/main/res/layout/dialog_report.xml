@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <TextView
-        android:text="REPORT"
+        android:text="Write a report"
         android:fontFamily="@raw/manrope"
         android:textSize="30dp"
         android:textStyle="bold"
@@ -25,20 +25,13 @@
         android:textSize="30dp"
         android:textStyle="bold"
          />
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/report"
-        android:layout_width="370dp"
-        android:layout_height="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="Write your opinion here"
-        android:background="@color/color4"
-        >
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/color4"
-            />
+        android:layout_marginHorizontal="20dp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

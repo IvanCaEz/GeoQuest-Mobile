@@ -1,6 +1,5 @@
 package com.example.geoquest_app.view
 
-import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,29 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
-import androidx.compose.ui.text.toLowerCase
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentListAndSearchBinding
-import com.example.geoquest_app.model.OnClickListenerTreasure
-import com.example.geoquest_app.model.ReviewAdapter
-import com.example.geoquest_app.model.TreasureAdapter
+import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerTreasure
+import com.example.geoquest_app.adapters.TreasureAdapter
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import okhttp3.internal.filterList
-import okhttp3.internal.wait
-import java.io.IOException
 import java.util.*
 
 class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
