@@ -14,16 +14,19 @@
         app:layout_constraintBottom_toTopOf="@id/background"
         app:layout_constraintStart_toStartOf="@id/background"
         />
+
     <TextView
         android:id="@+id/background"
         android:layout_width="350dp"
         android:layout_height="200dp"
-        android:background="@color/color3"
         android:layout_margin="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/color3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editProfile"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@id/editProfile" />
+
     <ImageView
         android:id="@+id/editProfile"
         android:layout_width="50dp"

@@ -43,10 +43,11 @@ class TreasureAdapter(
         val treasure = treasures[position]
         with(holder) {
             setListener(treasure)
-            binding.treasureName.text = treasure.name
-            binding.difficulty.text = treasure.difficulty
-            binding.score.text = treasure.score.toString()
-            binding.treasureImg.setImageBitmap(viewModel.treasureImages[treasure.idTreasure])
+            binding.treasureTitleTV.text = treasure.name
+            binding.difficultyTV.text = "Level: " +treasure.difficulty
+            binding.scoreTV.text = treasure.score.toString()
+            binding.locationTag.text = treasure.location
+            binding.treasureIV.setImageBitmap(viewModel.treasureImages[treasure.idTreasure])
             /*
             Glide.with(context)
                 .load(treasure.image)

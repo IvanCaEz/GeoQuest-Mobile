@@ -36,8 +36,8 @@ class ReviewAdapter (private val reviews: List<Reviews>, val listener: OnClickLi
         val review = reviews[position]
         with(holder){
             setListener(review)
-            binding.userName.text = review.idReview.toString()
-            binding.comment.text = review.opinion
+            binding.userTV.text = review.idReview.toString()
+            binding.reviewBox.text = review.opinion
 
         }
         }
