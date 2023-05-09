@@ -19,7 +19,7 @@
         android:layout_margin="8dp"
         android:iconifiedByDefault="false"
         android:queryHint="Search by location"
-        android:background="@color/white"
+        android:background="@drawable/white_bg_rounded_corners"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

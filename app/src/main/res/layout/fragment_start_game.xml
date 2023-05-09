@@ -6,6 +6,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.StartGameFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_slide_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/background_slide_container_start"
+        android:paddingBottom="20dp">
+
     <TextView
         android:id="@+id/treasureName"
         android:layout_width="wrap_content"
@@ -16,20 +27,24 @@
         android:fontFamily="@raw/manrope"
         android:text="Trearure Name"
         android:textSize="30dp"
+        android:textColor="@color/white"
         android:textStyle="bold"
         />
 
-    <ImageView
-        android:id="@+id/treasureImg"
-        android:layout_width="300dp"
-        android:layout_height="390dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/treasureName"
-        android:layout_margin="10dp"
-        android:src="@drawable/subir"
-        android:background="@color/color1"
-        />
+        <androidx.fragment.app.FragmentContainerView
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/map_little"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.75"
+            app:layout_constraintWidth_percent="0.90"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/treasureName"
+            android:layout_margin="20dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
         android:id="@+id/elapsedTime"
         android:layout_width="wrap_content"
@@ -40,7 +55,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/treasureImg"
+        app:layout_constraintTop_toBottomOf="@id/profile_slide_container"
         android:layout_margin="10dp"
         />
 
@@ -63,8 +78,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Show Hint"
-        android:backgroundTint="@color/color4"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:background="@drawable/background_button_login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/end"
         app:layout_constraintTop_toBottomOf="@id/time"
@@ -76,8 +91,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="End Hunt"
-        android:backgroundTint="@color/color4"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:background="@drawable/background_button_login"
         app:layout_constraintStart_toEndOf="@id/showHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/time"

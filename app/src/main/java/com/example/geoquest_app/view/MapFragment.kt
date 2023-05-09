@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.geoquest_app.R
+import com.example.geoquest_app.adapters.MarkerInfoWindowAdapter
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.example.geoquest_app.databinding.FragmentMapBinding
 import com.example.geoquest_app.viewmodel.GeoViewModel
@@ -44,8 +47,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var currentCoordinates: LatLng
     var route: Polyline? = null
-    var endLatitude = 0.0
-    var endLongitude = 0.0
+
 
 
     @SuppressLint("MissingPermission")
@@ -95,33 +97,30 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
                             )
                         }
                     } catch (e: IOException) {
-
                     }
-
                 }
-
-
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 return true
-
             }
-
         })
-
-
     }
 
     private fun createMarkers(treasureList: List<Treasures>) {
         treasureList.forEach { treasure ->
-            val coordinates = LatLng(treasure.latitude, treasure.longitude)
-            val treasureMarker = MarkerOptions().position(coordinates).title(treasure.name)
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.getTreasureImage(treasure.idTreasure)
+            }
 
+            val coordinates = LatLng(treasure.latitude, treasure.longitude)
+           val results = FloatArray(3)
+
+            Location.distanceBetween(currentCoordinates.latitude, currentCoordinates.longitude, treasure.latitude, treasure.longitude, results)
+
+            val treasureMarker = MarkerOptions().position(coordinates).title(treasure.name).snippet("${treasure.idTreasure},${treasure.score},${results[0]}")
             map.addMarker(treasureMarker)
         }
-
     }
 
     fun markerColor(color: String?): BitmapDescriptor {
@@ -146,7 +145,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
             CameraUpdateFactory.newLatLngZoom(currentCoordinates, 14f),
             1500, null
         )
-
 
 
         map.setOnMarkerClickListener(this)
@@ -212,6 +210,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
     }
 
     override fun onMarkerClick(treasureMarker: Marker): Boolean {
+        map.setInfoWindowAdapter(MarkerInfoWindowAdapter(requireContext(), viewModel))
         route?.remove()
         val start = "${currentCoordinates.longitude},${currentCoordinates.latitude}"
         val end = "${treasureMarker.position.longitude},${treasureMarker.position.latitude}"
@@ -221,14 +220,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
                 drawRoute()
             }
         }
-        // endLongitude = treasureMarker.position.longitude
-        // endLatitude = treasureMarker.position.latitude
+
         return false
     }
 
     fun drawRoute() {
-        //route?.remove()
-        //route = null
         val polyLineOptions = PolylineOptions()
             .startCap(RoundCap())
             .endCap(RoundCap())
@@ -236,11 +232,38 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
             .color(ContextCompat.getColor(requireContext(), R.color.ocre))
         viewModel.route.observe(viewLifecycleOwner) { routeResponse ->
             // devuelve las coordenadas alreves
+
             routeResponse.features.first().geometry.coordinates.forEach {
-                endLatitude = it[1]
-                endLongitude = it[0]
-                polyLineOptions.add(LatLng(it[1], it[0]))
+              polyLineOptions.add(LatLng(it[1], it[0]))
             }
+
+
+            /*
+              val coordinatesList = routeResponse.features.first().geometry.coordinates
+            val results = FloatArray(coordinatesList.size)
+            for (coord in 0 .. coordinatesList.lastIndex){
+                polyLineOptions.add(LatLng(coordinatesList[coord][1], coordinatesList[coord][0]))
+                if (coord == 0){
+                    Location.distanceBetween(currentCoordinates.latitude, currentCoordinates.longitude,coordinatesList[coord][1], coordinatesList[coord][0], results)
+                } else {
+                    Location.distanceBetween(coordinatesList[coord-1][1], coordinatesList[coord-1][0],coordinatesList[coord][1], coordinatesList[coord][0], results)
+                }
+            }
+            println(results.size)
+            try {
+                println(results[0])
+                println(results[1])
+                println(results[2])
+                println(results[3])
+                println(results[results.size-1])
+                println(results[results.size-2])
+            } catch (e: java.lang.NullPointerException){}
+
+            map.setInfoWindowAdapter(MarkerInfoWindowAdapter(requireContext(), viewModel, results[results.size-1].toInt().toString()))
+
+             */
+
+
         }
         route = map.addPolyline(polyLineOptions)
         route!!.isClickable = true

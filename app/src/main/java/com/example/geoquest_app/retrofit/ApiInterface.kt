@@ -118,7 +118,7 @@ interface ApiInterface {
     companion object {
         // emulador -> 10.0.2.16
         // itb -> 172.30.5.163
-        private const val BASE_URL = "http://172.30.5.163:8080/"
+        private const val BASE_URL = "http://192.168.56.1:8080/"
         fun create(): ApiInterface {
             val client = OkHttpClient.Builder().build()
             val gsonClient = GsonBuilder().serializeNulls().setLenient().serializeSpecialFloatingPointValues().create()

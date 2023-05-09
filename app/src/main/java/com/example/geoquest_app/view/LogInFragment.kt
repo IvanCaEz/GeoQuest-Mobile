@@ -73,7 +73,8 @@ class LogInFragment : Fragment() {
                         binding.password.error = null
                         binding.password.isErrorEnabled = false
 
-                        findNavController().navigate(R.id.action_logInFragment_to_mapFragment)
+                        val toMap = LogInFragmentDirections.actionLogInFragmentToMapFragment()
+                        findNavController().navigate(toMap)
 
 
                     } else {

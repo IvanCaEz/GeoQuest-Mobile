@@ -55,18 +55,16 @@ class GeoViewModel : ViewModel() {
 
     // USERS
     // USAR ESTA FUNCION PARA CARGAR LOS USERS QUE NO SEAN EL PROPIO USER
-    fun getUserByID(userID: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getUserByID(userID)
-            if (response.isSuccessful) {
-                withContext(Dispatchers.Main) {
-                    userNames[userID] = response.body()!!.nickName
-                }
-            } else {
-                Log.e("Error " + response.code(), response.message())
-            }
+    suspend fun getUserByID(userID: Int) {
+        val response = repository.getUserByID(userID)
+        if (response.isSuccessful) {
+            userNames[userID] = response.body()!!.nickName
+
+        } else {
+            Log.e("Error " + response.code(), response.message())
         }
     }
+
     fun getUserByUserName(userName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserByUserName(userName)
@@ -83,21 +81,21 @@ class GeoViewModel : ViewModel() {
         }
     }
 
-    fun getUserImage(userID: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+    suspend fun getUserImage(userID: Int) {
+       // CoroutineScope(Dispatchers.IO).launch {
             // Devuelve la portada del libro con la ID indicada
             val response = repository.getUserPicture(userID)
             if (response.isSuccessful) {
-                withContext(Dispatchers.Main) {
+           //     withContext(Dispatchers.Main) {
                     val source = response.body()
                     val inputStream = source?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(inputStream)
                     userImages[userID] = bitmap
-                }
+             //   }
             } else {
                 Log.e("Error " + response.code(), response.message())
             }
-        }
+        //}
     }
 
     fun postUser(newUser: User) {
@@ -116,6 +114,7 @@ class GeoViewModel : ViewModel() {
             repository.putUser(userID, objectBody, imagePart)
         }
     }
+
     fun deleteUser(userID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.deleteUserByID(userID)
@@ -135,6 +134,7 @@ class GeoViewModel : ViewModel() {
             }
         }
     }
+
     fun getTreasureByID(treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getTreasureById(treasureID)
@@ -150,26 +150,26 @@ class GeoViewModel : ViewModel() {
     }
 
     suspend fun getTreasureImage(treasureID: Int) {
-            val response = repository.getPictureByTreasureId(treasureID)
-            if (response.isSuccessful) {
-                    val source = response.body()
-                    val inputStream = source?.byteStream()
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    treasureImages[treasureID] = bitmap
-                    treasureImage.postValue(bitmap)
-            } else {
-                Log.e("Error " + response.code(), response.message())
-            }
+        val response = repository.getPictureByTreasureId(treasureID)
+        if (response.isSuccessful) {
+            val source = response.body()
+            val inputStream = source?.byteStream()
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            treasureImages[treasureID] = bitmap
+            treasureImage.postValue(bitmap)
+        } else {
+            Log.e("Error " + response.code(), response.message())
+        }
     }
 
     var treasureStats = MutableLiveData<TreasureStats>()
 
-    fun getTreasureStats(treasureID: Int){
+    fun getTreasureStats(treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getTreasureStatsById(treasureID)
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
-                  treasureStats.postValue(response.body())
+                    treasureStats.postValue(response.body())
                 }
             } else {
                 Log.e("Error " + response.code(), response.message())
@@ -192,52 +192,57 @@ class GeoViewModel : ViewModel() {
     }
 
 
-    fun postReview(review: Reviews, imageFile: File){
+    fun postReview(review: Reviews, imageFile: File) {
         CoroutineScope(Dispatchers.IO).launch {
             val json = Gson().toJson(review)
             val objectBody = json.toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val imageRequestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
             val imagePart =
                 MultipartBody.Part.createFormData("image", imageFile.name, imageRequestFile)
-            repository.postReviewByTreasureId(review.idTreasure,objectBody, imagePart)
+            repository.postReviewByTreasureId(review.idTreasure, objectBody, imagePart)
         }
     }
 
-    fun updateTreasureScore(treasureID: Int, treasure: Treasures){
+    fun updateTreasureScore(treasureID: Int, treasure: Treasures) {
         CoroutineScope(Dispatchers.IO).launch {
-            repository.updateTreasureScore(treasureID,treasure)
+            repository.updateTreasureScore(treasureID, treasure)
         }
     }
 
-    fun getReviewsByUserId(userId: Int){
+    fun getReviewsByUserId(userId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserReviews(userId)
-            if (response.isSuccessful){
+            if (response.isSuccessful) {
                 userReviews.postValue(response.body())
             } else Log.e("Error " + response.code(), response.message())
         }
     }
 
-    fun deleteReviewByTreasureId(treasureId: Int, reviewId: Int){
+    fun deleteReviewByTreasureId(treasureId: Int, reviewId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.deleteReviewByTreasureId(treasureId, reviewId)
         }
     }
 
-    fun updateReviewByTreasureId(reviewToUpdate: Reviews, imageFile: File){
+    fun updateReviewByTreasureId(reviewToUpdate: Reviews, imageFile: File) {
         CoroutineScope(Dispatchers.IO).launch {
             val json = Gson().toJson(reviewToUpdate)
             val objectBody = json.toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val imageRequestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
             val imagePart =
                 MultipartBody.Part.createFormData("image", imageFile.name, imageRequestFile)
-            repository.putReviewByTreasureId(reviewToUpdate.idTreasure, reviewToUpdate.idReview, objectBody, imagePart)
+            repository.putReviewByTreasureId(
+                reviewToUpdate.idTreasure,
+                reviewToUpdate.idReview,
+                objectBody,
+                imagePart
+            )
         }
     }
 
     // GAMES
 
-    fun postGame(treasureID: Int, game: Games){
+    fun postGame(treasureID: Int, game: Games) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.postUserGamesByTreasureId(treasureID, game)
         }
@@ -245,7 +250,7 @@ class GeoViewModel : ViewModel() {
 
     // FAVS
 
-    fun getUserFavs(userID: Int){
+    fun getUserFavs(userID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = repository.getUserFavs(userID)
@@ -259,19 +264,20 @@ class GeoViewModel : ViewModel() {
                     println("No tiene favs")
                     Log.e("Error " + response.code(), response.message())
                 }
-            } catch (e: java.lang.IllegalStateException){
+            } catch (e: java.lang.IllegalStateException) {
                 println("ERROR " + e.message)
             }
 
         }
     }
 
-    fun addFavTreasure(userID: Int, treasureID: Int){
+    fun addFavTreasure(userID: Int, treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.postUserFav(userID, treasureID)
         }
     }
-    fun deleteFavTreasure(userID: Int, treasureID: Int){
+
+    fun deleteFavTreasure(userID: Int, treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.deleteUserFav(userID, treasureID)
         }
@@ -284,8 +290,8 @@ class GeoViewModel : ViewModel() {
     }
 
     // REPORTS
-    fun postReport(report: Reports){
-        CoroutineScope(Dispatchers.IO).launch{
+    fun postReport(report: Reports) {
+        CoroutineScope(Dispatchers.IO).launch {
             repository.postReport(report)
         }
     }
@@ -294,17 +300,17 @@ class GeoViewModel : ViewModel() {
 
     val route = MutableLiveData<RouteResponse>()
 
-    suspend fun getRoute(key: String, start: String, end: String){
+    suspend fun getRoute(key: String, start: String, end: String) {
         //CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getRoutes(key, start, end)
-            if (response.isSuccessful){
-                println("Ruta creada")
-                Log.i("ruta", "CREADA")
-                route.postValue(response.body())
-            } else {
-                println("Ruta no creada")
-                Log.i("ruta", "MAL")
-            }
+        val response = repository.getRoutes(key, start, end)
+        if (response.isSuccessful) {
+            println("Ruta creada")
+            Log.i("ruta", "CREADA")
+            route.postValue(response.body())
+        } else {
+            println("Ruta no creada")
+            Log.i("ruta", "MAL")
+        }
         //}
     }
 
@@ -314,13 +320,12 @@ class GeoViewModel : ViewModel() {
         var stats: UserStats? = null
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserStats(userId)
-            if (response.isSuccessful){
+            if (response.isSuccessful) {
                 stats = response.body()
             } else Log.i("Estadisticas", "MAL")
         }
         return stats
     }
-
 
 
     fun validatePassword(passET: TextInputLayout, password: String): Boolean {
@@ -335,7 +340,11 @@ class GeoViewModel : ViewModel() {
         }
     }
 
-    fun confirmPassword(confirmPassET: TextInputLayout, confPassword: String, password: String): Boolean {
+    fun confirmPassword(
+        confirmPassET: TextInputLayout,
+        confPassword: String,
+        password: String
+    ): Boolean {
         return if (confPassword.trim() != password) {
             confirmPassET.isErrorEnabled = true
             confirmPassET.error = "The passwords don't match."
@@ -349,16 +358,15 @@ class GeoViewModel : ViewModel() {
 
     fun validateEmail(context: Context, email: String): Boolean {
         val emailPattern = Regex(
-            "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$")
-        return if (!emailPattern.matches(email)){
-            Toast.makeText(context,"This is not a valid email.", Toast.LENGTH_SHORT).show()
+            "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$"
+        )
+        return if (!emailPattern.matches(email)) {
+            Toast.makeText(context, "This is not a valid email.", Toast.LENGTH_SHORT).show()
             false
         } else {
             true
         }
     }
-
-
 
 
 }

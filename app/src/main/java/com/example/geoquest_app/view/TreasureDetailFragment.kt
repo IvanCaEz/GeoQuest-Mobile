@@ -19,6 +19,7 @@ import com.example.models.Treasures
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class TreasureDetailFragment : Fragment(), OnClickListenerReview {
@@ -45,6 +46,7 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         val treasureID = arguments?.getInt("treasureID")!!
         val userID = viewModel.userData.value?.idUser!!
         viewModel.getTreasureByID(treasureID)
+        viewModel.getAllReviews(treasureID)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getTreasureImage(treasureID)
         }
@@ -65,13 +67,22 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
                 viewModel.checkIfTreasureIsFav(userID, treasureID)
             }
         }
+        binding.shimmerViewContainer.visibility = View.INVISIBLE
 
         viewModel.reviewListData.observe(viewLifecycleOwner) { reviewList ->
-            reviewList.forEach { review ->
-                viewModel.getUserByID(review.idUser)
-                viewModel.getUserImage(review.idUser)
+            binding.shimmerViewContainer.visibility = View.VISIBLE
+            CoroutineScope(Dispatchers.IO).launch {
+                reviewList.forEach { review ->
+                    viewModel.getUserByID(review.idUser)
+                    viewModel.getUserImage(review.idUser)
+                }
+                withContext(Dispatchers.Main){
+                    binding.shimmerViewContainer.visibility = View.INVISIBLE
+                    binding.recyclerView.visibility = View.VISIBLE
+                    setUpRecyclerView(reviewList!!)
+                }
             }
-            setUpRecyclerView(reviewList!!)
+
         }
 
         viewModel.treasureData.observe(viewLifecycleOwner) { treasure ->
