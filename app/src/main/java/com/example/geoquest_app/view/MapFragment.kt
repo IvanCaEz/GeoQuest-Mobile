@@ -29,6 +29,10 @@ import com.google.android.gms.maps.GoogleMap.OnPolylineClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.*
 
@@ -64,13 +68,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentMapBinding.inflate(layoutInflater)
-
-        val rootView = inflater.inflate(R.layout.fragment_map, container, false)
-
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
         getLocation()
-
         return binding.root
     }
 
@@ -212,24 +212,28 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
     }
 
     override fun onMarkerClick(treasureMarker: Marker): Boolean {
-        // Borra la ruta anterior
-
-
+        route?.remove()
         val start = "${currentCoordinates.longitude},${currentCoordinates.latitude}"
         val end = "${treasureMarker.position.longitude},${treasureMarker.position.latitude}"
-        viewModel.getRoute("5b3ce3597851110001cf624877a97a68b1a84fa2bcb01fb0aa655b89", start, end)
-        drawRoute()
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getRoute("5b3ce3597851110001cf624877a97a68b1a84fa2bcb01fb0aa655b89", start, end)
+            withContext(Dispatchers.Main){
+                drawRoute()
+            }
+        }
         // endLongitude = treasureMarker.position.longitude
         // endLatitude = treasureMarker.position.latitude
         return false
     }
 
     fun drawRoute() {
-        route?.remove()
-        route = null
+        //route?.remove()
+        //route = null
         val polyLineOptions = PolylineOptions()
-            .width(10f)
-            .color(ContextCompat.getColor(requireContext(), R.color.black))
+            .startCap(RoundCap())
+            .endCap(RoundCap())
+            .width(12f)
+            .color(ContextCompat.getColor(requireContext(), R.color.ocre))
         viewModel.route.observe(viewLifecycleOwner) { routeResponse ->
             // devuelve las coordenadas alreves
             routeResponse.features.first().geometry.coordinates.forEach {

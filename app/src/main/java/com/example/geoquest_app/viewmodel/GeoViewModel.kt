@@ -150,20 +150,16 @@ class GeoViewModel : ViewModel() {
     }
 
     suspend fun getTreasureImage(treasureID: Int) {
-        //CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getPictureByTreasureId(treasureID)
             if (response.isSuccessful) {
-                //withContext(Dispatchers.Main) {
                     val source = response.body()
                     val inputStream = source?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(inputStream)
                     treasureImages[treasureID] = bitmap
                     treasureImage.postValue(bitmap)
-                //}
             } else {
                 Log.e("Error " + response.code(), response.message())
             }
-        //}
     }
 
     var treasureStats = MutableLiveData<TreasureStats>()
@@ -298,8 +294,8 @@ class GeoViewModel : ViewModel() {
 
     val route = MutableLiveData<RouteResponse>()
 
-    fun getRoute(key: String, start: String, end: String){
-        CoroutineScope(Dispatchers.IO).launch {
+    suspend fun getRoute(key: String, start: String, end: String){
+        //CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getRoutes(key, start, end)
             if (response.isSuccessful){
                 println("Ruta creada")
@@ -309,7 +305,7 @@ class GeoViewModel : ViewModel() {
                 println("Ruta no creada")
                 Log.i("ruta", "MAL")
             }
-        }
+        //}
     }
 
     // USER STATS

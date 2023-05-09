@@ -56,7 +56,6 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
             binding.favorite.isChecked = isFav
         }
 
-
         binding.favorite.setOnClickListener {
             if (!isFav) {
                 viewModel.addFavTreasure(userID, treasureID)
