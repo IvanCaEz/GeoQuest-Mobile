@@ -3,21 +3,23 @@ package com.example.geoquest_app.view
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentProfileBinding
-import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
+import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReviewUser
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.adapters.UserProfileReviewAdapter
+import com.example.geoquest_app.utils.ReportDialog
 import com.example.geoquest_app.viewmodel.GeoViewModel
 
-class ProfileFragment : Fragment(), OnClickListenerReview {
+class ProfileFragment : Fragment(), OnClickListenerReviewUser {
+
     lateinit var binding: FragmentProfileBinding
     private val viewModel: GeoViewModel by activityViewModels()
     private lateinit var reviewAdapter: UserProfileReviewAdapter
@@ -37,13 +39,30 @@ class ProfileFragment : Fragment(), OnClickListenerReview {
         activity.setBottomNavigationVisible(true)
 
         val id = viewModel.userData.value!!.idUser
+
+        val userStats = viewModel.getUserStats(id) // do not work
+        val solvedTreasures = binding.solvedTreasuresTitle
+        val notSolvedTreasures = binding.notSolvedTreasuresTitle
+        val reportQuantity = binding.reportQuantityTitle
+        val averageTime = binding.averageTimeTitle
+
+        solvedTreasures.isSelected = true
+        notSolvedTreasures.isSelected = true
+        reportQuantity.isSelected = true
+        averageTime.isSelected = true
+
+
+        binding.shimmerViewContainerProfile.visibility = View.VISIBLE
+        binding.recyclerView.alpha = 0.0f
         viewModel.getReviewsByUserId(id)
         viewModel.userReviews.observe(viewLifecycleOwner){
             it.forEach{ review ->
                 viewModel.getTreasureByID(review.idTreasure)
             }
             Handler(Looper.getMainLooper()).postDelayed({
-                setUpRecyclerView(it!!)
+                binding.shimmerViewContainerProfile.visibility = View.GONE
+                binding.recyclerView.animate().alpha(1.0f).duration = 400
+                setUpRecyclerView(it!!.toMutableList())
             }, 1700)
         }
 
@@ -52,7 +71,7 @@ class ProfileFragment : Fragment(), OnClickListenerReview {
         }
     }
 
-    private fun setUpRecyclerView(reviewList: List<Reviews>){
+    private fun setUpRecyclerView(reviewList: MutableList<Reviews>){
         reviewAdapter = UserProfileReviewAdapter(viewModel, reviewList, this)
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
@@ -65,6 +84,23 @@ class ProfileFragment : Fragment(), OnClickListenerReview {
 
     override fun onClick(review: Reviews) {
         TODO("Not yet implemented")
+    }
+
+    override fun onDelete(review: Reviews) {
+        viewModel.deleteReviewByTreasureId(review.idTreasure, review.idReview)
+        reviewAdapter.delete(review)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.shimmerViewContainerProfile.visibility = View.VISIBLE
+        binding.recyclerView.alpha = 0.0f
+    }
+
+
+    private fun setUpDialog(){
+        val dialog = ReportDialog()
+        dialog.show(parentFragmentManager, "report")
     }
 
 }

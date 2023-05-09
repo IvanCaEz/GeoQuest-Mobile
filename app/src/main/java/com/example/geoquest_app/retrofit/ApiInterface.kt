@@ -54,7 +54,7 @@ interface ApiInterface {
     @DELETE("treasure/{id}")
     suspend fun deleteTreasureById(@Path("id") treasureId: Int)
     @DELETE("treasure/{treasureId}/reviews/{reviewId}")
-    suspend fun deleteReviewByTreasureId(@Path("treasureId") treasureId: Int, @Path("reviewid") idReviews: Int)
+    suspend fun deleteReviewByTreasureId(@Path("treasureId") treasureId: Int, @Path("reviewId") idReviews: Int)
     @DELETE("treasure/{treasureId}/reports/{reportId}")
     suspend fun deleteReportByTreasureId(@Path("treasureId") treasureId: Int, @Path("reportId") idReports: Int)
     @POST("treasure/{id}/games")

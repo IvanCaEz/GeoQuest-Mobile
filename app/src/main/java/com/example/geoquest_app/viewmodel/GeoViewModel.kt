@@ -9,10 +9,7 @@ import com.example.geoquest_app.model.Reports
 import com.example.geoquest_app.retrofit.Repository
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.model.RouteResponse
-import com.example.models.Favourites
-import com.example.models.Games
-import com.example.models.Treasures
-import com.example.models.User
+import com.example.models.*
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -203,6 +200,23 @@ class GeoViewModel : ViewModel() {
         }
     }
 
+    fun deleteReviewByTreasureId(treasureId: Int, reviewId: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.deleteReviewByTreasureId(treasureId, reviewId)
+        }
+    }
+
+    fun updateReviewByTreasureId(reviewToUpdate: Reviews, imageFile: File){
+        CoroutineScope(Dispatchers.IO).launch {
+            val json = Gson().toJson(reviewToUpdate)
+            val objectBody = json.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val imageRequestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+            val imagePart =
+                MultipartBody.Part.createFormData("image", imageFile.name, imageRequestFile)
+            repository.putReviewByTreasureId(reviewToUpdate.idTreasure, reviewToUpdate.idReview, objectBody, imagePart)
+        }
+    }
+
     // GAMES
 
     fun postGame(treasureID: Int, game: Games){
@@ -274,6 +288,19 @@ class GeoViewModel : ViewModel() {
                 Log.i("ruta", "MAL")
             }
         }
+    }
+
+    // USER STATS
+
+    fun getUserStats(userId: Int): UserStats? {
+        var stats: UserStats? = null
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getUserStats(userId)
+            if (response.isSuccessful){
+                stats = response.body()
+            } else Log.i("Estadisticas", "MAL")
+        }
+        return stats
     }
 
 

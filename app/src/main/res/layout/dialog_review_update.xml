@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="375dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_review_update_dialog"
+    android:padding="5dp"
+    >
+
+        <TextView
+            android:id="@+id/title"
+            android:text="REVIEW"
+            android:fontFamily="@font/manrope_bold"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:scaleType="center"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+        <TextView
+            android:id="@+id/treasureName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_semibold"
+            android:text="Trearure Name"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintBottom_toTopOf="@id/opinionUpdate"
+
+            />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/opinionUpdate"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.9"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="Write your opinion here"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/treasureName"
+            app:layout_constraintBottom_toTopOf="@id/ratingUpdate"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/color4"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ratingUpdate"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="Write your rating here"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/opinionUpdate"
+        app:layout_constraintBottom_toTopOf="@id/reviewImage">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color4"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/reviewImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/ratingUpdate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="50dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/usuario"
+            android:background="@color/color1"
+            android:scaleType="centerCrop"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/selectImage"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Select review image..."
+        android:padding="6dp"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@id/reviewImage"
+        app:layout_constraintBottom_toBottomOf="@id/reviewImage"
+        app:layout_constraintTop_toTopOf="@id/reviewImage"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/background_review_update_button_selectimage"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

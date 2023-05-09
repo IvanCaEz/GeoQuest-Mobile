@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.ItemReviewsUserBinding
-import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
+import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReviewUser
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.viewmodel.GeoViewModel
 
-class UserProfileReviewAdapter(private val viewModel: GeoViewModel, private val reviews: List<Reviews>, val listener: OnClickListenerReview): RecyclerView.Adapter<UserProfileReviewAdapter.ViewHolder>() {
+class UserProfileReviewAdapter(private val viewModel: GeoViewModel, private val reviews: MutableList<Reviews>, val listener: OnClickListenerReviewUser): RecyclerView.Adapter<UserProfileReviewAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemReviewsUserBinding.bind(view)
         fun setListener(review: Reviews){
@@ -39,6 +39,14 @@ class UserProfileReviewAdapter(private val viewModel: GeoViewModel, private val 
             setListener(review)
             binding.reviewTreasureTitleTextView.text = viewModel.treasureName[review.idTreasure].toString()
             binding.ratingReviewUserTextView.text = review.rating.toString()
+        }
+    }
+
+    fun delete(review: Reviews) {
+        val index = reviews.indexOf(review)
+        if(index != -1){
+            reviews.removeAt(index)
+            notifyItemRemoved(index)
         }
     }
 }

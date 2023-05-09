@@ -23,8 +23,6 @@
             android:id="@+id/profile_title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
             android:fontFamily="@font/manrope_bold"
             android:text="Profile"
             android:textSize="20sp"
@@ -95,26 +93,31 @@
             android:backgroundTint="@color/color1">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/solved_treasures_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:text="Solved Treasures"
                 android:textSize="12sp"
                 android:fontFamily="@font/manrope_bold"
                 android:textColor="@color/white"
                 android:gravity="center"
-                android:layout_marginTop="3dp"
+                android:layout_margin="5dp"
+
                 />
 
             <TextView
                 android:id="@+id/solved_treasures"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="15dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/manrope_bold"
                 android:text="4"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                />
 
         </androidx.cardview.widget.CardView>
 
@@ -130,14 +133,15 @@
             android:backgroundTint="@color/color1">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/not_solved_treasures_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="Not solved Treasures"
                 android:textSize="12sp"
                 android:fontFamily="@font/manrope_bold"
                 android:textColor="@color/white"
                 android:gravity="center"
-                android:layout_marginTop="3dp"
                 />
 
             <TextView
@@ -165,14 +169,16 @@
             android:backgroundTint="@color/color1">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/report_quantity_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+
                 android:text="Report Quantity"
                 android:textSize="12sp"
                 android:fontFamily="@font/manrope_bold"
                 android:textColor="@color/white"
                 android:gravity="center"
-                android:layout_marginTop="3dp"
                 />
 
             <TextView
@@ -200,9 +206,11 @@
             android:backgroundTint="@color/color1">
 
             <TextView
+                android:id="@+id/average_time_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Average        Time"
+
+                android:text="Average          Time"
                 android:textSize="12sp"
                 android:fontFamily="@font/manrope_bold"
                 android:textColor="@color/white"
@@ -239,22 +247,47 @@
             android:textColor="@color/white"
             android:fontFamily="@font/manrope_bold"
             android:textSize="24sp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/recyclerView"
             />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reviewText"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <include layout="@layout/item_reviews_user_loading"/>
+                <include layout="@layout/item_reviews_user_loading"/>
+                <include layout="@layout/item_reviews_user_loading"/>
+                <include layout="@layout/item_reviews_user_loading"/>
+                <include layout="@layout/item_reviews_user_loading"/>
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/item_reviews_user"
-            android:layout_margin="10dp"
+
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/reviewText"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -43,7 +43,7 @@ class ReportDialog : DialogFragment() {
                         0,
                         userID!!,
                         treasureID!!,
-                        binding.report.text.toString(),
+                        binding.report.editText!!.text.toString(),
                         formatter.format(LocalDate.now())
                     )
                     viewModel.postReport(report)
