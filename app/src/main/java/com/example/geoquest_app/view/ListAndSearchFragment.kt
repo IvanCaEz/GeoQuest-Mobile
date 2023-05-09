@@ -17,6 +17,10 @@ import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerTreasur
 import com.example.geoquest_app.adapters.TreasureAdapter
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
@@ -44,15 +48,22 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         viewModel.getAllTreasures()
         viewModel.treasureListData.observe(viewLifecycleOwner) { treasureListVM ->
             treasureList = treasureListVM
-             treasureListVM.forEach { treasure ->
+            binding.shimmerViewContainer.visibility = View.VISIBLE
+            CoroutineScope(Dispatchers.IO).launch{
+                treasureListVM.forEach { treasure ->
                     viewModel.getTreasureImage(treasure.idTreasure)
                 }
-            binding.shimmerViewContainer.visibility = View.VISIBLE
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.shimmerViewContainer.visibility = View.INVISIBLE
-                binding.recyclerView.visibility = View.VISIBLE
-                setUpRecyclerView(treasureList!!)
-            },2000)
+                withContext(Dispatchers.Main){
+                    binding.shimmerViewContainer.visibility = View.INVISIBLE
+                    binding.recyclerView.visibility = View.VISIBLE
+                    setUpRecyclerView(treasureList)
+                }
+            }
+
+
+           // Handler(Looper.getMainLooper()).postDelayed({
+
+           // },2000)
 
         }
 

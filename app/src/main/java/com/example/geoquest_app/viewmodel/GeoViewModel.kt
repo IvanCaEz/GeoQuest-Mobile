@@ -1,8 +1,11 @@
 package com.example.geoquest_app.viewmodel
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.model.Reports
@@ -10,6 +13,8 @@ import com.example.geoquest_app.retrofit.Repository
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.model.RouteResponse
 import com.example.models.*
+import com.example.models.*
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -101,14 +106,14 @@ class GeoViewModel : ViewModel() {
         }
     }
 
-    fun putUser(userToUpdate: User, imageFile: File) {
+    fun putUser(userID: Int, userToUpdate: User, imageFile: File) {
         CoroutineScope(Dispatchers.IO).launch {
             val json = Gson().toJson(userToUpdate)
             val objectBody = json.toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val imageRequestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
             val imagePart =
                 MultipartBody.Part.createFormData("image", imageFile.name, imageRequestFile)
-            repository.putUser(objectBody, imagePart)
+            repository.putUser(userID, objectBody, imagePart)
         }
     }
     fun deleteUser(userID: Int) {
@@ -144,6 +149,38 @@ class GeoViewModel : ViewModel() {
         }
     }
 
+    suspend fun getTreasureImage(treasureID: Int) {
+        //CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getPictureByTreasureId(treasureID)
+            if (response.isSuccessful) {
+                //withContext(Dispatchers.Main) {
+                    val source = response.body()
+                    val inputStream = source?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    treasureImages[treasureID] = bitmap
+                    treasureImage.postValue(bitmap)
+                //}
+            } else {
+                Log.e("Error " + response.code(), response.message())
+            }
+        //}
+    }
+
+    var treasureStats = MutableLiveData<TreasureStats>()
+
+    fun getTreasureStats(treasureID: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getTreasureStatsById(treasureID)
+            if (response.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                  treasureStats.postValue(response.body())
+                }
+            } else {
+                Log.e("Error " + response.code(), response.message())
+            }
+        }
+    }
+
     // REVIEWS
     fun getAllReviews(treasureID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -157,22 +194,7 @@ class GeoViewModel : ViewModel() {
             }
         }
     }
-    fun getTreasureImage(treasureID: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getPictureByTreasureId(treasureID)
-            if (response.isSuccessful) {
-                withContext(Dispatchers.Main) {
-                    val source = response.body()
-                    val inputStream = source?.byteStream()
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    treasureImages[treasureID] = bitmap
-                    treasureImage.postValue(bitmap)
-                }
-            } else {
-                Log.e("Error " + response.code(), response.message())
-            }
-        }
-    }
+
 
     fun postReview(review: Reviews, imageFile: File){
         CoroutineScope(Dispatchers.IO).launch {
@@ -301,6 +323,43 @@ class GeoViewModel : ViewModel() {
             } else Log.i("Estadisticas", "MAL")
         }
         return stats
+    }
+
+
+
+    fun validatePassword(passET: TextInputLayout, password: String): Boolean {
+        return if (password.length <= 5) {
+            passET.isErrorEnabled = true
+            passET.error = "Password must contain 6 characters or more."
+            false
+        } else {
+            passET.error = null
+            passET.isErrorEnabled = false
+            true
+        }
+    }
+
+    fun confirmPassword(confirmPassET: TextInputLayout, confPassword: String, password: String): Boolean {
+        return if (confPassword.trim() != password) {
+            confirmPassET.isErrorEnabled = true
+            confirmPassET.error = "The passwords don't match."
+            false
+        } else {
+            confirmPassET.error = null
+            confirmPassET.isErrorEnabled = false // Quita el espacio extra
+            true
+        }
+    }
+
+    fun validateEmail(context: Context, email: String): Boolean {
+        val emailPattern = Regex(
+            "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$")
+        return if (!emailPattern.matches(email)){
+            Toast.makeText(context,"This is not a valid email.", Toast.LENGTH_SHORT).show()
+            false
+        } else {
+            true
+        }
     }
 
 

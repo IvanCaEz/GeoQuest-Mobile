@@ -74,8 +74,8 @@ interface ApiInterface {
     @POST("user")
     suspend fun postUser(@Body body: User)
     @Multipart
-    @PUT("user")
-    suspend fun putUser(@Part("body") body: RequestBody, @Part image: MultipartBody.Part)
+    @PUT("user/{id}")
+    suspend fun putUser(@Path("id") userId: Int, @Part("body") body: RequestBody, @Part image: MultipartBody.Part)
     @DELETE("user/{id}")
     suspend fun deleteUserByID(@Path("id") userId: Int)
     @GET("user/{id}/picture")
@@ -118,7 +118,7 @@ interface ApiInterface {
     companion object {
         // emulador -> 10.0.2.16
         // itb -> 172.30.5.163
-        private const val BASE_URL = "http://192.168.56.1:8080/"
+        private const val BASE_URL = "http://172.30.5.163:8080/"
         fun create(): ApiInterface {
             val client = OkHttpClient.Builder().build()
             val gsonClient = GsonBuilder().serializeNulls().setLenient().serializeSpecialFloatingPointValues().create()

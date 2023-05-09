@@ -16,6 +16,9 @@ import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.utils.ReportDialog
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class TreasureDetailFragment : Fragment(), OnClickListenerReview {
@@ -42,9 +45,11 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         val treasureID = arguments?.getInt("treasureID")!!
         val userID = viewModel.userData.value?.idUser!!
         viewModel.getTreasureByID(treasureID)
-        viewModel.getTreasureImage(treasureID)
-        viewModel.getAllReviews(treasureID)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getTreasureImage(treasureID)
+        }
         viewModel.checkIfTreasureIsFav(userID, treasureID)
+        viewModel.getTreasureStats(treasureID)
 
         viewModel.isFav.observe(viewLifecycleOwner) {
             isFav = it
@@ -61,7 +66,6 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
                 viewModel.checkIfTreasureIsFav(userID, treasureID)
             }
         }
-
 
         viewModel.reviewListData.observe(viewLifecycleOwner) { reviewList ->
             reviewList.forEach { review ->
@@ -90,10 +94,6 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
             showDialogReport()
         }
 
-
-
-
-
     }
     fun setUpRecyclerView(list: List<Reviews>) {
         reviewAdapter = ReviewAdapter(list, this, viewModel)
@@ -105,11 +105,26 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
             adapter = reviewAdapter
         }
     }
-    fun setTreasureInfo(treasure: Treasures) {
+    private fun setTreasureInfo(treasure: Treasures) {
         binding.treasureName.text = treasure.name
         binding.dificulty.text = treasure.difficulty
         binding.location.text = treasure.location
         binding.ratingBar.rating = treasure.score.toFloat()
+        viewModel.treasureStats.observe(viewLifecycleOwner){treasureStats ->
+            binding.reportQuantity.text = treasureStats.reportQuantity.toString()
+            binding.averageTime.text = treasureStats.averageTime
+            binding.favQuantity.text = treasureStats.totalFavourite.toString()
+            binding.reviewQuantity.text = treasureStats.totalReviews.toString()
+            binding.solvedTreasures.text = treasureStats.totalFound.toString()
+            val notSolved =  treasureStats.totalPlayed - treasureStats.totalFound
+            binding.notSolvedTreasures.text = notSolved.toString()
+            binding.notSolvedTreasures.visibility = View.VISIBLE
+            binding.averageTime.visibility = View.VISIBLE
+            binding.reportQuantity.visibility = View.VISIBLE
+            binding.reviewQuantity.visibility = View.VISIBLE
+            binding.solvedTreasures.visibility = View.VISIBLE
+            binding.favQuantity.visibility = View.VISIBLE
+        }
     }
     fun showDialogReport() {
         val dialog = ReportDialog()

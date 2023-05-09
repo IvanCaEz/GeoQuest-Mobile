@@ -31,7 +31,7 @@
         android:layout_margin="5dp"
         android:buttonTint="@color/color3"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -58,16 +58,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/ratingText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@raw/manrope"
-                android:text="Rating"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/ratingBar"
-                app:layout_constraintTop_toBottomOf="@id/treasureImg" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -76,10 +66,13 @@
                 android:layout_marginStart="10dp"
                 android:progressTint="@color/color4"
                 android:rating="2"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
                 android:stepSize="0.1"
                 android:isIndicator="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ratingText" />
+                app:layout_constraintBottom_toTopOf="@id/horizontalScrollview"
+                app:layout_constraintTop_toBottomOf="@id/treasureImg" />
 
             <TextView
                 android:id="@+id/dificulty"
@@ -94,8 +87,241 @@
                 app:layout_constraintStart_toEndOf="@id/ratingBar"
                 app:layout_constraintTop_toTopOf="@id/ratingBar" />
 
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollview"
+                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar">
+
+                <LinearLayout
+                    android:id="@+id/constraintHorizontal"
+                    android:padding="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardUseCompatPadding="true"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        app:cardUseCompatPadding="true"
+
+                        android:id="@+id/treasureStats1"
+                        android:layout_width="wrap_content"
+                        app:layout_constraintWidth_percent="0.20"
+                        android:layout_height="90dp"
+                        app:cardCornerRadius="15dp"
+                        android:backgroundTint="@color/color1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Times Played"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_marginTop="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/solved_treasures"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="15dp"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:text="0"
+                            android:visibility="invisible"
+                            android:textColor="@color/white" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        app:cardUseCompatPadding="true"
+
+                        android:id="@+id/treasureStats2"
+                        android:layout_width="wrap_content"
+                        app:layout_constraintWidth_percent="0.20"
+                        android:layout_height="90dp"
+                        app:cardCornerRadius="15dp"
+                        android:backgroundTint="@color/color1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Times Found"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_marginTop="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/not_solved_treasures"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="15dp"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:text="0"
+                            android:visibility="invisible"
+                            android:textColor="@color/white" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        app:cardUseCompatPadding="true"
+
+                        android:id="@+id/treasureStats3"
+                        android:layout_width="wrap_content"
+                        app:layout_constraintWidth_percent="0.20"
+                        android:layout_height="90dp"
+                        app:cardCornerRadius="15dp"
+
+                        android:backgroundTint="@color/color1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total  Reviews"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_marginTop="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/review_quantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="15dp"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:text="0"
+                            android:visibility="invisible"
+                            android:textColor="@color/white" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        app:cardUseCompatPadding="true"
+
+                        android:id="@+id/treasureStats4"
+                        android:layout_width="wrap_content"
+                        app:layout_constraintWidth_percent="0.20"
+                        android:layout_height="90dp"
+                        app:cardCornerRadius="15dp"
+
+                        android:backgroundTint="@color/color1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Times Favorites"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_marginTop="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/fav_quantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="15dp"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:text="0"
+                            android:visibility="invisible"
+                            android:textColor="@color/white" />
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/treasureStats5"
+                        android:layout_width="wrap_content"
+                        app:layout_constraintWidth_percent="0.20"
+                        android:layout_height="90dp"
+                        app:cardCornerRadius="15dp"
+
+                        android:backgroundTint="@color/color1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Report Quantity"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_marginTop="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/report_quantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="15dp"
+                            android:textSize="20sp"
+                            android:visibility="invisible"
+                            android:fontFamily="@font/manrope_bold"
+                            android:text="4"
+                            android:textColor="@color/white" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/treasureStats6"
+                        android:layout_width="wrap_content"
+                        app:layout_constraintWidth_percent="0.20"
+                        android:layout_height="90dp"
+                        app:cardCornerRadius="15dp"
+
+                        android:backgroundTint="@color/color1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Average        Time"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_marginTop="3dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/average_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="15dp"
+                            android:visibility="invisible"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/manrope_bold"
+                            android:text="4"
+                            android:textColor="@color/white" />
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+
             <Button
                 android:id="@+id/play"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/color4"
@@ -103,7 +329,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toStartOf="@id/report"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ratingBar" />
+                app:layout_constraintTop_toBottomOf="@id/horizontalScrollview" />
 
             <Button
                 android:id="@+id/report"
@@ -111,10 +337,11 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/color4"
                 android:text="Report"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/play"
-                app:layout_constraintTop_toBottomOf="@id/ratingBar" />
+                app:layout_constraintTop_toBottomOf="@id/horizontalScrollview" />
 
             <TextView
                 android:id="@+id/location"
@@ -146,7 +373,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 

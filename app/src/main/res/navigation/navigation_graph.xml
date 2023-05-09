@@ -107,5 +107,9 @@
         android:id="@+id/logOutFragment"
         android:name="com.example.geoquest_app.view.LogOutFragment"
         android:label="fragment_log_out"
-        tools:layout="@layout/fragment_log_out" />
+        tools:layout="@layout/fragment_log_out" >
+        <action
+            android:id="@+id/action_logOutFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+    </fragment>
 </navigation>

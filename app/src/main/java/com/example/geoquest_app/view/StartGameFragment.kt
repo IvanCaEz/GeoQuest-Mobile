@@ -26,6 +26,9 @@ import com.example.geoquest_app.databinding.FragmentStartGameBinding
 import com.example.geoquest_app.view.MainActivity
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Games
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileOutputStream
@@ -62,7 +65,10 @@ class StartGameFragment : Fragment() {
         println("ID TESORO: $treasureID")
 
         viewModel.getTreasureByID(treasureID)
-        viewModel.getTreasureImage(treasureID)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getTreasureImage(treasureID)
+
+        }
 
 
         val startTime = System.currentTimeMillis()

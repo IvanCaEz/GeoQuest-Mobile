@@ -57,6 +57,7 @@
             app:cardCornerRadius="50dp">
 
             <ImageView
+                android:id="@+id/userImageIV"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/usuario"

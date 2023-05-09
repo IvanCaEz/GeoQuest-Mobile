@@ -54,7 +54,14 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
 
         binding.shimmerViewContainerProfile.visibility = View.VISIBLE
         binding.recyclerView.alpha = 0.0f
+        viewModel.getUserImage(id)
         viewModel.getReviewsByUserId(id)
+
+        viewModel.userImage.observe(viewLifecycleOwner){ userImage ->
+
+            binding.userImageIV.setImageBitmap(userImage)
+        }
+
         viewModel.userReviews.observe(viewLifecycleOwner){
             it.forEach{ review ->
                 viewModel.getTreasureByID(review.idTreasure)

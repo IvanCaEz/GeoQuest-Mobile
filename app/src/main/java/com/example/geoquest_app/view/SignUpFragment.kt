@@ -44,28 +44,20 @@ class SignUpFragment : Fragment() {
         binding.signup.setOnClickListener {
             val nickname = binding.nickname.editText?.text.toString()
             val email = binding.email.editText?.text.toString()
-            val password = binding.password.editText?.text.toString()
+            val passET = binding.password
+            val password = passET.editText?.text.toString()
+            val confPassET = binding.confPassword
+            val confPass = confPassET.editText?.text.toString()
             if (nickname.isNotEmpty()) {
-                if (validatePassword(password) && confirmPassword(password)) {
-
+                if (viewModel.validatePassword(passET, password) &&
+                    viewModel.confirmPassword(confPassET, confPass, password)) {
 
                     val newUser = User(
                         0, nickname, email, password,
                         "placeholder_user.png", "Noob", "Player", listOf()
                     )
-                    // Utilizar este code para el put
-                    val placeholderDrawable = resources.getDrawable(R.drawable.usuario)
-                    val file = File(context?.cacheDir, "usuario.png")
-                    val fileOutputStream = FileOutputStream(file)
-                    val bitmap = (placeholderDrawable as BitmapDrawable).bitmap
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
-                    fileOutputStream.close()
-                    val filePath = file.absolutePath
-                    val imageFile = File(filePath)
 
                     viewModel.postUser(newUser)
-
-
 
                     findNavController().navigate(R.id.action_signUpFragment_to_logInFragment)
                     /*
@@ -101,40 +93,9 @@ class SignUpFragment : Fragment() {
 
         }
 
-    private fun validatePassword(password: String): Boolean {
-        return if (password.length <= 5) {
-            binding.password.isErrorEnabled = true
-            binding.password.error = "Password must contain 6 characters or more."
-            false
-        } else {
-            binding.password.error = null
-            binding.password.isErrorEnabled = false
-            true
-        }
-    }
 
-    private fun confirmPassword(password: String): Boolean {
-        return if (binding.confPassword.editText?.text.toString().trim() != password) {
-            binding.confPassword.isErrorEnabled = true
-            binding.confPassword.error = "The passwords don't match."
-            false
-        } else {
-            binding.confPassword.error = null
-            binding.confPassword.isErrorEnabled = false // Quita el espacio extra
-            true
-        }
-    }
 
-    private fun validateEmail(email: String): Boolean {
-        val emailPattern = Regex(
-            "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$")
-        return if (!emailPattern.matches(email)){
-            Toast.makeText(requireContext(),"This is not a valid email.", Toast.LENGTH_SHORT).show()
-            false
-        } else {
-            true
-        }
-    }
+
 
 }
 
