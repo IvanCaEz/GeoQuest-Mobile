@@ -30,7 +30,7 @@ class GeoViewModel : ViewModel() {
     val repository = Repository()
 
     // USER VARIABLES
-    var userData = MutableLiveData<User>()
+    var userData = MutableLiveData<User?>()
     var userImage = MutableLiveData<Bitmap>()
     var userImages = mutableMapOf<Int, Bitmap>()
     var userNames = mutableMapOf<Int, String>()
@@ -118,6 +118,7 @@ class GeoViewModel : ViewModel() {
     fun deleteUser(userID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.deleteUserByID(userID)
+            userData.postValue(null)
         }
     }
 

@@ -8,6 +8,7 @@
     tools:context=".view.EditProfileFragment">
 
     <ImageView
+        android:id="@+id/deleteAccount"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/borrar"
