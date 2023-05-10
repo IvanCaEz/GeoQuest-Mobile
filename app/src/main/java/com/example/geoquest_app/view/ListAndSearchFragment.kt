@@ -46,7 +46,6 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
 
 
         viewModel.getAllTreasures()
-        binding.shimmerViewContainer.visibility = View.INVISIBLE
         viewModel.treasureListData.observe(viewLifecycleOwner) { treasureListVM ->
             treasureList = treasureListVM
             binding.shimmerViewContainer.visibility = View.VISIBLE
