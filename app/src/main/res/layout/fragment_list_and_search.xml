@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color1"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.ListAndSearchFragment">
+
 
     <SearchView
         android:id="@+id/searchView"
@@ -12,16 +14,18 @@
         android:layout_height="50dp"
         android:iconifiedByDefault="false"
         android:queryHint="Search"
-        android:background="@color/white"
+        android:background="@drawable/white_bg_rounded_corners"
+        android:alpha="0.65"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="15dp"/>
+        android:layout_margin="8dp"/>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +48,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="15dp"
+        android:layout_margin="5dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,10 +57,12 @@
         tools:listitem="@layout/item_treasures" />
 
     <Spinner
+        android:layout_margin="2dp"
         android:id="@+id/searchSpinner"
         app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="wrap_content"
+        android:alpha="0.65"
         android:layout_height="wrap_content"
         android:entries="@array/spinner_search"
         />

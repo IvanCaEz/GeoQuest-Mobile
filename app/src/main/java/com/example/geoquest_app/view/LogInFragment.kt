@@ -68,13 +68,12 @@ class LogInFragment : Fragment() {
             if (userName.isNotEmpty() && password.isNotEmpty()) {
                 viewModel.getUserByUserName(userName)
                 viewModel.userData.observe(viewLifecycleOwner) { user ->
-                    if (user.password == password) {
-
+                    if (user?.password == password) {
                         binding.password.error = null
                         binding.password.isErrorEnabled = false
 
-                        findNavController().navigate(R.id.action_logInFragment_to_mapFragment)
-
+                        val toMap = LogInFragmentDirections.actionLogInFragmentToMapFragment()
+                        findNavController().navigate(toMap)
 
                     } else {
                         binding.password.isErrorEnabled = true

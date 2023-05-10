@@ -25,6 +25,7 @@ import com.example.geoquest_app.databinding.FragmentEditProfileBinding
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.User
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileOutputStream
@@ -128,24 +129,26 @@ class EditProfileFragment : Fragment() {
                     viewModel.putUser(user.idUser,userToUpdate, imageFile)
                 }
             }
+            val toProfile = EditProfileFragmentDirections.actionEditProfileFragmentToProfileFragment()
+            findNavController().navigate(toProfile)
+        }
 
-
-
-
-
-
-
-            val placeholderDrawable = resources.getDrawable(R.drawable.usuario)
-            val file = File(context?.cacheDir, "usuario.png")
-            val fileOutputStream = FileOutputStream(file)
-            val bitmap = (placeholderDrawable as BitmapDrawable).bitmap
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
-            fileOutputStream.close()
-            val filePath = file.absolutePath
-            val imageFile = File(filePath)
-
-
-            findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
+        binding.deleteAccount.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage("Are you really sure you want to delete your account?")
+                .setPositiveButton("Yes, I'm sure") { dialog, which ->
+                    viewModel.deleteUser(user!!.idUser)
+                    viewModel.userData.observe(viewLifecycleOwner){
+                        // TODO limpiar prefs
+                        Toast.makeText(requireContext(), "Account deleted succesfully", Toast.LENGTH_SHORT).show()
+                        val toLogin = EditProfileFragmentDirections.actionEditProfileFragmentToLogInFragment()
+                        findNavController().navigate(toLogin)
+                    }
+                }
+                .setNegativeButton("Take me back"){ dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 

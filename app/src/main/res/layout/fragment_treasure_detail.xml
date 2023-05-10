@@ -118,7 +118,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Times Played"
+                            android:text="Total Played"
                             android:textSize="12sp"
                             android:fontFamily="@font/manrope_bold"
                             android:textColor="@color/white"
@@ -153,7 +153,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Times Found"
+                            android:text="Total Found"
                             android:textSize="12sp"
                             android:fontFamily="@font/manrope_bold"
                             android:textColor="@color/white"
@@ -213,7 +213,6 @@
 
                     <androidx.cardview.widget.CardView
                         app:cardUseCompatPadding="true"
-
                         android:id="@+id/treasureStats4"
                         android:layout_width="wrap_content"
                         app:layout_constraintWidth_percent="0.20"
@@ -225,7 +224,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Times Favorites"
+                            android:text="Total Favorites"
                             android:textSize="12sp"
                             android:fontFamily="@font/manrope_bold"
                             android:textColor="@color/white"
@@ -247,6 +246,7 @@
 
                     </androidx.cardview.widget.CardView>
                     <androidx.cardview.widget.CardView
+                        app:cardUseCompatPadding="true"
                         android:id="@+id/treasureStats5"
                         android:layout_width="wrap_content"
                         app:layout_constraintWidth_percent="0.20"
@@ -281,6 +281,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        app:cardUseCompatPadding="true"
                         android:id="@+id/treasureStats6"
                         android:layout_width="wrap_content"
                         app:layout_constraintWidth_percent="0.20"
@@ -292,7 +293,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Average        Time"
+                            android:text="Average Time"
                             android:textSize="12sp"
                             android:fontFamily="@font/manrope_bold"
                             android:textColor="@color/white"
@@ -355,13 +356,35 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/play" />
 
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/location"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/item_review_loading"/>
+                    <include layout="@layout/item_review_loading"/>
+                    <include layout="@layout/item_review_loading"/>
+                    <include layout="@layout/item_review_loading"/>
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/item_review"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/location"
                 android:layout_margin="10dp"

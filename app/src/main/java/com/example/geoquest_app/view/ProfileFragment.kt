@@ -18,6 +18,9 @@ import com.example.geoquest_app.adapters.UserProfileReviewAdapter
 import com.example.geoquest_app.model.ReviewDialogUpdate
 import com.example.geoquest_app.utils.ReportDialog
 import com.example.geoquest_app.viewmodel.GeoViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment(), OnClickListenerReviewUser {
 
@@ -55,7 +58,9 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
 
         binding.shimmerViewContainerProfile.visibility = View.VISIBLE
         binding.recyclerView.alpha = 0.0f
-        viewModel.getUserImage(id)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getUserImage(id)
+        }
         viewModel.getReviewsByUserId(id)
 
         viewModel.userImage.observe(viewLifecycleOwner){ userImage ->

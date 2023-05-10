@@ -60,11 +60,6 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
                 }
             }
 
-
-           // Handler(Looper.getMainLooper()).postDelayed({
-
-           // },2000)
-
         }
 
 
@@ -110,35 +105,23 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         })
     }
 
-
-
-
-
     override fun onResume() {
         super.onResume()
         binding.shimmerViewContainer.visibility = View.GONE
         binding.recyclerView.visibility = View.VISIBLE
     }
-
     private fun setUpRecyclerView(treasureList: List<Treasures>) {
         treasureAdapter = TreasureAdapter(treasureList, this, viewModel)
         linearLayoutManager = LinearLayoutManager(context)
-
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = linearLayoutManager
             adapter = treasureAdapter
         }
     }
-
     override fun onClick(treasures: Treasures) {
-        println("ID TESORO : ${treasures.idTreasure}")
-
-        val action =
-            ListAndSearchFragmentDirections.actionListAndSearchFragmentToTreasureDetailFragment(
-                treasures.idTreasure
-            )
+        val action = ListAndSearchFragmentDirections
+            .actionListAndSearchFragmentToTreasureDetailFragment(treasures.idTreasure)
         findNavController().navigate(action)
     }
-
 }
