@@ -15,6 +15,7 @@ import com.example.geoquest_app.databinding.FragmentProfileBinding
 import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReviewUser
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.adapters.UserProfileReviewAdapter
+import com.example.geoquest_app.model.ReviewDialogUpdate
 import com.example.geoquest_app.utils.ReportDialog
 import com.example.geoquest_app.viewmodel.GeoViewModel
 
@@ -90,7 +91,8 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
     }
 
     override fun onClick(review: Reviews) {
-        TODO("Not yet implemented")
+        val dialog = ReviewDialogUpdate(review)
+        dialog.show(parentFragmentManager, "review")
     }
 
     override fun onDelete(review: Reviews) {
@@ -102,12 +104,6 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         super.onResume()
         binding.shimmerViewContainerProfile.visibility = View.VISIBLE
         binding.recyclerView.alpha = 0.0f
-    }
-
-
-    private fun setUpDialog(){
-        val dialog = ReportDialog()
-        dialog.show(parentFragmentManager, "report")
     }
 
 }

@@ -59,7 +59,7 @@ class EditProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentEditProfileBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -71,7 +71,6 @@ class EditProfileFragment : Fragment() {
 
         val user = viewModel.userData.value
         binding.email.editText?.setText(user?.email)
-
 
         binding.userImg.setImageBitmap(viewModel.userImages[user?.idUser])
 
