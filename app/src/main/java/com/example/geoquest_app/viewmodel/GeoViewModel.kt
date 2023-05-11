@@ -325,7 +325,7 @@ class GeoViewModel : ViewModel() {
                     Log.e("Error " + response.code(), response.message())
                 }
             } catch (e: java.lang.IllegalStateException) {
-                println("ERROR " + e.message)
+                println("LINEA 315 VieMODEL ERROR " + e.message)
             }
         }
     }
@@ -401,11 +401,27 @@ class GeoViewModel : ViewModel() {
 
 
     fun validatePassword(passET: TextInputLayout, password: String): Boolean {
-        return if (password.length <= 8) {
+        passET.error = null
+        val minus = Regex("[a-z]")
+        val mayus = Regex("[A-Z]")
+        val number = Regex("[0-9]")
+        return if (password.length <= 7) {
             passET.isErrorEnabled = true
-            passET.error = "Password must contain 6 characters or more."
+            passET.error = "Password must contain 8 or more characters"
             false
-        } else {
+        } else if (!minus.containsMatchIn(password)){
+            passET.isErrorEnabled = true
+            passET.error = "Password must contain a lowercase letter."
+            false
+        } else if (!mayus.containsMatchIn(password)){
+            passET.isErrorEnabled = true
+            passET.error = "Password must contain an uppercase letter."
+            false
+        }else if (!number.containsMatchIn(password)){
+            passET.isErrorEnabled = true
+            passET.error = "Password must contain a number."
+            false
+        }else{
             passET.error = null
             passET.isErrorEnabled = false
             true

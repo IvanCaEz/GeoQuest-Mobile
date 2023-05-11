@@ -108,7 +108,6 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             // Achievements
             for (i in 0..list.lastIndex){
                 if (i == 0){
-                    println("YYYYYYYYYYYYYYYYYYYYYYYY")
                     when (list[i]) {
                         in 0..5 -> solvedAchievements.setImageResource(R.drawable.medalla_de_bronce)
                         in 6..10 -> solvedAchievements.setImageResource(R.drawable.medalla_de_plata)
@@ -116,7 +115,6 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                         else -> solvedAchievements.setImageResource(R.drawable.diamante)
                     }
                 } else if (i == 1){
-                    println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
                     when (list[i]) {
                         in 0..5 -> binding.imageNST.setImageResource(R.drawable.medalla_de_bronce)
                         in 6..10 -> binding.imageNST.setImageResource(R.drawable.medalla_de_plata)
@@ -124,7 +122,6 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                         else -> binding.imageNST.setImageResource(R.drawable.diamante)
                     }
                 } else if (i == 2) {
-                    println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa")
                     when (list[i]) {
                         in 0..5 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_bronce)
                         in 6..10 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_plata)
@@ -185,10 +182,13 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                     }, 1700)
                 }
             } else {
+                println("me hago visible")
+                Handler(Looper.getMainLooper()).postDelayed({
                 binding.emptyList.visibility = View.VISIBLE
                 binding.shimmerViewContainerProfile.visibility = View.INVISIBLE
                 binding.recyclerView.animate().alpha(1.0f).duration = 400
                 setUpRecyclerView(reviews.toMutableList())
+                }, 1700)
             }
         }
         binding.editProfile.setOnClickListener {

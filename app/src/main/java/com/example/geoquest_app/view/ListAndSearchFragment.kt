@@ -52,7 +52,6 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         viewModel.getAllTreasures()
         viewModel.getUserFavs(viewModel.userData.value!!.idUser)
         viewModel.treasureListData.observe(viewLifecycleOwner) { treasureListVM ->
-
             treasureList = treasureListVM
             binding.shimmerViewContainer.visibility = View.VISIBLE
             CoroutineScope(Dispatchers.IO).launch{

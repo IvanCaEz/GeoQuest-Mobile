@@ -285,7 +285,7 @@
             android:id="@+id/emptyList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No has realizado ninguna review"
+            android:text="You haven't reviewed any treasure yet"
             android:fontFamily="@font/manrope_bold"
             android:textColor="@color/white"
             android:textSize="20sp"
