@@ -91,7 +91,7 @@ class EditProfileFragment : Fragment() {
 
         binding.confirmButton.setOnClickListener {
             val newEmail = binding.email.editText?.text.toString()
-            val newPass = binding.password.editText?.text.toString()
+            val newPass = viewModel.encryptPassword(binding.password.editText?.text.toString())
             var emailUpdated = ""
             var passUpdated = ""
 

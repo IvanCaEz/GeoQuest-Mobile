@@ -38,8 +38,6 @@
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:layout_marginEnd="25dp"
-
-
             android:background="#00000000"
             android:src="@drawable/editar"
             app:layout_constraintTop_toTopOf="@id/profile_title_textview"
@@ -71,8 +69,6 @@
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
             android:fontFamily="@font/manrope_bold"
             android:text="Alejandro Arcas"
             android:textColor="@color/black"
@@ -97,14 +93,12 @@
                 android:id="@+id/solved_treasures_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:text="Solved Treasures"
                 android:textSize="12sp"
                 android:fontFamily="@font/manrope_bold"
                 android:textColor="@color/white"
                 android:gravity="center"
                 android:layout_margin="5dp"
-
                 />
 
             <TextView
@@ -284,6 +278,8 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <TextView
+            android:visibility="invisible"
+            android:layout_marginTop="20dp"
             android:id="@+id/emptyList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -291,8 +287,8 @@
             android:fontFamily="@font/manrope_bold"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintTop_toTopOf="@id/recyclerView"
-            app:layout_constraintBottom_toBottomOf="@id/recyclerView"
+            app:layout_constraintTop_toBottomOf="@id/reviewText"
+            app:layout_constraintBottom_toBottomOf="@id/shimmer_view_container_profile"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

@@ -2,12 +2,15 @@ package com.example.geoquest_app.retrofit
 
 import com.example.geoquest_app.model.Reports
 import com.example.geoquest_app.model.Reviews
+import com.example.geoquest_app.model.auth.TokenResponse
 import com.example.models.*
+import com.example.models.requests.AuthRequest
 import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -65,15 +68,14 @@ interface ApiInterface {
     @GET("user")
     suspend fun getAllUsers(): Response<List<User>>
 
-    // TODO() mirar esto del login para la auth
     @POST("user/login")
-    suspend fun postUserForLogin(usernameAndPass: String)
+    suspend fun postUserForLogin(@Body body: AuthRequest): Response<TokenResponse>
     @GET("user/{id}")
     suspend fun getUserByID(@Path("id") userId: Int): Response<User>
     @GET("user/username/{userName}")
     suspend fun getUserByUserName(@Path("userName") userName: String): Response<User>
     @POST("user")
-    suspend fun postUser(@Body body: User)
+    suspend fun postUser(@Body body: User): Response<Int>
     @Multipart
     @PUT("user/{id}")
     suspend fun putUser(@Path("id") userId: Int, @Part("body") body: RequestBody, @Part image: MultipartBody.Part)
@@ -119,19 +121,22 @@ interface ApiInterface {
     companion object {
         // emulador -> 10.0.2.16
         // itb -> 172.30.5.163
-        private const val BASE_URL = "http://172.30.3.105:8080/"
-        fun create(): ApiInterface {
-            val client = OkHttpClient.Builder()
+        private const val BASE_URL = "http://172.30.5.163:8080/"
+        fun create(token: String): ApiInterface {
+            println("Token desde apiinterface: $token")
+            val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(AuthInterceptor(token))
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .writeTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
                 .build()
+
             val gsonClient = GsonBuilder().serializeNulls().setLenient().serializeSpecialFloatingPointValues().create()
 
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gsonClient))
-                .client(client)
+                .client(okHttpClient)
                 .build()
             return retrofit.create(ApiInterface::class.java)
         }

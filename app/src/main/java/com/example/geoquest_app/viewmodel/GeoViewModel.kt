@@ -3,17 +3,21 @@ package com.example.geoquest_app.viewmodel
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.session.MediaSession.Token
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.model.Reports
 import com.example.geoquest_app.retrofit.Repository
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.model.RouteResponse
+import com.example.geoquest_app.model.auth.TokenResponse
 import com.example.models.*
 import com.example.models.*
+import com.example.models.requests.AuthRequest
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -25,9 +29,17 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 
 class GeoViewModel : ViewModel() {
-    val repository = Repository()
+    var repository = Repository("")
+
+
+    // AUTH VARIABLES
+    var tokenResponseData = MutableLiveData<TokenResponse>()
+    var repoIsUpdated = MutableLiveData<Boolean>()
+    var loginAuthCode = MutableLiveData<Int>()
 
     // USER VARIABLES
     var userData = MutableLiveData<User?>()
@@ -38,6 +50,7 @@ class GeoViewModel : ViewModel() {
     var userFavs = MutableLiveData<List<Treasures>>()
     var isFav = MutableLiveData<Boolean>()
     var userReviews = MutableLiveData<List<Reviews>>()
+    var isNewUserCode = MutableLiveData<Int>()
     var userStats = MutableLiveData<UserStats>()
 
 
@@ -48,11 +61,44 @@ class GeoViewModel : ViewModel() {
     var treasureImages = mutableMapOf<Int, Bitmap>()
     var treasureName = mutableMapOf<Int, String>()
 
-
     // REVIEW VARIABLES
     var reviewListData = MutableLiveData<List<Reviews>>()
     var reviewData = MutableLiveData<Reviews>()
 
+
+    // AUTH
+    private fun updateRepositoryAndData(tokenResponse: TokenResponse) {
+        repository = Repository(tokenResponse.token)
+        userData.postValue(tokenResponse.user)
+        tokenResponseData.postValue(tokenResponse)
+    }
+
+    fun updateRepository(token: String) {
+        repository = Repository(token)
+        repoIsUpdated.postValue(true)
+        println("Repo updated")
+    }
+
+    fun getToken(auth: AuthRequest) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.postUserForLogin(auth)
+            if (response.isSuccessful) {
+                println("token vm: ${response.body()!!.token}")
+                println("CODE "+response.code())
+                println("successfull")
+                // Updateamos repositorio con el token
+                withContext(Dispatchers.Main) {
+                    updateRepositoryAndData(response.body()!!)
+                    loginAuthCode.postValue(response.code())
+                }
+            } else {
+                println("no successfull")
+                println("CODE "+response.code())
+                loginAuthCode.postValue(response.code())
+                Log.e("Error " + response.code(), response.message())
+            }
+        }
+    }
 
     // USERS
     // USAR ESTA FUNCION PARA CARGAR LOS USERS QUE NO SEAN EL PROPIO USER
@@ -73,7 +119,6 @@ class GeoViewModel : ViewModel() {
                 withContext(Dispatchers.Main) {
                     userData.postValue(response.body())
                     isNewUser.postValue(false)
-
                 }
             } else {
                 isNewUser.postValue(true)
@@ -82,28 +127,26 @@ class GeoViewModel : ViewModel() {
         }
     }
 
-    fun getUserImage(userID: Int) {
-       CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getUserPicture(userID)
-            if (response.isSuccessful) {
-                withContext(Dispatchers.Main) {
-                println("holaaaaaa he llegadoooooooo")
-                    val source = response.body()
-                    val inputStream = source?.byteStream()
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    userImage.postValue(bitmap)
-                    userImages[userID] = bitmap
-                println("holaaaaaa he aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                }
-            } else {
-                Log.e("Error " + response.code(), response.message())
-            }
-       }
+    suspend fun getUserImage(userID: Int) {
+        val response = repository.getUserPicture(userID)
+        if (response.isSuccessful) {
+            val source = response.body()
+            val inputStream = source?.byteStream()
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            userImage.postValue(bitmap)
+            userImages[userID] = bitmap
+        } else {
+            Log.e("Error " + response.code(), response.message())
+        }
     }
 
     fun postUser(newUser: User) {
         CoroutineScope(Dispatchers.IO).launch {
-            repository.postUser(newUser)
+            val response = repository.postUser(newUser)
+            withContext(Dispatchers.Main) {
+                    isNewUserCode.postValue(response.code())
+                    println("CODE "+response.code())
+            }
         }
     }
 
@@ -218,7 +261,10 @@ class GeoViewModel : ViewModel() {
             val response = repository.getUserReviews(userId)
             if (response.isSuccessful) {
                 userReviews.postValue(response.body())
-            } else Log.e("Error " + response.code(), response.message())
+            } else{
+                userReviews.postValue(emptyList())
+                Log.e("Error " + response.code(), response.message())
+            }
         }
     }
 
@@ -358,16 +404,35 @@ class GeoViewModel : ViewModel() {
         }
     }
 
-    fun validateEmail(context: Context, email: String): Boolean {
+    fun validateEmail(emailET: TextInputLayout, email: String): Boolean {
         val emailPattern = Regex(
             "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$"
         )
         return if (!emailPattern.matches(email)) {
-            Toast.makeText(context, "This is not a valid email.", Toast.LENGTH_SHORT).show()
+            emailET.isErrorEnabled = true
+            emailET.error = "Invalid email"
             false
         } else {
+            emailET.isErrorEnabled = false
+            emailET.error = null
             true
         }
+    }
+
+    fun encryptPassword(password: String): String {
+        val messageDigest = MessageDigest.getInstance("SHA-256")
+        val hash = messageDigest.digest(password.toByteArray(StandardCharsets.UTF_8))
+        val hex = StringBuilder(hash.size * 2)
+
+        for (byte in hash) {
+            val hexString = Integer.toHexString(0xff and byte.toInt())
+            if (hexString.length == 1) {
+                hex.append('0')
+            }
+            hex.append(hexString)
+        }
+
+        return hex.toString()
     }
 
 

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.geoquest_app.R
@@ -20,6 +21,7 @@ import com.example.geoquest_app.viewmodel.GeoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProfileFragment : Fragment(), OnClickListenerReviewUser {
 
@@ -56,18 +58,20 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         val shimmer = binding.shimmerViewContainerProfile
         val recyclerView = binding.recyclerView
 
-        binding.emptyList.alpha = 0.0f
-        profileTitle.alpha = 0.0f
-        userImg.alpha = 0.0f
-        editProfile.alpha = 0.0f
-        profileName.alpha = 0.0f
-        userStats1.alpha = 0.0f
-        userStats2.alpha = 0.0f
-        userStats3.alpha = 0.0f
-        userStats4.alpha = 0.0f
-        reviewText.alpha = 0.0f
-        recyclerView.alpha = 0.0f
-        shimmer.alpha = 0.0f
+        viewModel.getUserStats(id) // do not work
+        viewModel.getUserStats(id) // do not work
+        val solvedTreasures = binding.solvedTreasures
+        val notSolvedTreasures = binding.notSolvedTreasures
+        val reportQuantity = binding.reportQuantity
+        val averageTime = binding.averageTime
+
+        viewModel.userStats.observe(viewLifecycleOwner) { userStats ->
+            solvedTreasures.text = userStats.solved.toString()
+            notSolvedTreasures.text = userStats.notSolved.toString()
+            reportQuantity.text = userStats.reportQuantity.toString()
+            averageTime.text = userStats.averageTime.toString()
+        }
+        binding.profileName.text = viewModel.userData.value?.nickName
 
         slideConstraint.y = -2200f
         slideConstraint.animate().translationY(0.0f).duration = 1500
@@ -85,66 +89,51 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             recyclerView.animate().alpha(1.0f).duration = 350
         }, 1800)
 
-        // -----------------------------------------------------------------------------------------
-
         val userId = viewModel.userData.value!!.idUser
-
-        val solvedTreasures = binding.solvedTreasures
-        val notSolvedTreasures = binding.notSolvedTreasures
-        val reportQuantity = binding.reportQuantity
-        val averageTime = binding.averageTime
-
         averageTime.isSelected = true
-
-        viewModel.getUserStats(userId)
-        viewModel.userStats.observe(viewLifecycleOwner){ stats ->
-            solvedTreasures.text = stats.solved.toString()
-            notSolvedTreasures.text = stats.notSolved.toString()
-            reportQuantity.text = stats.reportQuantity.toString()
-            averageTime.text = stats.averageTime
-        }
 
         shimmer.visibility = View.VISIBLE
         binding.recyclerView.alpha = 0.0f
 
-
-        viewModel.getUserImage(userId)
-        viewModel.userImage.observe(viewLifecycleOwner){ userImage ->
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getUserImage(userId)
+        }
+        viewModel.userImage.observe(viewLifecycleOwner) { userImage ->
             binding.userImageIV.setImageBitmap(userImage)
         }
-
         viewModel.getReviewsByUserId(userId)
-        viewModel.userReviews.observe(viewLifecycleOwner){ reviews ->
-            reviews.forEach{ review ->
-                viewModel.getTreasureByID(review.idTreasure)
-            }
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.shimmerViewContainerProfile.visibility = View.GONE
+        viewModel.userReviews.observe(viewLifecycleOwner) { reviews ->
+            if (reviews.isNotEmpty()) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    reviews.forEach { review ->
+                        viewModel.getTreasureByID(review.idTreasure)
+                    }
+                    withContext(Dispatchers.Main) {
+                        binding.emptyList.visibility = View.INVISIBLE
+                        binding.shimmerViewContainerProfile.visibility = View.GONE
+                        binding.recyclerView.animate().alpha(1.0f).duration = 400
+                        setUpRecyclerView(reviews.toMutableList())
+                    }
+                }
+            } else {
+                binding.emptyList.visibility = View.VISIBLE
+                binding.shimmerViewContainerProfile.visibility = View.INVISIBLE
                 binding.recyclerView.animate().alpha(1.0f).duration = 400
                 setUpRecyclerView(reviews.toMutableList())
-            }, 1700)
+            }
         }
-
         binding.editProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
+            requireView().findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
     }
-
-    private fun setUpRecyclerView(reviewList: MutableList<Reviews>){
+    private fun setUpRecyclerView(reviewList: MutableList<Reviews>) {
         reviewAdapter = UserProfileReviewAdapter(viewModel, reviewList, this)
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        if (reviewList.isEmpty()) {
-            binding.emptyList.visibility = View.VISIBLE
-            binding.recyclerView.visibility = View.GONE
-            binding.shimmerViewContainerProfile.visibility = View.GONE
-        }
-        else {
-            binding.recyclerView.apply {
-                setHasFixedSize(true)
-                layoutManager = linearLayoutManager
-                adapter = reviewAdapter
-            }
+        binding.recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = linearLayoutManager
+            adapter = reviewAdapter
         }
     }
 

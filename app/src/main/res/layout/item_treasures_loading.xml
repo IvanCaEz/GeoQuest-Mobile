@@ -22,7 +22,7 @@
             android:id="@+id/treasure_IV"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_margin="8dp"
+            android:layout_margin="10dp"
             android:background="#A0A0A0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guideline"
@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.39" />
+            app:layout_constraintGuide_percent="0.4" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"

@@ -2,12 +2,16 @@ package com.example.geoquest_app.retrofit
 
 import com.example.geoquest_app.model.Reports
 import com.example.models.*
+import com.example.models.requests.AuthRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class Repository {
-    val apiInterface = ApiInterface.create()
+class Repository(token: String) {
+    val apiInterface = ApiInterface.create(token)
     val directionsInterface = DirectionsApiInterface.create()
+
+    // AUTH
+    suspend fun postUserForLogin(body: AuthRequest) = apiInterface.postUserForLogin(body)
 
     // ROUTES
     suspend fun getRoutes(key: String, start: String, end: String) = directionsInterface.getRoute(key, start, end)
@@ -40,7 +44,6 @@ class Repository {
 
     // USERS
     suspend fun getAllUsers() = apiInterface.getAllUsers()
-    suspend fun postUserForLogin(usernameAndPass: String) = apiInterface.postUserForLogin(usernameAndPass)
     suspend fun getUserByID(userId: Int) = apiInterface.getUserByID(userId)
     suspend fun getUserByUserName(userName: String) = apiInterface.getUserByUserName(userName)
     suspend fun postUser(body:User) = apiInterface.postUser(body)
