@@ -57,25 +57,17 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <RatingBar
         android:id="@+id/ratingUpdate"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.9"
+        android:layout_width="235dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="Write your rating here"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/opinionUpdate"
-        app:layout_constraintBottom_toTopOf="@id/reviewImage">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/color4"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintBottom_toTopOf="@id/reviewImage"
+        android:stepSize="1.0"
+        android:progressTint="#FFCA28"
+        app:layout_constraintStart_toStartOf="@id/treasureName"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 
     <androidx.cardview.widget.CardView
@@ -94,7 +86,7 @@
             android:id="@+id/reviewPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/usuario"
+            android:src="@drawable/placeholder_review"
             android:background="@color/color1"
             android:scaleType="centerCrop"
             />

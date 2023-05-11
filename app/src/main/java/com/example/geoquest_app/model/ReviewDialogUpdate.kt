@@ -63,8 +63,9 @@ class ReviewDialogUpdate(val review: Reviews): DialogFragment() {
             binding = DialogReviewUpdateBinding.inflate(layoutInflater)
 
             binding.treasureName.text = viewModel.treasureName[review.idTreasure].toString()
-            binding.opinionUpdate.hint = review.opinion
-            binding.ratingUpdate.hint = review.rating.toString()
+            binding.opinionUpdate.editText?.setText(review.opinion)
+            binding.ratingUpdate.rating = review.rating.toFloat()
+            binding.reviewPicture.setImageBitmap(viewModel.reviewImages[review.idReview])
 
             binding.selectImage.setOnClickListener {
                 if (ContextCompat.checkSelfPermission(requireContext(),
@@ -79,12 +80,11 @@ class ReviewDialogUpdate(val review: Reviews): DialogFragment() {
                     selectImage(resultLauncher)
                 }
             }
-
             builder.setView(binding.root)
                 // Add action buttons
                 .setPositiveButton("Update") { dialog, id ->
                     if (imageUri != null){
-                        val rating = binding.ratingUpdate.editText!!.text.toString().toInt()
+                        val rating = binding.ratingUpdate.rating.toInt()
                         val opinion = binding.opinionUpdate.editText!!.text.toString()
                         val reviewToUpdate = Reviews(review.idReview, review.idTreasure, review.idUser, opinion, rating, newImageName)
                         try {
@@ -95,7 +95,7 @@ class ReviewDialogUpdate(val review: Reviews): DialogFragment() {
                         val imageFile = File(imagePath)
                         viewModel.updateReviewByTreasureId(reviewToUpdate, imageFile)
                     } else {
-                        val rating = binding.ratingUpdate.editText!!.text.toString().toInt()
+                        val rating = binding.ratingUpdate.rating.toInt()
                         val opinion = binding.opinionUpdate.editText!!.text.toString()
                         val placeholderDrawable = resources.getDrawable(R.drawable.placeholder_review)
                         val file = File(context?.cacheDir, review.photo)

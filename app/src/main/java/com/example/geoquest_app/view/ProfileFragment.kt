@@ -119,6 +119,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                 CoroutineScope(Dispatchers.IO).launch {
                     reviews.forEach { review ->
                         viewModel.getTreasureByID(review.idTreasure)
+                        viewModel.getReviewPicture(review.idTreasure, review.idReview)
                     }
                     Handler(Looper.getMainLooper()).postDelayed({
                         binding.emptyList.visibility = View.INVISIBLE

@@ -5,7 +5,7 @@
     <string-array name="spinner_search">
         <item>Location</item>
         <item>Name</item>
-        <item>Difficulty</item>
+        <item>Level</item>
         <item>Score</item>
     </string-array>
 

@@ -64,6 +64,7 @@ class GeoViewModel : ViewModel() {
     // REVIEW VARIABLES
     var reviewListData = MutableLiveData<List<Reviews>>()
     var reviewData = MutableLiveData<Reviews>()
+    var reviewImages = mutableMapOf<Int, Bitmap>()
 
 
     // AUTH
@@ -84,7 +85,7 @@ class GeoViewModel : ViewModel() {
             val response = repository.postUserForLogin(auth)
             if (response.isSuccessful) {
                 println("token vm: ${response.body()!!.token}")
-                println("CODE "+response.code())
+                println("CODE " + response.code())
                 println("successfull")
                 // Updateamos repositorio con el token
                 withContext(Dispatchers.Main) {
@@ -93,7 +94,7 @@ class GeoViewModel : ViewModel() {
                 }
             } else {
                 println("no successfull")
-                println("CODE "+response.code())
+                println("CODE " + response.code())
                 loginAuthCode.postValue(response.code())
                 Log.e("Error " + response.code(), response.message())
             }
@@ -145,8 +146,8 @@ class GeoViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.postUser(newUser)
             withContext(Dispatchers.Main) {
-                    isNewUserCode.postValue(response.code())
-                    println("CODE "+response.code())
+                isNewUserCode.postValue(response.code())
+                println("CODE " + response.code())
             }
         }
     }
@@ -262,12 +263,25 @@ class GeoViewModel : ViewModel() {
             val response = repository.getUserReviews(userId)
             if (response.isSuccessful) {
                 userReviews.postValue(response.body())
-            } else{
+            } else {
                 userReviews.postValue(emptyList())
                 Log.e("Error " + response.code(), response.message())
             }
         }
     }
+
+    suspend fun getReviewPicture(treasureID: Int, reviewID: Int) {
+        val response = repository.getPictureWithSpecificReviewFromTreasureById(treasureID, reviewID)
+        if (response.isSuccessful) {
+            val source = response.body()
+            val inputStream = source?.byteStream()
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            reviewImages[reviewID] = bitmap
+        } else {
+            Log.e("Error " + response.code(), response.message())
+        }
+    }
+
 
     fun deleteReviewByTreasureId(treasureId: Int, reviewId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -371,7 +385,7 @@ class GeoViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserStats(userId)
             if (response.isSuccessful) {
-                 userStats.postValue(response.body())
+                userStats.postValue(response.body())
             } else Log.i("Estadisticas", "MAL")
         }
     }

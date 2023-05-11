@@ -3,6 +3,7 @@ package com.example.geoquest_app.view
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -18,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
@@ -33,6 +35,7 @@ import java.io.FileOutputStream
 class EditProfileFragment : Fragment() {
     lateinit var binding: FragmentEditProfileBinding
     private val viewModel: GeoViewModel by activityViewModels()
+    lateinit var myPreferences: SharedPreferences
     var imagePath = ""
     var imageUri: Uri? = null
     private val REQUEST_PERMISSIONS = 1
@@ -96,7 +99,6 @@ class EditProfileFragment : Fragment() {
             var passUpdated = ""
 
             if (user != null){
-
                 emailUpdated = if (newEmail != user.email) newEmail
                 else user.email
                 passUpdated = if (newPass != user.password) newPass
@@ -139,7 +141,17 @@ class EditProfileFragment : Fragment() {
                 .setPositiveButton("Yes, I'm sure") { dialog, which ->
                     viewModel.deleteUser(user!!.idUser)
                     viewModel.userData.observe(viewLifecycleOwner){
-                        // TODO limpiar prefs
+                        myPreferences =
+                            requireActivity().getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE)
+
+                        myPreferences.edit {
+                            putString("userName", "")
+                            putString("password", "")
+                            putString("token", "")
+                            putBoolean("active", false)
+                            apply()
+                        }
+                        viewModel.updateRepository("")
                         Toast.makeText(requireContext(), "Account deleted succesfully", Toast.LENGTH_SHORT).show()
                         val toLogin = EditProfileFragmentDirections.actionEditProfileFragmentToLogInFragment()
                         findNavController().navigate(toLogin)
