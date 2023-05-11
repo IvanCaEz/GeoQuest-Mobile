@@ -119,6 +119,7 @@ class GeoViewModel : ViewModel() {
                 withContext(Dispatchers.Main) {
                     userData.postValue(response.body())
                     isNewUser.postValue(false)
+
                 }
             } else {
                 isNewUser.postValue(true)

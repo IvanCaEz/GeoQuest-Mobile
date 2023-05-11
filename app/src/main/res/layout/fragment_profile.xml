@@ -290,7 +290,8 @@
             app:layout_constraintTop_toBottomOf="@id/reviewText"
             app:layout_constraintBottom_toBottomOf="@id/shimmer_view_container_profile"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="HardcodedText" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

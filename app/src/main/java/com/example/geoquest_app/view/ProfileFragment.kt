@@ -58,7 +58,19 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         val shimmer = binding.shimmerViewContainerProfile
         val recyclerView = binding.recyclerView
 
-        viewModel.getUserStats(id) // do not work
+        binding.emptyList.alpha = 0.0f
+        profileTitle.alpha = 0.0f
+        userImg.alpha = 0.0f
+        editProfile.alpha = 0.0f
+        profileName.alpha = 0.0f
+        userStats1.alpha = 0.0f
+        userStats2.alpha = 0.0f
+        userStats3.alpha = 0.0f
+        userStats4.alpha = 0.0f
+        reviewText.alpha = 0.0f
+        recyclerView.alpha = 0.0f
+        shimmer.alpha = 0.0f
+
         viewModel.getUserStats(id) // do not work
         val solvedTreasures = binding.solvedTreasures
         val notSolvedTreasures = binding.notSolvedTreasures
@@ -69,7 +81,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             solvedTreasures.text = userStats.solved.toString()
             notSolvedTreasures.text = userStats.notSolved.toString()
             reportQuantity.text = userStats.reportQuantity.toString()
-            averageTime.text = userStats.averageTime.toString()
+            averageTime.text = userStats.averageTime
         }
         binding.profileName.text = viewModel.userData.value?.nickName
 
@@ -108,12 +120,12 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                     reviews.forEach { review ->
                         viewModel.getTreasureByID(review.idTreasure)
                     }
-                    withContext(Dispatchers.Main) {
+                    Handler(Looper.getMainLooper()).postDelayed({
                         binding.emptyList.visibility = View.INVISIBLE
                         binding.shimmerViewContainerProfile.visibility = View.GONE
                         binding.recyclerView.animate().alpha(1.0f).duration = 400
                         setUpRecyclerView(reviews.toMutableList())
-                    }
+                    }, 1700)
                 }
             } else {
                 binding.emptyList.visibility = View.VISIBLE

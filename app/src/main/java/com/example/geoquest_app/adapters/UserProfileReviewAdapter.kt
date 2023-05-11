@@ -18,6 +18,9 @@ class UserProfileReviewAdapter(private val viewModel: GeoViewModel, private val 
             binding.root.setOnClickListener {
                 listener.onClick(review)
             }
+            binding.buttonTrash.setOnClickListener {
+                listener.onDelete(review)
+            }
         }
     }
 
