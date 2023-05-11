@@ -41,7 +41,7 @@ class GeoViewModel : ViewModel() {
     var userImages = mutableMapOf<Int, Bitmap>()
     var userNames = mutableMapOf<Int, String>()
     var isNewUser = MutableLiveData<Boolean>()
-    var userFavs = MutableLiveData<List<Treasures>>()
+    var userFavs = MutableLiveData<List<Favourites>>()
     var isFav = MutableLiveData<Boolean>()
     var userReviews = MutableLiveData<List<Reviews>>()
     var isNewUserCode = MutableLiveData<Int>()
@@ -327,7 +327,6 @@ class GeoViewModel : ViewModel() {
             } catch (e: java.lang.IllegalStateException) {
                 println("ERROR " + e.message)
             }
-
         }
     }
 
@@ -402,7 +401,7 @@ class GeoViewModel : ViewModel() {
 
 
     fun validatePassword(passET: TextInputLayout, password: String): Boolean {
-        return if (password.length <= 5) {
+        return if (password.length <= 8) {
             passET.isErrorEnabled = true
             passET.error = "Password must contain 6 characters or more."
             false

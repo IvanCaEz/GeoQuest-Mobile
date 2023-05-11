@@ -12,10 +12,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentListAndSearchBinding
 import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerTreasure
 import com.example.geoquest_app.adapters.TreasureAdapter
 import com.example.geoquest_app.viewmodel.GeoViewModel
+import com.example.models.Favourites
 import com.example.models.Treasures
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +32,8 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
     lateinit var binding: FragmentListAndSearchBinding
     private val viewModel: GeoViewModel by activityViewModels()
     var treasureList = listOf<Treasures>()
+    var favTreasureList = listOf<Treasures>()
+    var favList = listOf<Favourites>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,10 +47,12 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
-
-
+        //Comienza con el botón Todos checkeado
+        binding.toggleButton.check(R.id.all_markers_button)
         viewModel.getAllTreasures()
+        viewModel.getUserFavs(viewModel.userData.value!!.idUser)
         viewModel.treasureListData.observe(viewLifecycleOwner) { treasureListVM ->
+
             treasureList = treasureListVM
             binding.shimmerViewContainer.visibility = View.VISIBLE
             CoroutineScope(Dispatchers.IO).launch{
@@ -56,13 +62,34 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
                 withContext(Dispatchers.Main){
                     binding.shimmerViewContainer.visibility = View.INVISIBLE
                     binding.recyclerView.visibility = View.VISIBLE
-                    setUpRecyclerView(treasureList)
+                    if (binding.toggleButton.checkedButtonId == R.id.all_markers_button){
+                        setUpRecyclerView(treasureList)
+                    } else {
+                        setUpRecyclerView(favTreasureList)
+                    }
                 }
             }
+        }
 
+        viewModel.userFavs.observe(viewLifecycleOwner){ favListVM ->
+            favList = favListVM
+            favList.forEach { fav ->
+                viewModel.getTreasureByID(fav.idTreasure)
+            }
         }
 
 
+
+        binding.toggleButton.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+            if (isChecked){
+                when (checkedId){
+                    R.id.all_markers_button -> setAdapter(false)
+                    R.id.favourites_button -> setAdapter(true)
+                }
+            } else {
+                if (toggleButton.checkedButtonId == View.NO_ID)  setAdapter(false)
+            }
+        }
 
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
@@ -73,22 +100,29 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
                     var filterList = listOf<Treasures>()
                    when(filter){
                        "Location" ->{
-                           filterList = treasureList.filter { it.location.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                           filterList = if (binding.toggleButton.checkedButtonId == R.id.all_markers_button){
+                               treasureList.filter { it.location.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                           } else favTreasureList.filter { it.location.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
                        }
                        "Score" -> {
-                           filterList =  treasureList.filter { it.score.toString() >= query}
+                           filterList = if (binding.toggleButton.checkedButtonId == R.id.all_markers_button){
+                               treasureList.filter { it.score.toString() >= query}
+                           } else favTreasureList.filter { it.score.toString() >= query}
                        }
                        "Name" -> {
-                           filterList =  treasureList.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                           filterList = if (binding.toggleButton.checkedButtonId == R.id.all_markers_button){
+                               treasureList.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                           } else favTreasureList.filter { it.name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
                        }
                        "Difficulty" -> {
-                           filterList =  treasureList.filter { it.difficulty.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                           filterList = if (binding.toggleButton.checkedButtonId == R.id.all_markers_button){
+                               treasureList.filter { it.difficulty.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
+                           } else favTreasureList.filter { it.difficulty.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT)) }
                        }
                        else -> {  }
                    }
                     setUpRecyclerView(filterList)
                 }
-
                 return false
             }
 
@@ -96,13 +130,29 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
                 if(newText.equals("")){
                     this.onQueryTextSubmit("")
                 } else {
-                   setUpRecyclerView(treasureList)
+                    if (binding.toggleButton.checkedButtonId == R.id.all_markers_button ){
+                        setUpRecyclerView(treasureList)
+                    } else setUpRecyclerView(favTreasureList)
                 }
                 return true
-
             }
-
         })
+    }
+    private fun setAdapter(filterVisited: Boolean){
+       binding.nofavsTV.visibility = View.INVISIBLE
+        if (filterVisited){
+            binding.shimmerViewContainer.visibility = View.INVISIBLE
+            val treasureIDs = mutableListOf<Int>()
+            if (favList.isNotEmpty()){
+                binding.nofavsTV.visibility = View.INVISIBLE
+            } else binding.nofavsTV.visibility = View.VISIBLE
+            favList.forEach { treasureIDs.add(it.idTreasure) }
+            favTreasureList = treasureList.filter { treasureIDs.contains(it.idTreasure) }
+            setUpRecyclerView(favTreasureList)
+        } else{
+            binding.nofavsTV.visibility = View.INVISIBLE
+            setUpRecyclerView(treasureList)
+        }
     }
 
     override fun onResume() {

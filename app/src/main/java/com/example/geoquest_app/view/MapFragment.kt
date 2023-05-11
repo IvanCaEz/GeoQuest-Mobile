@@ -141,7 +141,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener,
                 treasureMarker.icon(markerColor("#5A4A37"))
             }
             map.addMarker(treasureMarker)
-
         }
         viewModel.distanceMapVM.postValue(distanceMap)
     }

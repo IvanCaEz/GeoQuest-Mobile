@@ -21,6 +21,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="8dp"/>
 
+    <TextView
+        android:id="@+id/nofavs_TV"
+        android:text="No favourites yet"
+        android:textSize="30dp"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggleButton"/>
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
@@ -29,7 +42,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/toggleButton"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,12 +66,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/toggleButton"
         tools:listitem="@layout/item_treasures" />
 
     <Spinner
         android:layout_margin="2dp"
         android:id="@+id/searchSpinner"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="wrap_content"
@@ -66,5 +80,43 @@
         android:layout_height="wrap_content"
         android:entries="@array/spinner_search"
         />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        style="?attr/materialButtonToggleGroupStyle"
+        android:id="@+id/toggleButton"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        >
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:id="@+id/all_markers_button"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/marronOscuro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All"
+            app:strokeWidth="2dp"
+            />
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:id="@+id/favourites_button"
+            android:backgroundTint="@color/marronOscuro"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Favourites"
+            app:strokeWidth="2dp"
+            />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
