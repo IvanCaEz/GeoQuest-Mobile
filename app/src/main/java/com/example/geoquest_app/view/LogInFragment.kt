@@ -107,7 +107,7 @@ class LogInFragment : Fragment() {
             }
         }
         binding.signup.setOnClickListener {
-            requireView().findNavController().navigate( LogInFragmentDirections.actionLogInFragmentToSignUpFragment())
+            getView()?.findNavController()?.navigate( LogInFragmentDirections.actionLogInFragmentToSignUpFragment())
         }
     }
 
@@ -161,5 +161,5 @@ class LogInFragment : Fragment() {
             }
         }
     }
-    private fun login() = requireView().findNavController().navigate(R.id.action_logInFragment_to_mapFragment)
+    private fun login() = view?.findNavController()?.navigate(R.id.action_logInFragment_to_mapFragment)
 }

@@ -82,7 +82,7 @@ class SignUpFragment : Fragment() {
                                 binding.nickname.error = null
                                 binding.nickname.isErrorEnabled = false
                                 dialog.dismiss()
-                                requireView().findNavController().navigate(R.id.action_signUpFragment_to_logInFragment)
+                                getView()?.findNavController()?.navigate(R.id.action_signUpFragment_to_logInFragment)
                             }
                         }
                     }
@@ -94,7 +94,7 @@ class SignUpFragment : Fragment() {
             }
         }
             binding.login.setOnClickListener {
-                requireView().findNavController().navigate(R.id.action_signUpFragment_to_logInFragment)
+                getView()?.findNavController()?.navigate(R.id.action_signUpFragment_to_logInFragment)
             }
 
         }

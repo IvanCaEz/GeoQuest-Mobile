@@ -1,14 +1,17 @@
 package com.example.geoquest_app.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentTreasureDetailBinding
 import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
 import com.example.geoquest_app.adapters.ReviewAdapter
@@ -38,6 +41,7 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         return binding.root
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as MainActivity
@@ -93,12 +97,22 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
             binding.treasureImg.setImageBitmap(treasureImage)
         }
 
+
         binding.play.setOnClickListener {
-            val toPlay =
-                TreasureDetailFragmentDirections.actionTreasureDetailFragmentToStartGameFragment(
-                    treasureID
-                )
-            findNavController().navigate(toPlay)
+            val distance = viewModel.distanceMapVM.value?.get(treasureID)
+            if (distance!! <= 1000) {
+                val toPlay =
+                    TreasureDetailFragmentDirections.actionTreasureDetailFragmentToStartGameFragment(
+                        treasureID
+                    )
+                findNavController().navigate(toPlay)
+            }else {
+                Toast.makeText(
+                    requireContext(),
+                    "Get closer to the treasure to start the hunt",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
         binding.report.setOnClickListener {
             showDialogReport()

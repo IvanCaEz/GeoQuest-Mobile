@@ -17,6 +17,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
 import com.example.geoquest_app.adapters.MarkerInfoWindowAdapter
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
@@ -40,13 +42,15 @@ import java.io.IOException
 import java.util.*
 
 
-class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPolylineClickListener {
+class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener,
+    OnInfoWindowClickListener {
     lateinit var binding: FragmentMapBinding
     lateinit var map: GoogleMap
     val viewModel: GeoViewModel by activityViewModels()
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var currentCoordinates: LatLng
     var route: Polyline? = null
+    var distanceMap = mutableMapOf<Int, Int>()
 
 
 
@@ -97,10 +101,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
                             )
                         }
                     } catch (e: IOException) {
+                        Log.e("Error ", e.message, e.cause)
                     }
                 }
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 return true
             }
@@ -108,19 +114,36 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
     }
 
     private fun createMarkers(treasureList: List<Treasures>) {
+        distanceMap = mutableMapOf<Int, Int>()
         treasureList.forEach { treasure ->
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.getTreasureImage(treasure.idTreasure)
+
             }
-
             val coordinates = LatLng(treasure.latitude, treasure.longitude)
-           val results = FloatArray(3)
+            val results = FloatArray(3)
 
-            Location.distanceBetween(currentCoordinates.latitude, currentCoordinates.longitude, treasure.latitude, treasure.longitude, results)
+            Location.distanceBetween(
+                currentCoordinates.latitude,
+                currentCoordinates.longitude,
+                treasure.latitude,
+                treasure.longitude,
+                results
+            )
 
-            val treasureMarker = MarkerOptions().position(coordinates).title(treasure.name).snippet("${treasure.idTreasure},${treasure.score},${results[0]}")
+            distanceMap[treasure.idTreasure] = results[0].toInt()
+
+            val treasureMarker = MarkerOptions().position(coordinates).title(treasure.name)
+                .snippet("${treasure.idTreasure},${treasure.score},${results[0]}")
+            if (results[0] <= 1000) {
+                treasureMarker.icon(markerColor("#4E6A55"))
+            } else {
+                treasureMarker.icon(markerColor("#5A4A37"))
+            }
             map.addMarker(treasureMarker)
+
         }
+        viewModel.distanceMapVM.postValue(distanceMap)
     }
 
     fun markerColor(color: String?): BitmapDescriptor {
@@ -139,17 +162,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
         viewModel.treasureListData.observe(viewLifecycleOwner) { treasureList ->
             createMarkers(treasureList)
         }
-
         enableLocation()
         map.animateCamera(
             CameraUpdateFactory.newLatLngZoom(currentCoordinates, 14f),
             1500, null
         )
-
-
+        map.setOnInfoWindowClickListener(this)
         map.setOnMarkerClickListener(this)
-
-
     }
 
     private fun isLocationPermissionGranted(): Boolean {
@@ -210,13 +229,18 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
     }
 
     override fun onMarkerClick(treasureMarker: Marker): Boolean {
+
         map.setInfoWindowAdapter(MarkerInfoWindowAdapter(requireContext(), viewModel))
         route?.remove()
         val start = "${currentCoordinates.longitude},${currentCoordinates.latitude}"
         val end = "${treasureMarker.position.longitude},${treasureMarker.position.latitude}"
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.getRoute("5b3ce3597851110001cf624877a97a68b1a84fa2bcb01fb0aa655b89", start, end)
-            withContext(Dispatchers.Main){
+            viewModel.getRoute(
+                "5b3ce3597851110001cf624877a97a68b1a84fa2bcb01fb0aa655b89",
+                start,
+                end
+            )
+            withContext(Dispatchers.Main) {
                 drawRoute()
             }
         }
@@ -232,37 +256,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
             .color(ContextCompat.getColor(requireContext(), R.color.ocre))
         viewModel.route.observe(viewLifecycleOwner) { routeResponse ->
             // devuelve las coordenadas alreves
-
             routeResponse.features.first().geometry.coordinates.forEach {
-              polyLineOptions.add(LatLng(it[1], it[0]))
+                polyLineOptions.add(LatLng(it[1], it[0]))
             }
-
-
-            /*
-              val coordinatesList = routeResponse.features.first().geometry.coordinates
-            val results = FloatArray(coordinatesList.size)
-            for (coord in 0 .. coordinatesList.lastIndex){
-                polyLineOptions.add(LatLng(coordinatesList[coord][1], coordinatesList[coord][0]))
-                if (coord == 0){
-                    Location.distanceBetween(currentCoordinates.latitude, currentCoordinates.longitude,coordinatesList[coord][1], coordinatesList[coord][0], results)
-                } else {
-                    Location.distanceBetween(coordinatesList[coord-1][1], coordinatesList[coord-1][0],coordinatesList[coord][1], coordinatesList[coord][0], results)
-                }
-            }
-            println(results.size)
-            try {
-                println(results[0])
-                println(results[1])
-                println(results[2])
-                println(results[3])
-                println(results[results.size-1])
-                println(results[results.size-2])
-            } catch (e: java.lang.NullPointerException){}
-
-            map.setInfoWindowAdapter(MarkerInfoWindowAdapter(requireContext(), viewModel, results[results.size-1].toInt().toString()))
-
-             */
-
 
         }
         route = map.addPolyline(polyLineOptions)
@@ -274,8 +270,23 @@ class MapFragment : Fragment(), OnMapReadyCallback, OnMarkerClickListener, OnPol
         getLocation()
     }
 
-    override fun onPolylineClick(p0: Polyline) {
-        println("hola")
+
+    override fun onInfoWindowClick(marker: Marker) {
+        val distance = marker.snippet!!.split(",")[2].toDouble().toInt()
+        if (distance <= 1000) {
+            requireView().findNavController().navigate(
+                MapFragmentDirections.actionMapFragmentToTreasureDetailFragment(
+                    marker.snippet!!.split(",")[0].toInt()
+                )
+            )
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Get closer to the treasure to start the hunt",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
 

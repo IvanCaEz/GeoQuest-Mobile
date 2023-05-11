@@ -54,6 +54,7 @@ class GeoViewModel : ViewModel() {
     var treasureImage = MutableLiveData<Bitmap>()
     var treasureImages = mutableMapOf<Int, Bitmap>()
     var treasureName = mutableMapOf<Int, String>()
+    var distanceMapVM = MutableLiveData<Map<Int, Int>>()
 
     // REVIEW VARIABLES
     var reviewListData = MutableLiveData<List<Reviews>>()
