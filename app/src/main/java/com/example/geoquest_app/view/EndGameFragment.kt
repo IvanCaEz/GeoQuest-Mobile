@@ -159,9 +159,9 @@ class EndGameFragment : Fragment() {
                     else -> "Expert"
                 }
                 viewModel.updateUserLevel(userID, level)
+                findNavController().navigate(R.id.action_endGameFragment_to_listAndSearchFragment)
             }
 
-            findNavController().navigate(R.id.action_endGameFragment_to_listAndSearchFragment)
         }
     }
 
