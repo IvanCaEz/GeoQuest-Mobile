@@ -79,6 +79,8 @@ interface ApiInterface {
     @Multipart
     @PUT("user/{id}")
     suspend fun putUser(@Path("id") userId: Int, @Part("body") body: RequestBody, @Part image: MultipartBody.Part)
+    @PUT("user/{id}/level")
+    suspend fun updateUserLevel(@Path("id") userId: Int, @Body body: String)
     @DELETE("user/{id}")
     suspend fun deleteUserByID(@Path("id") userId: Int)
     @GET("user/{id}/picture")

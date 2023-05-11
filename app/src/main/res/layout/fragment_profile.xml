@@ -19,20 +19,6 @@
         android:paddingTop="30dp"
         android:paddingBottom="20dp">
 
-        <TextView
-            android:id="@+id/profile_title_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope_bold"
-            android:text="Profile"
-            android:textSize="20sp"
-            android:paddingBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@id/userImg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
         <ImageView
             android:id="@+id/editProfile"
             android:layout_width="23dp"
@@ -40,8 +26,7 @@
             android:layout_marginEnd="25dp"
             android:background="#00000000"
             android:src="@drawable/editar"
-            app:layout_constraintTop_toTopOf="@id/profile_title_textview"
-            app:layout_constraintBottom_toBottomOf="@id/profile_title_textview"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
 
@@ -51,7 +36,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_title_textview"
+            app:layout_constraintTop_toTopOf="parent"
             app:cardCornerRadius="50dp">
 
             <ImageView
@@ -73,10 +58,23 @@
             android:text="Alejandro Arcas"
             android:textColor="@color/black"
             android:textSize="30sp"
-            app:layout_constraintBottom_toTopOf="@+id/userStats3"
+            app:layout_constraintBottom_toTopOf="@+id/userLevel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/userImg" />
+
+        <TextView
+            android:id="@+id/userLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_bold"
+            android:text="Noob"
+            android:textColor="#5E5E5E"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@+id/userStats3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_name" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/userStats1"

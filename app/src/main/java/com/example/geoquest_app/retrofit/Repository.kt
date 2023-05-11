@@ -48,6 +48,8 @@ class Repository(token: String) {
     suspend fun getUserByUserName(userName: String) = apiInterface.getUserByUserName(userName)
     suspend fun postUser(body:User) = apiInterface.postUser(body)
     suspend fun putUser(userId: Int, body: RequestBody, image: MultipartBody.Part) = apiInterface.putUser(userId, body, image)
+    suspend fun updateUserLevel(userId: Int, body: String) = apiInterface.updateUserLevel(userId, body)
+
     suspend fun deleteUserByID(userId: Int) = apiInterface.deleteUserByID(userId)
     suspend fun getUserPicture(userId: Int) = apiInterface.getUserPicture(userId)
     // USER STATS

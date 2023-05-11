@@ -77,7 +77,7 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
             binding.shimmerViewContainer.visibility = View.VISIBLE
             CoroutineScope(Dispatchers.IO).launch {
                 reviewList.forEach { review ->
-                    viewModel.getUserByID(review.idUser)
+                    viewModel.getUserByID(review.idUser, "review")
                     viewModel.getUserImage(review.idUser)
                 }
                 withContext(Dispatchers.Main){

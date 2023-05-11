@@ -80,8 +80,6 @@ class EndGameFragment : Fragment() {
         val startTime = arguments?.getString("startDate")!!
         val endTime = arguments?.getString("endDate")!!
 
-        println("id tesoro:$treasureID")
-        println("iid tesoro del viewmodel: ${viewModel.treasureData.value?.idTreasure}")
         val userID = viewModel.userData.value?.idUser
 
        setUpSpinner()
@@ -92,6 +90,8 @@ class EndGameFragment : Fragment() {
 
         binding.treasureName.text = treasure?.name
         binding.elapsedTime.text = elapsedTime
+
+
 
 
         binding.image.setOnClickListener {
@@ -113,7 +113,7 @@ class EndGameFragment : Fragment() {
             val opinion = binding.opinion.editText?.text.toString()
             val result = binding.resultSpinner.selectedItem.toString()
 
-            val solved = result == "FOUND"
+            val solved = result == "Found"
 
             val game = Games(0, treasureID, userID!!, solved,startTime,endTime)
 
@@ -132,6 +132,7 @@ class EndGameFragment : Fragment() {
                 viewModel.postReview(review, imageFile)
                 viewModel.updateTreasureScore(treasureID, treasure!!)
 
+
             } else {
                 val placeholderDrawable = resources.getDrawable(R.drawable.placeholder_review)
                 val file = File(context?.cacheDir, "placeholder_review.png")
@@ -147,18 +148,31 @@ class EndGameFragment : Fragment() {
                 viewModel.updateTreasureScore(treasureID, treasure!!)
             }
 
+            viewModel.getUserStats(userID)
+            var level: String
+            viewModel.userStats.observe(viewLifecycleOwner){ userStats ->
+                level = when (userStats.solved){
+                    in  0..1 -> "Noob"
+                    in 2..4 -> "Beginner"
+                    in 5 ..6 -> "Intermediate"
+                    in 7..9 -> "Advanced"
+                    else -> "Expert"
+                }
+                viewModel.updateUserLevel(userID, level)
+            }
+
             findNavController().navigate(R.id.action_endGameFragment_to_listAndSearchFragment)
         }
     }
 
-    fun setUpSpinner(){
-        val options = arrayOf("FOUND", "NOT FOUND")
+    private fun setUpSpinner(){
+        val options = arrayOf("Found", "Not found")
         val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.spinner_found_notfound, options)
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_found_notfound)
         binding.resultSpinner.adapter = spinnerAdapter
     }
 
-    fun timeFormatting(startTime: String, endTime: String): String {
+    private fun timeFormatting(startTime: String, endTime: String): String {
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm:ss")
 
         val timeDifference =  Duration.between(LocalDateTime.parse(startTime, formatter),

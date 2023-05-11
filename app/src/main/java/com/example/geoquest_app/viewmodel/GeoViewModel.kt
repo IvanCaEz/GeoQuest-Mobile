@@ -98,11 +98,13 @@ class GeoViewModel : ViewModel() {
 
     // USERS
     // USAR ESTA FUNCION PARA CARGAR LOS USERS QUE NO SEAN EL PROPIO USER
-    suspend fun getUserByID(userID: Int) {
+    suspend fun getUserByID(userID: Int, purpose: String) {
         val response = repository.getUserByID(userID)
         if (response.isSuccessful) {
             userNames[userID] = response.body()!!.nickName
-
+            if (purpose == "update"){
+                userData.postValue(response.body())
+            }
         } else {
             Log.e("Error " + response.code(), response.message())
         }
@@ -155,6 +157,12 @@ class GeoViewModel : ViewModel() {
             val imagePart =
                 MultipartBody.Part.createFormData("image", imageFile.name, imageRequestFile)
             repository.putUser(userID, objectBody, imagePart)
+        }
+    }
+    fun updateUserLevel(userID: Int, userLevel: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            println("me updateo")
+            repository.updateUserLevel(userID, userLevel)
         }
     }
 
@@ -394,6 +402,7 @@ class GeoViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserStats(userId)
             if (response.isSuccessful) {
+                println("STATS ${response.body()}")
                 userStats.postValue(response.body())
             } else Log.i("Estadisticas", "MAL")
         }

@@ -46,15 +46,17 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
+
+
         val userId = viewModel.userData.value!!.idUser
 
         // ANIMATION DE ENTRADA
 
         val slideConstraint = binding.profileSlideContainer
-        val profileTitle = binding.profileTitleTextview
         val userImg = binding.userImageIV
         val editProfile = binding.editProfile
         val profileName = binding.profileName
+        val userLevel = binding.userLevel
         val userStats1 = binding.userStats1
         val userStats2 = binding.userStats2
         val userStats3 = binding.userStats3
@@ -72,11 +74,12 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         reviewsAchievements = binding.imageRQ
         averageTimeAchievements = binding.imageAT
 
+
         binding.emptyList.alpha = 0.0f
-        profileTitle.alpha = 0.0f
         userImg.alpha = 0.0f
         editProfile.alpha = 0.0f
         profileName.alpha = 0.0f
+        userLevel.alpha = 0.0f
         userStats1.alpha = 0.0f
         userStats2.alpha = 0.0f
         userStats3.alpha = 0.0f
@@ -97,7 +100,11 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
 
         var reportQuantitySize = viewModel.getUserReport(userId)
 
-        viewModel.getUserStats(id) // do not work
+
+
+
+
+        viewModel.getUserStats(userId)
         viewModel.userStats.observe(viewLifecycleOwner) { userStats ->
             solvedTreasures.text = userStats.solved.toString()
             notSolvedTreasures.text = userStats.notSolved.toString()
@@ -137,7 +144,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         slideConstraint.animate().translationY(0.0f).duration = 1500
         Handler(Looper.getMainLooper()).postDelayed({
             userImg.animate().alpha(1.0f).duration = 350
-            profileTitle.animate().alpha(1.0f).duration = 350
+            userLevel.animate().alpha(1.0f).duration = 350
             editProfile.animate().alpha(1.0f).duration = 350
             profileName.animate().alpha(1.0f).duration = 350
             userStats4.animate().alpha(1.0f).duration = 350
@@ -162,9 +169,14 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
 
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getUserImage(userId)
+            viewModel.getUserByID(userId, "update")
         }
         viewModel.userImage.observe(viewLifecycleOwner) { userImage ->
             binding.userImageIV.setImageBitmap(userImage)
+        }
+        viewModel.userData.observe(viewLifecycleOwner){user ->
+            userLevel.text = user!!.userLevel
+            profileName.text = user.nickName
         }
         viewModel.getReviewsByUserId(userId)
         viewModel.userReviews.observe(viewLifecycleOwner) { reviews ->
