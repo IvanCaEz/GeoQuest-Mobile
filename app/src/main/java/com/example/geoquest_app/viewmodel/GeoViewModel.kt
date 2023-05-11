@@ -38,6 +38,7 @@ class GeoViewModel : ViewModel() {
     var userFavs = MutableLiveData<List<Treasures>>()
     var isFav = MutableLiveData<Boolean>()
     var userReviews = MutableLiveData<List<Reviews>>()
+    var userStats = MutableLiveData<UserStats>()
 
 
     // TREASURE VARIABLES
@@ -81,21 +82,23 @@ class GeoViewModel : ViewModel() {
         }
     }
 
-    suspend fun getUserImage(userID: Int) {
-       // CoroutineScope(Dispatchers.IO).launch {
-            // Devuelve la portada del libro con la ID indicada
+    fun getUserImage(userID: Int) {
+       CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserPicture(userID)
             if (response.isSuccessful) {
-           //     withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main) {
+                println("holaaaaaa he llegadoooooooo")
                     val source = response.body()
                     val inputStream = source?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(inputStream)
+                    userImage.postValue(bitmap)
                     userImages[userID] = bitmap
-             //   }
+                println("holaaaaaa he aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                }
             } else {
                 Log.e("Error " + response.code(), response.message())
             }
-        //}
+       }
     }
 
     fun postUser(newUser: User) {
@@ -317,15 +320,13 @@ class GeoViewModel : ViewModel() {
 
     // USER STATS
 
-    fun getUserStats(userId: Int): UserStats? {
-        var stats: UserStats? = null
+    fun getUserStats(userId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserStats(userId)
             if (response.isSuccessful) {
-                stats = response.body()
+                 userStats.postValue(response.body())
             } else Log.i("Estadisticas", "MAL")
         }
-        return stats
     }
 
 

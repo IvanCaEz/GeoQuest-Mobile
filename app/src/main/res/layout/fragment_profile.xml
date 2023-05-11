@@ -223,6 +223,13 @@
                 android:id="@+id/average_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:freezesText="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="15dp"
                 android:textSize="20sp"
@@ -275,6 +282,19 @@
             </LinearLayout>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <TextView
+            android:id="@+id/emptyList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No has realizado ninguna review"
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="@id/recyclerView"
+            app:layout_constraintBottom_toBottomOf="@id/recyclerView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

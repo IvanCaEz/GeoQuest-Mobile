@@ -37,6 +37,7 @@ class UserProfileReviewAdapter(private val viewModel: GeoViewModel, private val 
         val review = reviews[position]
         with(holder){
             setListener(review)
+            binding.reviewTreasureTitleTextView.isSelected = true
             binding.reviewTreasureTitleTextView.text = viewModel.treasureName[review.idTreasure].toString()
             binding.ratingReviewUserTextView.text = review.rating.toString()
         }

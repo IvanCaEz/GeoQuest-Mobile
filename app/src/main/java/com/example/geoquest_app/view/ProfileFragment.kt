@@ -16,7 +16,6 @@ import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReviewU
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.adapters.UserProfileReviewAdapter
 import com.example.geoquest_app.model.ReviewDialogUpdate
-import com.example.geoquest_app.utils.ReportDialog
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,40 +41,87 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
-        val id = viewModel.userData.value!!.idUser
+        // ANIMATION DE ENTRADA
 
-        val userStats = viewModel.getUserStats(id) // do not work
-        val solvedTreasures = binding.solvedTreasuresTitle
-        val notSolvedTreasures = binding.notSolvedTreasuresTitle
-        val reportQuantity = binding.reportQuantityTitle
-        val averageTime = binding.averageTimeTitle
+        val slideConstraint = binding.profileSlideContainer
+        val profileTitle = binding.profileTitleTextview
+        val userImg = binding.userImageIV
+        val editProfile = binding.editProfile
+        val profileName = binding.profileName
+        val userStats1 = binding.userStats1
+        val userStats2 = binding.userStats2
+        val userStats3 = binding.userStats3
+        val userStats4 = binding.userStats4
+        val reviewText = binding.reviewText
+        val shimmer = binding.shimmerViewContainerProfile
+        val recyclerView = binding.recyclerView
 
-        solvedTreasures.isSelected = true
-        notSolvedTreasures.isSelected = true
-        reportQuantity.isSelected = true
+        binding.emptyList.alpha = 0.0f
+        profileTitle.alpha = 0.0f
+        userImg.alpha = 0.0f
+        editProfile.alpha = 0.0f
+        profileName.alpha = 0.0f
+        userStats1.alpha = 0.0f
+        userStats2.alpha = 0.0f
+        userStats3.alpha = 0.0f
+        userStats4.alpha = 0.0f
+        reviewText.alpha = 0.0f
+        recyclerView.alpha = 0.0f
+        shimmer.alpha = 0.0f
+
+        slideConstraint.y = -2200f
+        slideConstraint.animate().translationY(0.0f).duration = 1500
+        Handler(Looper.getMainLooper()).postDelayed({
+            userImg.animate().alpha(1.0f).duration = 350
+            profileTitle.animate().alpha(1.0f).duration = 350
+            editProfile.animate().alpha(1.0f).duration = 350
+            profileName.animate().alpha(1.0f).duration = 350
+            userStats4.animate().alpha(1.0f).duration = 350
+            userStats3.animate().alpha(1.0f).duration = 350
+            userStats2.animate().alpha(1.0f).duration = 350
+            userStats1.animate().alpha(1.0f).duration = 350
+            reviewText.animate().alpha(1.0f).duration = 350
+            shimmer.animate().alpha(1.0f).duration = 350
+            recyclerView.animate().alpha(1.0f).duration = 350
+        }, 1800)
+
+        // -----------------------------------------------------------------------------------------
+
+        val userId = viewModel.userData.value!!.idUser
+
+        val solvedTreasures = binding.solvedTreasures
+        val notSolvedTreasures = binding.notSolvedTreasures
+        val reportQuantity = binding.reportQuantity
+        val averageTime = binding.averageTime
+
         averageTime.isSelected = true
 
-
-        binding.shimmerViewContainerProfile.visibility = View.VISIBLE
-        binding.recyclerView.alpha = 0.0f
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.getUserImage(id)
+        viewModel.getUserStats(userId)
+        viewModel.userStats.observe(viewLifecycleOwner){ stats ->
+            solvedTreasures.text = stats.solved.toString()
+            notSolvedTreasures.text = stats.notSolved.toString()
+            reportQuantity.text = stats.reportQuantity.toString()
+            averageTime.text = stats.averageTime
         }
-        viewModel.getReviewsByUserId(id)
 
+        shimmer.visibility = View.VISIBLE
+        binding.recyclerView.alpha = 0.0f
+
+
+        viewModel.getUserImage(userId)
         viewModel.userImage.observe(viewLifecycleOwner){ userImage ->
-
             binding.userImageIV.setImageBitmap(userImage)
         }
 
-        viewModel.userReviews.observe(viewLifecycleOwner){
-            it.forEach{ review ->
+        viewModel.getReviewsByUserId(userId)
+        viewModel.userReviews.observe(viewLifecycleOwner){ reviews ->
+            reviews.forEach{ review ->
                 viewModel.getTreasureByID(review.idTreasure)
             }
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.shimmerViewContainerProfile.visibility = View.GONE
                 binding.recyclerView.animate().alpha(1.0f).duration = 400
-                setUpRecyclerView(it!!.toMutableList())
+                setUpRecyclerView(reviews.toMutableList())
             }, 1700)
         }
 
@@ -88,10 +134,17 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         reviewAdapter = UserProfileReviewAdapter(viewModel, reviewList, this)
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        binding.recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = linearLayoutManager
-            adapter = reviewAdapter
+        if (reviewList.isEmpty()) {
+            binding.emptyList.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+            binding.shimmerViewContainerProfile.visibility = View.GONE
+        }
+        else {
+            binding.recyclerView.apply {
+                setHasFixedSize(true)
+                layoutManager = linearLayoutManager
+                adapter = reviewAdapter
+            }
         }
     }
 
