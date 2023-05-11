@@ -6,10 +6,10 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentProfileBinding
@@ -21,7 +21,6 @@ import com.example.geoquest_app.viewmodel.GeoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ProfileFragment : Fragment(), OnClickListenerReviewUser {
 
@@ -29,6 +28,10 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
     private val viewModel: GeoViewModel by activityViewModels()
     private lateinit var reviewAdapter: UserProfileReviewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var solvedAchievements: AppCompatImageView
+    lateinit var notSolvedAchievements: AppCompatImageView
+    lateinit var reviewsAchievements: AppCompatImageView
+    lateinit var averageTimeAchievements: AppCompatImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +46,8 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
 
+        val userId = viewModel.userData.value!!.idUser
+
         // ANIMATION DE ENTRADA
 
         val slideConstraint = binding.profileSlideContainer
@@ -54,9 +59,18 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         val userStats2 = binding.userStats2
         val userStats3 = binding.userStats3
         val userStats4 = binding.userStats4
+        val logroText = binding.logrosText
+        val userLogro1 = binding.firstLogro
+        val userLogro2 = binding.secondLogro
+        val userLogro3 = binding.thirdLogro
+        val userLogro4 = binding.fourLogro
         val reviewText = binding.reviewText
         val shimmer = binding.shimmerViewContainerProfile
         val recyclerView = binding.recyclerView
+        solvedAchievements = binding.imageST
+        notSolvedAchievements = binding.imageNST
+        reviewsAchievements = binding.imageRQ
+        averageTimeAchievements = binding.imageAT
 
         binding.emptyList.alpha = 0.0f
         profileTitle.alpha = 0.0f
@@ -70,18 +84,55 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         reviewText.alpha = 0.0f
         recyclerView.alpha = 0.0f
         shimmer.alpha = 0.0f
+        logroText.alpha = 0.0f
+        userLogro1.alpha = 0.0f
+        userLogro2.alpha = 0.0f
+        userLogro3.alpha = 0.0f
+        userLogro4.alpha = 0.0f
 
-        viewModel.getUserStats(id) // do not work
         val solvedTreasures = binding.solvedTreasures
         val notSolvedTreasures = binding.notSolvedTreasures
         val reportQuantity = binding.reportQuantity
         val averageTime = binding.averageTime
 
+        var reportQuantitySize = viewModel.getUserReport(userId)
+
+        viewModel.getUserStats(id) // do not work
         viewModel.userStats.observe(viewLifecycleOwner) { userStats ->
             solvedTreasures.text = userStats.solved.toString()
             notSolvedTreasures.text = userStats.notSolved.toString()
             reportQuantity.text = userStats.reportQuantity.toString()
             averageTime.text = userStats.averageTime
+
+            val list = listOf(userStats.solved, userStats.notSolved, reportQuantitySize)
+            // Achievements
+            for (i in 0..list.lastIndex){
+                if (i == 0){
+                    println("YYYYYYYYYYYYYYYYYYYYYYYY")
+                    when (list[i]) {
+                        in 0..5 -> solvedAchievements.setImageResource(R.drawable.medalla_de_bronce)
+                        in 6..10 -> solvedAchievements.setImageResource(R.drawable.medalla_de_plata)
+                        in 11..20 -> solvedAchievements.setImageResource(R.drawable.medalla_de_oro)
+                        else -> solvedAchievements.setImageResource(R.drawable.diamante)
+                    }
+                } else if (i == 1){
+                    println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+                    when (list[i]) {
+                        in 0..5 -> binding.imageNST.setImageResource(R.drawable.medalla_de_bronce)
+                        in 6..10 -> binding.imageNST.setImageResource(R.drawable.medalla_de_plata)
+                        in 11..20 -> binding.imageNST.setImageResource(R.drawable.medalla_de_oro)
+                        else -> binding.imageNST.setImageResource(R.drawable.diamante)
+                    }
+                } else if (i == 2) {
+                    println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa")
+                    when (list[i]) {
+                        in 0..5 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_bronce)
+                        in 6..10 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_plata)
+                        in 11..20 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_oro)
+                        else -> binding.imageRQ.setImageResource(R.drawable.diamante)
+                    }
+                }
+            }
         }
         binding.profileName.text = viewModel.userData.value?.nickName
 
@@ -99,9 +150,14 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             reviewText.animate().alpha(1.0f).duration = 350
             shimmer.animate().alpha(1.0f).duration = 350
             recyclerView.animate().alpha(1.0f).duration = 350
+            logroText.animate().alpha(1.0f).duration = 350
+            userLogro1.animate().alpha(1.0f).duration = 350
+            userLogro2.animate().alpha(1.0f).duration = 350
+            userLogro3.animate().alpha(1.0f).duration = 350
+            userLogro4.animate().alpha(1.0f).duration = 350
         }, 1800)
 
-        val userId = viewModel.userData.value!!.idUser
+
         averageTime.isSelected = true
 
         shimmer.visibility = View.VISIBLE
@@ -123,7 +179,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                     }
                     Handler(Looper.getMainLooper()).postDelayed({
                         binding.emptyList.visibility = View.INVISIBLE
-                        binding.shimmerViewContainerProfile.visibility = View.GONE
+                        binding.shimmerViewContainerProfile.visibility = View.VISIBLE
                         binding.recyclerView.animate().alpha(1.0f).duration = 400
                         setUpRecyclerView(reviews.toMutableList())
                     }, 1700)
@@ -165,5 +221,4 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         binding.shimmerViewContainerProfile.visibility = View.VISIBLE
         binding.recyclerView.alpha = 0.0f
     }
-
 }

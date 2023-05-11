@@ -1,13 +1,8 @@
 package com.example.geoquest_app.viewmodel
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.session.MediaSession.Token
 import android.util.Log
-import android.widget.EditText
-import android.widget.Toast
-import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.geoquest_app.model.Reports
@@ -15,7 +10,6 @@ import com.example.geoquest_app.retrofit.Repository
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.model.RouteResponse
 import com.example.geoquest_app.model.auth.TokenResponse
-import com.example.models.*
 import com.example.models.*
 import com.example.models.requests.AuthRequest
 import com.google.android.material.textfield.TextInputLayout
@@ -359,6 +353,21 @@ class GeoViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             repository.postReport(report)
         }
+    }
+
+    fun getUserReport(userId: Int): Int {
+        var size = 0
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getUserReports(userId)
+            if (response.isSuccessful){
+                if (response.body()!!.isNotEmpty()){
+                    size = response.body()!!.size
+                } else size = 0
+            } else {
+                Log.e("Error " + response.code(), response.message())
+            }
+        }
+        return size
     }
 
     // ROUTES
