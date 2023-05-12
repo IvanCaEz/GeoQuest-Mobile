@@ -1,14 +1,12 @@
 # GeoQuest - Mobile
 
 This is the README file for the GeoQuest mobile application, which is part of a larger project. 
-GeoQuest Mobile is a mobile application built to provide an immersive and interactive gaming experience based on the player's real-world location. The game allows users to embark on treasure hunts as they explore their surroundings.
+This repository holds the source code of the mobile application, developed using [Kotlin](https://kotlinlang.org) language and [Retrofit](https://square.github.io/retrofit/) to make the connection between our API and our APP in the [Android Studio](https://developer.android.com/studio/intro) IDE. 
 
-This repository holds the source code of the mobile application, developed using [Kotlin](https://kotlinlang.org) language and [Android Studio](https://developer.android.com/studio/intro) IDE.
-
-Welcome to the GeoQuest Mobile repository! This repository contains the source code for the mobile application of GeoQuest, a location-based quest and treasure hunt game.
 
 ## Table of Contents
 
+- [Introduction](#introduction)
 - [Authors](#authors)
 - [Features](#features)
 - [Web Application](#web-application)
@@ -17,6 +15,10 @@ Welcome to the GeoQuest Mobile repository! This repository contains the source c
 - [Contributions](#contributions)
 - [Support](#support)
 - [License](#license)
+
+## Introduction
+
+GeoQuest Mobile is a mobile application built to provide an immersive and interactive experience based on the player's real-world location. The game allows users to embark on treasure hunts as they explore their surroundings and post their findings.
 
 
 ## Authors
@@ -73,7 +75,7 @@ Once the application is up and running, you can use the following instructions t
 
 6. Read the hint to aid yourself with the hunt.
 
-7. Track your progress and earn achievements.
+7. Find the treasures, track your progress and earn achievements.
 
 ## Contributions
 Thank you for considering contributing to GeoQuest! If you would like to contribute to the project, follow these steps:
