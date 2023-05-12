@@ -65,6 +65,7 @@
         app:layout_constraintTop_toBottomOf="@id/opinionUpdate"
         app:layout_constraintBottom_toTopOf="@id/reviewImage"
         android:stepSize="1.0"
+        android:secondaryProgressTint="#FFCA28"
         android:progressTint="#FFCA28"
         app:layout_constraintStart_toStartOf="@id/treasureName"
         app:layout_constraintEnd_toEndOf="parent"

@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,10 +45,6 @@ class ReviewDialogUpdate(val review: Reviews): DialogFragment() {
                     binding.reviewPicture.setImageURI(imageUri)
                     // Get the file name from the URI
                     newImageName = getFileName(imageUri!!)
-
-                    println(imageUri.toString())
-
-                    println(newImageName)
                 }
             }
         }
@@ -90,7 +87,7 @@ class ReviewDialogUpdate(val review: Reviews): DialogFragment() {
                         try {
                             imagePath = getPathFromUri(requireContext(), imageUri!!)!!
                         } catch (e: java.lang.NullPointerException){
-                            println("${e.cause} : ${e.message}")
+                            Log.e("Error ", e.message, e.cause)
                         }
                         val imageFile = File(imagePath)
                         viewModel.updateReviewByTreasureId(reviewToUpdate, imageFile)

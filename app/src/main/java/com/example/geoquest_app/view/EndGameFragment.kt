@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -55,9 +56,6 @@ class EndGameFragment : Fragment() {
                     // Get the file name from the URI
                     newImageName = getFileName(imageUri!!)
 
-                    println(imageUri.toString())
-
-                    println(newImageName)
                 }
             }
         }
@@ -125,7 +123,7 @@ class EndGameFragment : Fragment() {
                 try {
                     imagePath = getPathFromUri(requireContext(), imageUri!!)!!
                 } catch (e: java.lang.NullPointerException){
-                    println("${e.cause} : ${e.message}")
+                    Log.e("Error ", e.message, e.cause)
                 }
                 val imageFile = File(imagePath)
 
@@ -183,19 +181,6 @@ class EndGameFragment : Fragment() {
         val seconds = TimeUnit.MILLISECONDS.toSeconds(timeDifference) % 60
 
         return "$hours:$minutes:$seconds"
-    }
-
-    private fun pathFromBitmap(bitmap: Bitmap, imageName: String): String? {
-        val file = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),imageName )
-        try {
-            FileOutputStream(file).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
-            }
-            return file.absolutePath
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null
-        }
     }
 
     private fun getFileName(uri: Uri): String {

@@ -62,10 +62,13 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         viewModel.getTreasureByID(treasureID)
         viewModel.getAllReviews(treasureID)
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.getTreasureImage(treasureID)
             viewModel.checkIfTreasureIsFav(userID, treasureID)
         }
 
+        binding.treasureImg.setImageBitmap(viewModel.treasureImages[treasureID])
+        viewModel.treasureData.observe(viewLifecycleOwner) { treasure ->
+            setTreasureInfo(treasure)
+        }
 
         viewModel.getTreasureStats(treasureID)
 
@@ -103,13 +106,6 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
 
         }
 
-        viewModel.treasureData.observe(viewLifecycleOwner) { treasure ->
-            setTreasureInfo(treasure)
-        }
-
-        viewModel.treasureImage.observe(viewLifecycleOwner) { treasureImage ->
-            binding.treasureImg.setImageBitmap(treasureImage)
-        }
 
 
         binding.play.setOnClickListener {

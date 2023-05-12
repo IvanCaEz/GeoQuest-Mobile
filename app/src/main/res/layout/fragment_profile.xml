@@ -21,8 +21,8 @@
 
         <ImageView
             android:id="@+id/editProfile"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="25dp"
             android:background="#00000000"
             android:src="@drawable/editar"
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/manrope_bold"
-            android:text="Alejandro Arcas"
+            android:text="Username"
             android:textColor="@color/black"
             android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/userLevel"
@@ -103,12 +103,11 @@
                 android:id="@+id/solved_treasures"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="15dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/manrope_bold"
-                android:text="4"
+                android:text="0"
                 android:textColor="@color/white"
                 />
 
@@ -145,7 +144,7 @@
                 android:layout_marginBottom="15dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/manrope_bold"
-                android:text="4"
+                android:text="0"
                 android:textColor="@color/white" />
 
         </androidx.cardview.widget.CardView>
@@ -182,7 +181,7 @@
                 android:layout_marginBottom="15dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/manrope_bold"
-                android:text="4"
+                android:text="0"
                 android:textColor="@color/white" />
 
         </androidx.cardview.widget.CardView>
@@ -226,7 +225,7 @@
                 android:layout_marginBottom="15dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/manrope_bold"
-                android:text="4"
+                android:text="0"
                 android:textColor="@color/white" />
 
         </androidx.cardview.widget.CardView>

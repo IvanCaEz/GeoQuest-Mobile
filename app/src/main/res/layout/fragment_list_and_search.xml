@@ -110,8 +110,8 @@
             android:id="@+id/all_markers_button"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:backgroundTint="@color/marronOscuro"
+            android:layout_height="wrap_content"
             android:text="All"
             android:textColor="@color/white"
             app:strokeWidth="2dp" />
@@ -119,9 +119,9 @@
         <Button
             android:id="@+id/favourites_button"
             style="?attr/materialButtonOutlinedStyle"
+            android:backgroundTint="@color/marronOscuro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/marronOscuro"
             android:text="Favourites"
             android:textColor="@color/white"
             app:strokeWidth="2dp" />

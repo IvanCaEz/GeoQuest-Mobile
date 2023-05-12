@@ -148,12 +148,10 @@ class LogInFragment : Fragment() {
 
     private fun checkSavedPreferences(){
         val savedUsername = myPreferences.getString("userName", "")
-        val savedPass = myPreferences.getString("password", "")
         val savedToken = myPreferences.getString("token", "")
         val active = myPreferences.getBoolean("active", false)
         if (active){
             viewModel.updateRepository(savedToken!!)
-            println("token "+savedToken)
             viewModel.repoIsUpdated.observe(viewLifecycleOwner){
                 viewModel.getUserByUserName(savedUsername!!)
                 viewModel.userData.observe(viewLifecycleOwner){

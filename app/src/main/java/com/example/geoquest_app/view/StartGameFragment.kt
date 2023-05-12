@@ -60,7 +60,6 @@ class StartGameFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         if (isLocationPermissionGranted()) {
             fusedLocationProviderClient.lastLocation.addOnCompleteListener {
                 val location = it.result
-                println(location)
                 if (location != null) {
                     currentCoordinates = LatLng(location.latitude, location.longitude)
                     createMap()

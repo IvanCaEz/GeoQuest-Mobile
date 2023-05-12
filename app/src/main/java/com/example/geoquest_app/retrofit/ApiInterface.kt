@@ -122,9 +122,8 @@ interface ApiInterface {
 
     companion object {
         // itb -> 172.30.5.163
-        private const val BASE_URL = "http://192.168.56.1:8080/"
+        private const val BASE_URL = "http://192.168.1.73:8080/"
         fun create(token: String): ApiInterface {
-            println("Token desde apiinterface: $token")
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor(token))
                 .connectTimeout(1, TimeUnit.MINUTES)

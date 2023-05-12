@@ -7,8 +7,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/mapImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,6 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/manrope_semibold"
         android:paddingEnd="10dp"
         android:text="Treasure"
         android:textSize="18sp"
@@ -28,6 +30,8 @@
     <TextView
         android:id="@+id/score_TV"
         android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/manrope_medium"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
@@ -51,6 +55,8 @@
     <TextView
         android:id="@+id/distance_TV"
         android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/manrope_medium"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"

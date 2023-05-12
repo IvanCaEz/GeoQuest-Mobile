@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -51,9 +52,6 @@ class EditProfileFragment : Fragment() {
                     // Get the file name from the URI
                     newImageName = getFileName(imageUri!!)
 
-                    println(imageUri.toString())
-
-                    println(newImageName)
                 }
             }
         }
@@ -115,7 +113,7 @@ class EditProfileFragment : Fragment() {
                     try {
                         imagePath = getPathFromUri(requireContext(), imageUri!!)!!
                     } catch (e: java.lang.NullPointerException){
-                        println("${e.cause} : ${e.message}")
+                        Log.e("Error ", e.message, e.cause)
                     }
                     val imageFile = File(imagePath)
 

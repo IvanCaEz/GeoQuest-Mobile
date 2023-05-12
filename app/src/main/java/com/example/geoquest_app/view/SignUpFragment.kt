@@ -77,18 +77,15 @@ class SignUpFragment : Fragment() {
                     viewModel.isNewUserCode.observe(viewLifecycleOwner) { code ->
                         when (code) {
                             409 -> {
-                                println("no soy nuevo")
                                 binding.nickname.isErrorEnabled = true
                                 binding.nickname.error = "This username is taken."
                                 dialog.dismiss()
                             }
                             201 -> {
-                                println("soy nuevo")
                                 binding.nickname.error = null
                                 binding.nickname.isErrorEnabled = false
                                 dialog.dismiss()
                                 findNavController().safeNavigate(SignUpFragmentDirections.actionSignUpFragmentToLogInFragment())
-                                //getView()?.findNavController()?.navigate(R.id.action_signUpFragment_to_logInFragment)
                             }
                         }
                     }

@@ -9,7 +9,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color1">#4E6A55</color>
     <color name="color5">#B7DCC0</color>
+    <color name="rojo">#881616</color>
     <color name="marronOscuro">#5A4A37</color>
+    <color name="marronClaro">#715D46</color>
     <color name="ocre">#A4975B</color>
     <color name="verdeOscuro2">#48603D</color>
     <color name="verdeClaro">#8C996A</color>

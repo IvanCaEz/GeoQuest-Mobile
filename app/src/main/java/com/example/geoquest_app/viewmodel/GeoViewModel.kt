@@ -72,24 +72,18 @@ class GeoViewModel : ViewModel() {
     fun updateRepository(token: String) {
         repository = Repository(token)
         repoIsUpdated.postValue(true)
-        println("Repo updated")
     }
 
     fun getToken(auth: AuthRequest) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.postUserForLogin(auth)
             if (response.isSuccessful) {
-                println("token vm: ${response.body()!!.token}")
-                println("CODE " + response.code())
-                println("successfull")
                 // Updateamos repositorio con el token
                 withContext(Dispatchers.Main) {
                     updateRepositoryAndData(response.body()!!)
                     loginAuthCode.postValue(response.code())
                 }
             } else {
-                println("no successfull")
-                println("CODE " + response.code())
                 loginAuthCode.postValue(response.code())
                 Log.e("Error " + response.code(), response.message())
             }
@@ -144,7 +138,7 @@ class GeoViewModel : ViewModel() {
             val response = repository.postUser(newUser)
             withContext(Dispatchers.Main) {
                 isNewUserCode.postValue(response.code())
-                println("CODE " + response.code())
+                Log.e("Code " + response.code(), response.message())
             }
         }
     }
@@ -161,14 +155,13 @@ class GeoViewModel : ViewModel() {
     }
     fun updateUserLevel(userID: Int, userLevel: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            println("me updateo")
             repository.updateUserLevel(userID, userLevel)
         }
     }
 
     fun deleteUser(userID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.deleteUserByID(userID)
+            repository.deleteUserByID(userID)
             userData.postValue(null)
         }
     }
@@ -325,15 +318,12 @@ class GeoViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     withContext(Dispatchers.Main) {
                         userFavs.postValue(response.body())
-                        println(response.body())
                     }
                 } else {
                     userFavs.postValue(listOf())
-                    println("No tiene favs")
                     Log.e("Error " + response.code(), response.message())
                 }
             } catch (e: java.lang.IllegalStateException) {
-                println("LINEA 315 VieMODEL ERROR " + e.message)
             }
         }
     }
@@ -381,12 +371,10 @@ class GeoViewModel : ViewModel() {
         //CoroutineScope(Dispatchers.IO).launch {
         val response = repository.getRoutes(key, start, end)
         if (response.isSuccessful) {
-            println("Ruta creada")
             Log.i("ruta", "CREADA")
             route.postValue(response.body())
         } else {
-            println("Ruta no creada")
-            Log.i("ruta", "MAL")
+            Log.i("ruta", "NO CREADA")
         }
         //}
     }
@@ -397,7 +385,6 @@ class GeoViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getUserStats(userId)
             if (response.isSuccessful) {
-                println("STATS ${response.body()}")
                 userStats.postValue(response.body())
             } else Log.i("Estadisticas", "MAL")
         }

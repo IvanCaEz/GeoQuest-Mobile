@@ -19,8 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/treasure_CV"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/treasure_IV"
             android:layout_width="140dp"
             android:layout_height="120dp"
             android:layout_margin="5dp"
@@ -32,12 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/treasure_IV"
-                android:background="#CFCFCF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </androidx.cardview.widget.CardView>
+        </de.hdodenhof.circleimageview.CircleImageView>
 
 
         <TextView
