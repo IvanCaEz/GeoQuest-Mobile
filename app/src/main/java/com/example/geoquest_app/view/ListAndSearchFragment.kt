@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentListAndSearchBinding
-import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerTreasure
-import com.example.geoquest_app.adapters.TreasureAdapter
+import com.example.geoquest_app.view.adapters.onClickListeners.OnClickListenerTreasure
+import com.example.geoquest_app.view.adapters.TreasureAdapter
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Favourites
 import com.example.models.Treasures

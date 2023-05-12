@@ -1,4 +1,4 @@
-package com.example.geoquest_app.adapters
+package com.example.geoquest_app.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

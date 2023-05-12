@@ -20,7 +20,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
-import com.example.geoquest_app.adapters.MarkerInfoWindowAdapter
+import com.example.geoquest_app.view.adapters.MarkerInfoWindowAdapter
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.example.geoquest_app.databinding.FragmentMapBinding
 import com.example.geoquest_app.viewmodel.GeoViewModel

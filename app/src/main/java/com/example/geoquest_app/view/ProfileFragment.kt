@@ -13,9 +13,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentProfileBinding
-import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReviewUser
+import com.example.geoquest_app.view.adapters.onClickListeners.OnClickListenerReviewUser
 import com.example.geoquest_app.model.Reviews
-import com.example.geoquest_app.adapters.UserProfileReviewAdapter
+import com.example.geoquest_app.view.adapters.UserProfileReviewAdapter
 import com.example.geoquest_app.model.ReviewDialogUpdate
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -74,8 +74,6 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         reviewsAchievements = binding.imageRQ
         averageTimeAchievements = binding.imageAT
 
-
-        binding.emptyList.alpha = 0.0f
         userImg.alpha = 0.0f
         editProfile.alpha = 0.0f
         profileName.alpha = 0.0f
@@ -98,11 +96,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         val reportQuantity = binding.reportQuantity
         val averageTime = binding.averageTime
 
-        var reportQuantitySize = viewModel.getUserReport(userId)
-
-
-
-
+        val reportQuantitySize = viewModel.getUserReport(userId)
 
         viewModel.getUserStats(userId)
         viewModel.userStats.observe(viewLifecycleOwner) { userStats ->
@@ -114,26 +108,30 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             val list = listOf(userStats.solved, userStats.notSolved, reportQuantitySize)
             // Achievements
             for (i in 0..list.lastIndex){
-                if (i == 0){
-                    when (list[i]) {
-                        in 0..5 -> solvedAchievements.setImageResource(R.drawable.medalla_de_bronce)
-                        in 6..10 -> solvedAchievements.setImageResource(R.drawable.medalla_de_plata)
-                        in 11..20 -> solvedAchievements.setImageResource(R.drawable.medalla_de_oro)
-                        else -> solvedAchievements.setImageResource(R.drawable.diamante)
+                when (i) {
+                    0 -> {
+                        when (list[i]) {
+                            in 0..5 -> solvedAchievements.setImageResource(R.drawable.medalla_de_bronce)
+                            in 6..10 -> solvedAchievements.setImageResource(R.drawable.medalla_de_plata)
+                            in 11..20 -> solvedAchievements.setImageResource(R.drawable.medalla_de_oro)
+                            else -> solvedAchievements.setImageResource(R.drawable.diamante)
+                        }
                     }
-                } else if (i == 1){
-                    when (list[i]) {
-                        in 0..5 -> binding.imageNST.setImageResource(R.drawable.medalla_de_bronce)
-                        in 6..10 -> binding.imageNST.setImageResource(R.drawable.medalla_de_plata)
-                        in 11..20 -> binding.imageNST.setImageResource(R.drawable.medalla_de_oro)
-                        else -> binding.imageNST.setImageResource(R.drawable.diamante)
+                    1 -> {
+                        when (list[i]) {
+                            in 0..5 -> binding.imageNST.setImageResource(R.drawable.medalla_de_bronce)
+                            in 6..10 -> binding.imageNST.setImageResource(R.drawable.medalla_de_plata)
+                            in 11..20 -> binding.imageNST.setImageResource(R.drawable.medalla_de_oro)
+                            else -> binding.imageNST.setImageResource(R.drawable.diamante)
+                        }
                     }
-                } else if (i == 2) {
-                    when (list[i]) {
-                        in 0..5 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_bronce)
-                        in 6..10 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_plata)
-                        in 11..20 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_oro)
-                        else -> binding.imageRQ.setImageResource(R.drawable.diamante)
+                    2 -> {
+                        when (list[i]) {
+                            in 0..5 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_bronce)
+                            in 6..10 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_plata)
+                            in 11..20 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_oro)
+                            else -> binding.imageRQ.setImageResource(R.drawable.diamante)
+                        }
                     }
                 }
             }
@@ -196,10 +194,10 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             } else {
                 println("me hago visible")
                 Handler(Looper.getMainLooper()).postDelayed({
-                binding.emptyList.visibility = View.VISIBLE
-                binding.shimmerViewContainerProfile.visibility = View.INVISIBLE
-                binding.recyclerView.animate().alpha(1.0f).duration = 400
-                setUpRecyclerView(reviews.toMutableList())
+                    binding.emptyList.visibility = View.VISIBLE
+                    binding.shimmerViewContainerProfile.visibility = View.INVISIBLE
+                    binding.recyclerView.animate().alpha(1.0f).duration = 400
+                    setUpRecyclerView(reviews.toMutableList())
                 }, 1700)
             }
         }

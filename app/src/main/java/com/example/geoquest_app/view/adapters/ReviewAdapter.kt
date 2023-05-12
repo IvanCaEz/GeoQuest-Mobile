@@ -1,4 +1,4 @@
-package com.example.geoquest_app.adapters
+package com.example.geoquest_app.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.ItemReviewBinding
-import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
+import com.example.geoquest_app.view.adapters.onClickListeners.OnClickListenerReview
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.viewmodel.GeoViewModel
 

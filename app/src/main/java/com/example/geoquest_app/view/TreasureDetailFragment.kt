@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.databinding.FragmentTreasureDetailBinding
-import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerReview
-import com.example.geoquest_app.adapters.ReviewAdapter
+import com.example.geoquest_app.view.adapters.onClickListeners.OnClickListenerReview
+import com.example.geoquest_app.view.adapters.ReviewAdapter
 import com.example.geoquest_app.model.Reviews
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures

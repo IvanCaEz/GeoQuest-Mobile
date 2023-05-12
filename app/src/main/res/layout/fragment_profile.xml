@@ -285,7 +285,7 @@
             android:layout_height="wrap_content"
             android:text="You haven't reviewed any treasure yet"
             android:fontFamily="@font/manrope_bold"
-            android:textColor="@color/white"
+            android:textColor="#ffffff"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/reviewText"
             app:layout_constraintBottom_toBottomOf="@id/shimmer_view_container_profile"
