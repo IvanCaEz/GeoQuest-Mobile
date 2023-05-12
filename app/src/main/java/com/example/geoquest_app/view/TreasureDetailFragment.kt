@@ -2,6 +2,8 @@ package com.example.geoquest_app.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +46,16 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(true)
+
+        loginAnimation()
+
+        binding.treasureName.isSelected = true
+        binding.tresaureStatsValue1.isSelected = true
+        binding.tresaureStatsValue2.isSelected = true
+        binding.tresaureStatsValue3.isSelected = true
+        binding.tresaureStatsValue4.isSelected = true
+        binding.tresaureStatsValue5.isSelected = true
+        binding.tresaureStatsValue6.isSelected = true
 
         val treasureID = arguments?.getInt("treasureID")!!
         val userID = viewModel.userData.value?.idUser!!
@@ -117,6 +129,40 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         }
 
     }
+
+    private fun loginAnimation(){
+        val slideConstraint = binding.treasureDetailSlideContainer
+        val mainText = binding.treasureName
+        val firstEditText = binding.treasureImg
+        val secondEditText = binding.ratingBar
+        val firstTextSignUp = binding.dificulty
+        val secondTextSignUp = binding.horizontalScrollview
+        val logoImage = binding.play
+        val favourite = binding.favorite
+        val report = binding.report
+
+        mainText.alpha = 0.0f
+        firstEditText.alpha = 0.0f
+        secondEditText.alpha = 0.0f
+        firstTextSignUp.alpha = 0.0f
+        secondTextSignUp.alpha = 0.0f
+        logoImage.alpha = 0.0f
+        favourite.alpha = 0.0f
+        report.alpha = 0.0f
+
+        slideConstraint.y = -2200.0f
+        slideConstraint.animate().translationY(0.0f).duration = 1500
+        Handler(Looper.getMainLooper()).postDelayed({
+            mainText.animate().alpha(1.0f).duration = 350
+            firstEditText.animate().alpha(1.0f).duration = 350
+            secondEditText.animate().alpha(1.0f).duration = 350
+            firstTextSignUp.animate().alpha(1.0f).duration = 350
+            secondTextSignUp.animate().alpha(1.0f).duration = 350
+            logoImage.animate().alpha(1.0f).duration = 350
+            favourite.animate().alpha(1.0f).duration = 350
+            report.animate().alpha(1.0f).duration = 350
+        }, 1800)
+    }
     fun setUpRecyclerView(list: List<Reviews>) {
         reviewAdapter = ReviewAdapter(list, this, viewModel)
         linearLayoutManager = LinearLayoutManager(context)
@@ -130,7 +176,6 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
     private fun setTreasureInfo(treasure: Treasures) {
         binding.treasureName.text = treasure.name
         binding.dificulty.text = treasure.difficulty
-        binding.location.text = treasure.location
         binding.ratingBar.rating = treasure.score.toFloat()
         viewModel.treasureStats.observe(viewLifecycleOwner){treasureStats ->
             binding.reportQuantity.text = treasureStats.reportQuantity.toString()
@@ -156,4 +201,6 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
     override fun onClick(review: Reviews) {
 
     }
+
+
 }

@@ -43,8 +43,9 @@ class TreasureAdapter(
         val treasure = treasures[position]
         with(holder) {
             setListener(treasure)
+            binding.treasureTitleTV.isSelected = true
             binding.treasureTitleTV.text = treasure.name
-            binding.difficultyTV.text = "Level: " +treasure.difficulty
+            binding.difficultyTV.text = treasure.difficulty
             binding.scoreTV.text = treasure.score.round(2).toString()
             binding.locationTag.text = treasure.location
             binding.treasureIV.setImageBitmap(viewModel.treasureImages[treasure.idTreasure])

@@ -53,6 +53,8 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         //Comienza con el botón Todos checkeado
         binding.toggleButton.check(R.id.all_markers_button)
 
+
+
         viewModel.getAllTreasures()
 
         viewModel.treasureListData.observe(viewLifecycleOwner) { treasureListVM ->
