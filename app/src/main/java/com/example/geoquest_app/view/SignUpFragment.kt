@@ -19,6 +19,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentSignUpBinding
+import com.example.geoquest_app.utils.safeNavigate
 import com.example.geoquest_app.view.MainActivity
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.User
@@ -86,7 +87,8 @@ class SignUpFragment : Fragment() {
                                 binding.nickname.error = null
                                 binding.nickname.isErrorEnabled = false
                                 dialog.dismiss()
-                                getView()?.findNavController()?.navigate(R.id.action_signUpFragment_to_logInFragment)
+                                findNavController().safeNavigate(SignUpFragmentDirections.actionSignUpFragmentToLogInFragment())
+                                //getView()?.findNavController()?.navigate(R.id.action_signUpFragment_to_logInFragment)
                             }
                         }
                     }
@@ -98,7 +100,7 @@ class SignUpFragment : Fragment() {
             }
         }
             binding.login.setOnClickListener {
-                getView()?.findNavController()?.navigate(R.id.action_signUpFragment_to_logInFragment)
+                findNavController().safeNavigate(SignUpFragmentDirections.actionSignUpFragmentToLogInFragment())
             }
 
         }

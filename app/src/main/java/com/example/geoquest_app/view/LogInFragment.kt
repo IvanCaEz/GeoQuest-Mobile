@@ -16,6 +16,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.FragmentLogInBinding
+import com.example.geoquest_app.utils.safeNavigate
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.requests.AuthRequest
 class LogInFragment : Fragment() {
@@ -107,7 +108,7 @@ class LogInFragment : Fragment() {
             }
         }
         binding.signup.setOnClickListener {
-            getView()?.findNavController()?.navigate( LogInFragmentDirections.actionLogInFragmentToSignUpFragment())
+            findNavController().safeNavigate( LogInFragmentDirections.actionLogInFragmentToSignUpFragment())
         }
     }
 
@@ -161,5 +162,5 @@ class LogInFragment : Fragment() {
             }
         }
     }
-    private fun login() = view?.findNavController()?.navigate(R.id.action_logInFragment_to_mapFragment)
+    private fun login() = findNavController().safeNavigate(LogInFragmentDirections.actionLogInFragmentToMapFragment())
 }
