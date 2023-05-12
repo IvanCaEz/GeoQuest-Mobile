@@ -338,22 +338,17 @@ class GeoViewModel : ViewModel() {
         }
     }
 
-    fun addFavTreasure(userID: Int, treasureID: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.postUserFav(userID, treasureID)
-        }
+    suspend fun addFavTreasure(userID: Int, treasureID: Int) {
+        repository.postUserFav(userID, treasureID)
     }
 
-    fun deleteFavTreasure(userID: Int, treasureID: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.deleteUserFav(userID, treasureID)
-        }
+    suspend fun deleteFavTreasure(userID: Int, treasureID: Int) {
+        repository.deleteUserFav(userID, treasureID)
     }
 
-    fun checkIfTreasureIsFav(userID: Int, treasureID: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+    suspend fun checkIfTreasureIsFav(userID: Int, treasureID: Int) {
             isFav.postValue(repository.checkIfFav(userID, treasureID))
-        }
+
     }
 
     // REPORTS

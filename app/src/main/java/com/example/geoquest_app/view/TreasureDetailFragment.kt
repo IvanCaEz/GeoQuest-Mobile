@@ -63,22 +63,26 @@ class TreasureDetailFragment : Fragment(), OnClickListenerReview {
         viewModel.getAllReviews(treasureID)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.getTreasureImage(treasureID)
+            viewModel.checkIfTreasureIsFav(userID, treasureID)
         }
-        viewModel.checkIfTreasureIsFav(userID, treasureID)
+
+
         viewModel.getTreasureStats(treasureID)
 
         viewModel.isFav.observe(viewLifecycleOwner) {
             isFav = it
-            binding.favorite.isChecked = isFav
+            binding.favorite.isChecked = it
         }
 
         binding.favorite.setOnClickListener {
-            if (!isFav) {
-                viewModel.addFavTreasure(userID, treasureID)
-                viewModel.checkIfTreasureIsFav(userID, treasureID)
-            } else {
-                viewModel.deleteFavTreasure(userID, treasureID)
-                viewModel.checkIfTreasureIsFav(userID, treasureID)
+            CoroutineScope(Dispatchers.IO).launch{
+                if (!isFav) {
+                    viewModel.addFavTreasure(userID, treasureID)
+                    viewModel.checkIfTreasureIsFav(userID, treasureID)
+                } else {
+                    viewModel.deleteFavTreasure(userID, treasureID)
+                    viewModel.checkIfTreasureIsFav(userID, treasureID)
+                }
             }
         }
         binding.shimmerViewContainer.visibility = View.INVISIBLE

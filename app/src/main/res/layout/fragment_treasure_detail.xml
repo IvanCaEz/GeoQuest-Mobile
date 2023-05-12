@@ -394,7 +394,6 @@
         android:layout_height="50dp"
         android:button="@drawable/favourite"
         android:buttonTint="@color/color3"
-        android:checked="false"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toStartOf="@id/report"
         app:layout_constraintStart_toEndOf="@id/play"
@@ -407,7 +406,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -420,11 +418,7 @@
 
             <include layout="@layout/item_review_loading" />
 
-            <include layout="@layout/item_review_loading" />
 
-            <include layout="@layout/item_review_loading" />
-
-            <include layout="@layout/item_review_loading" />
 
         </LinearLayout>
 
