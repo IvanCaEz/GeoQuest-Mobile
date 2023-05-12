@@ -47,7 +47,6 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         activity.setBottomNavigationVisible(true)
 
 
-
         val userId = viewModel.userData.value!!.idUser
 
         // ANIMATION DE ENTRADA
@@ -104,10 +103,11 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             notSolvedTreasures.text = userStats.notSolved.toString()
             reportQuantity.text = userStats.reportQuantity.toString()
             averageTime.text = userStats.averageTime
+            val hours = userStats.averageTime.split(":")[0].toInt()
 
-            val list = listOf(userStats.solved, userStats.notSolved, reportQuantitySize)
+            val list = listOf(userStats.solved, userStats.notSolved, reportQuantitySize, hours)
             // Achievements
-            for (i in 0..list.lastIndex){
+            for (i in 0..list.lastIndex) {
                 when (i) {
                     0 -> {
                         when (list[i]) {
@@ -134,6 +134,14 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                             in 11..15 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_plata)
                             in 16..25 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_oro)
                             else -> binding.imageRQ.setImageResource(R.drawable.diamante)
+                        }
+                    }
+                    3 -> {
+                        when (list[i]) {
+                            in 0..1 -> binding.imageAT.setImageResource(R.drawable.diamante)
+                            in 2..3 -> binding.imageAT.setImageResource(R.drawable.medalla_de_oro)
+                            in 4..5 -> binding.imageAT.setImageResource(R.drawable.medalla_de_plata)
+                            in 6..7 -> binding.imageAT.setImageResource(R.drawable.medalla_de_bronce)
                         }
                     }
                 }
@@ -174,7 +182,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
         viewModel.userImage.observe(viewLifecycleOwner) { userImage ->
             binding.userImageIV.setImageBitmap(userImage)
         }
-        viewModel.userData.observe(viewLifecycleOwner){user ->
+        viewModel.userData.observe(viewLifecycleOwner) { user ->
             userLevel.text = user!!.userLevel.replace("\"", "")
             profileName.text = user.nickName
         }
@@ -194,7 +202,6 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                     }, 1700)
                 }
             } else {
-                println("me hago visible")
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding.emptyList.visibility = View.VISIBLE
                     binding.shimmerViewContainerProfile.visibility = View.INVISIBLE
@@ -204,9 +211,11 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             }
         }
         binding.editProfile.setOnClickListener {
-            requireView().findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
+            requireView().findNavController()
+                .navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
     }
+
     private fun setUpRecyclerView(reviewList: MutableList<Reviews>) {
         reviewAdapter = UserProfileReviewAdapter(viewModel, reviewList, this)
         linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -226,6 +235,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
     override fun onDelete(review: Reviews) {
         viewModel.deleteReviewByTreasureId(review.idTreasure, review.idReview)
         reviewAdapter.delete(review)
+        viewModel.getReviewsByUserId(review.idUser)
     }
 
     override fun onResume() {

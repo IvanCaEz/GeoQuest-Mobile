@@ -80,7 +80,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/color2"
+                android:backgroundTint="@color/color5"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -101,7 +101,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/color2"
+                android:backgroundTint="@color/color5"
                 android:inputType="textPassword"
                 android:singleLine="true" />
 

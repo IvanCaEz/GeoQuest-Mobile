@@ -123,7 +123,7 @@ interface ApiInterface {
     companion object {
         // emulador -> 10.0.2.16
         // itb -> 172.30.5.163
-        private const val BASE_URL = "http://172.30.3.105:8080/"
+        private const val BASE_URL = "http://172.30.5.163:8080/"
         fun create(token: String): ApiInterface {
             println("Token desde apiinterface: $token")
             val okHttpClient = OkHttpClient.Builder()

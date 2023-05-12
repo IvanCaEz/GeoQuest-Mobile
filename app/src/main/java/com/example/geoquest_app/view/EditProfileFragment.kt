@@ -91,21 +91,25 @@ class EditProfileFragment : Fragment() {
                 selectImage()
             }
         }
-
+        val passET = binding.password
         binding.confirmButton.setOnClickListener {
             val newEmail = binding.email.editText?.text.toString()
-            val newPass = viewModel.encryptPassword(binding.password.editText?.text.toString())
+            var pass = viewModel.userData.value?.password.toString()
+            if (binding.password.editText?.text.toString().isNotEmpty()){
+                if (viewModel.validatePassword(passET, pass) ){
+                    pass = viewModel.encryptPassword(binding.password.editText?.text.toString())
+                }
+            }  else pass = viewModel.userData.value?.password.toString()
+
             var emailUpdated = ""
-            var passUpdated = ""
 
             if (user != null){
                 emailUpdated = if (newEmail != user.email) newEmail
                 else user.email
-                passUpdated = if (newPass != user.password) newPass
-                else user.password
+
 
                 if (imageUri != null){
-                    val userToUpdate = User(user.idUser, user.nickName, emailUpdated, passUpdated, newImageName,
+                    val userToUpdate = User(user.idUser, user.nickName, emailUpdated, pass, newImageName,
                     user.userLevel, user.userRole, listOf())
 
                     try {
@@ -126,7 +130,7 @@ class EditProfileFragment : Fragment() {
                     fileOutputStream.close()
                     val filePath = file.absolutePath
                     val imageFile = File(filePath)
-                    val userToUpdate = User(user.idUser, user.nickName, emailUpdated, passUpdated, user.photo,
+                    val userToUpdate = User(user.idUser, user.nickName, emailUpdated, pass, user.photo,
                         user.userLevel, user.userRole, listOf())
                     viewModel.putUser(user.idUser,userToUpdate, imageFile)
                 }

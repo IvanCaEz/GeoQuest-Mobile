@@ -1,44 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="375dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_review_update_dialog"
+    android:paddingEnd="5dp"
+    android:paddingStart="5dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="20dp"
+    >
     <TextView
+        android:id="@+id/title"
         android:text="REPORT"
-        android:fontFamily="@raw/manrope"
+        android:fontFamily="@font/manrope_bold"
         android:textSize="30dp"
         android:textStyle="bold"
+        android:textColor="@color/white"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:scaleType="center"
         android:background="@color/color1"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/treasureName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:fontFamily="@raw/manrope"
-        android:text="Trearure Name"
-        android:textSize="30dp"
-        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:text="Treasure Name"
+        android:textSize="25dp"
+        android:fontFamily="@font/manrope_semibold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/report"
          />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/report"
-        android:layout_width="370dp"
-        android:layout_height="150dp"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="Write your opinion here"
-        android:background="@color/color4"
+        android:background="@color/color5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/treasureName"
+        android:layout_marginBottom="10dp"
+
         >
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/color4"
+            android:lines="4"
+            android:gravity="top|left"
+            android:backgroundTint="@color/color5"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
