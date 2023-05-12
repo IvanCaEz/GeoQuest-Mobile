@@ -18,13 +18,20 @@ Welcome to the GeoQuest Mobile repository! This repository contains the source c
 - [Support](#support)
 - [License](#license)
 
+
 ## Authors
 
 [Alejandro Arcas Leon](https://gitlab.com/Xalexx)
 
+[Martí Gustamante Clavell](https://gitlab.com/marti.gustamante.7e6)
+
 [Ivan Martinez Cañero](https://gitlab.com/ivan.martinez.7e6)
 
+[Asier Barranco Barbudo](https://gitlab.com/asier.barranco.7e6)
+
 [Joel Garcia Galiano](https://gitlab.com/joel.garcia.7e6)
+
+[Raul Argemi](https://gitlab.com/raul.argemi.7e6)
 
 ## Features
 
