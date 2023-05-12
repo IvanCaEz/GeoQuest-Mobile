@@ -1,14 +1,11 @@
-package com.example.geoquest_app.utils
+package com.example.geoquest_app.view
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.DialogReportBinding
 import com.example.geoquest_app.model.Reports
 import com.example.geoquest_app.viewmodel.GeoViewModel
@@ -33,8 +30,6 @@ class ReportDialog : DialogFragment() {
 
             //val inflater = requireActivity().layoutInflater
 
-
-            // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
             builder.setView(binding.root)
                 // Add action buttons

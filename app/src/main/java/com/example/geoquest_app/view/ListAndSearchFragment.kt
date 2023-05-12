@@ -1,5 +1,6 @@
 package com.example.geoquest_app.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -43,6 +44,7 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         return binding.root
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as MainActivity
@@ -50,9 +52,8 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         //Comienza con el botón Todos checkeado
         binding.toggleButton.check(R.id.all_markers_button)
 
-        viewModel.getAllTreasures()
-        viewModel.getUserFavs(viewModel.userData.value!!.idUser)
         viewModel.treasureListData.observe(viewLifecycleOwner) { treasureListVM ->
+            binding.recyclerView.visibility = View.INVISIBLE
             treasureList = treasureListVM
             binding.shimmerViewContainer.visibility = View.VISIBLE
             binding.nofavsTV.visibility = View.INVISIBLE
@@ -74,7 +75,18 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
 
         viewModel.userFavs.observe(viewLifecycleOwner) { favListVM ->
             favList = favListVM
-            println(favList)
+        }
+        binding.swipelayout.setColorSchemeColors(R.color.color1, R.color.marronOscuro)
+        // SWIPE
+       // esto cuando acabe de hacer las llamads binding.swipelayout.isEnabled = false
+        binding.swipelayout.setOnRefreshListener {
+            binding.swipelayout.isRefreshing = false
+            if (binding.toggleButton.checkedButtonId == R.id.all_markers_button) {
+                viewModel.getAllTreasures()
+            } else {
+                binding.recyclerView.visibility = View.INVISIBLE
+                viewModel.getUserFavs(viewModel.userData.value!!.idUser)
+            }
         }
 
 
@@ -82,8 +94,14 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         binding.toggleButton.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
-                    R.id.all_markers_button -> setAdapter(false)
-                    R.id.favourites_button -> setAdapter(true)
+                    R.id.all_markers_button -> {
+                        viewModel.getAllTreasures()
+                        setAdapter(false)
+                    }
+                    R.id.favourites_button ->{
+                        viewModel.getUserFavs(viewModel.userData.value!!.idUser)
+                        setAdapter(true)
+                    }
                 }
             } else {
                 if (toggleButton.checkedButtonId == View.NO_ID) setAdapter(false)

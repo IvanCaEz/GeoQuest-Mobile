@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.ItemTreasuresBinding
 import com.example.geoquest_app.adapters.onClickListeners.OnClickListenerTreasure
+import com.example.geoquest_app.utils.round
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
+import kotlin.math.round
 
 class TreasureAdapter(
     private val treasures: List<Treasures>,
@@ -43,12 +45,14 @@ class TreasureAdapter(
             setListener(treasure)
             binding.treasureTitleTV.text = treasure.name
             binding.difficultyTV.text = "Level: " +treasure.difficulty
-            binding.scoreTV.text = treasure.score.toString()
+            binding.scoreTV.text = treasure.score.round(2).toString()
             binding.locationTag.text = treasure.location
             binding.treasureIV.setImageBitmap(viewModel.treasureImages[treasure.idTreasure])
 
         }
     }
+
+
 }
 
 
