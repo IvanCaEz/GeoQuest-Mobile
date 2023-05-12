@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import com.example.geoquest_app.R
 import com.example.geoquest_app.databinding.PopupmarkerBinding
+import com.example.geoquest_app.utils.round
 import com.example.geoquest_app.view.MapFragmentDirections
 import com.example.geoquest_app.viewmodel.GeoViewModel
 import com.example.models.Treasures
@@ -17,7 +18,7 @@ class MarkerInfoWindowAdapter(context: Context, val viewModel: GeoViewModel): Go
     private fun setInfoWindowText(marker: Marker) {
         val binding = PopupmarkerBinding.bind(view)
         binding.titleTreasure.text = marker.title
-        binding.scoreTV.text = marker.snippet!!.split(",")[1]
+        binding.scoreTV.text = marker.snippet!!.split(",")[1].toDouble().round(2).toString()
         binding.distanceTV.text = "Aproximate ${marker.snippet!!.split(",")[2].toDouble().toInt()} m"
         binding.mapImage.setImageBitmap(viewModel.treasureImages[marker.snippet!!.split(",")[0].toInt()])
     }

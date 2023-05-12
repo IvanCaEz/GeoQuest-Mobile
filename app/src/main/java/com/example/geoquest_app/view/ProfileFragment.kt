@@ -159,7 +159,6 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             userLogro4.animate().alpha(1.0f).duration = 350
         }, 1800)
 
-
         averageTime.isSelected = true
 
         shimmer.visibility = View.VISIBLE
@@ -173,7 +172,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
             binding.userImageIV.setImageBitmap(userImage)
         }
         viewModel.userData.observe(viewLifecycleOwner){user ->
-            userLevel.text = user!!.userLevel
+            userLevel.text = user!!.userLevel.replace("\"", "")
             profileName.text = user.nickName
         }
         viewModel.getReviewsByUserId(userId)

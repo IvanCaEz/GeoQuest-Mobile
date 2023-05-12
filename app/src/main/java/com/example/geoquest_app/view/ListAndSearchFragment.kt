@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -52,11 +53,10 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         //Comienza con el botón Todos checkeado
         binding.toggleButton.check(R.id.all_markers_button)
 
+        viewModel.getAllTreasures()
+
         viewModel.treasureListData.observe(viewLifecycleOwner) { treasureListVM ->
-            binding.recyclerView.visibility = View.INVISIBLE
             treasureList = treasureListVM
-            binding.shimmerViewContainer.visibility = View.VISIBLE
-            binding.nofavsTV.visibility = View.INVISIBLE
             CoroutineScope(Dispatchers.IO).launch {
                 treasureListVM.forEach { treasure ->
                     viewModel.getTreasureImage(treasure.idTreasure)
@@ -64,29 +64,34 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
                 withContext(Dispatchers.Main) {
                     binding.shimmerViewContainer.visibility = View.INVISIBLE
                     binding.recyclerView.visibility = View.VISIBLE
-                    if (binding.toggleButton.checkedButtonId == R.id.all_markers_button) {
-                        setUpRecyclerView(treasureList)
-                    } else {
-                        setAdapter(true)
-                    }
+                    setAdapter(false)
                 }
+                binding.swipelayout.isEnabled = true
             }
         }
 
         viewModel.userFavs.observe(viewLifecycleOwner) { favListVM ->
             favList = favListVM
+            binding.shimmerViewContainer.visibility = View.INVISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
+            setAdapter(true)
+            binding.swipelayout.isEnabled = true
         }
         binding.swipelayout.setColorSchemeColors(R.color.color1, R.color.marronOscuro)
         // SWIPE
-       // esto cuando acabe de hacer las llamads binding.swipelayout.isEnabled = false
         binding.swipelayout.setOnRefreshListener {
             binding.swipelayout.isRefreshing = false
             if (binding.toggleButton.checkedButtonId == R.id.all_markers_button) {
+                binding.shimmerViewContainer.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.INVISIBLE
                 viewModel.getAllTreasures()
             } else {
+                binding.nofavsTV.visibility = View.INVISIBLE
+                binding.shimmerViewContainer.visibility = View.VISIBLE
                 binding.recyclerView.visibility = View.INVISIBLE
                 viewModel.getUserFavs(viewModel.userData.value!!.idUser)
             }
+            binding.swipelayout.isEnabled = false
         }
 
 
@@ -95,12 +100,15 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
             if (isChecked) {
                 when (checkedId) {
                     R.id.all_markers_button -> {
+                        binding.nofavsTV.visibility = View.INVISIBLE
+                        binding.shimmerViewContainer.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.INVISIBLE
                         viewModel.getAllTreasures()
-                        setAdapter(false)
                     }
                     R.id.favourites_button ->{
+                        binding.shimmerViewContainer.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.INVISIBLE
                         viewModel.getUserFavs(viewModel.userData.value!!.idUser)
-                        setAdapter(true)
                     }
                 }
             } else {
@@ -146,7 +154,7 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
                                         .contains(query.lowercase(Locale.ROOT))
                                 }
                         }
-                        "Difficulty" -> {
+                        "Level" -> {
                             filterList =
                                 if (binding.toggleButton.checkedButtonId == R.id.all_markers_button) {
                                     treasureList.filter {
@@ -178,13 +186,11 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
         })
     }
 
-    private fun setAdapter(filterVisited: Boolean) {
+    private fun setAdapter(favFilter: Boolean) {
         binding.nofavsTV.visibility = View.INVISIBLE
-        if (filterVisited) {
-            binding.shimmerViewContainer.visibility = View.INVISIBLE
+        if (favFilter) {
             val treasureIDs = mutableListOf<Int>()
             if (favList.isNotEmpty()) {
-                binding.nofavsTV.visibility = View.INVISIBLE
                 favList.forEach { treasureIDs.add(it.idTreasure) }
                 favTreasureList = treasureList.filter { treasureIDs.contains(it.idTreasure) }
                 setUpRecyclerView(favTreasureList)
@@ -194,15 +200,12 @@ class ListAndSearchFragment : Fragment(), OnClickListenerTreasure {
             }
 
         } else {
-            binding.nofavsTV.visibility = View.INVISIBLE
             setUpRecyclerView(treasureList)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        binding.shimmerViewContainer.visibility = View.GONE
-        binding.recyclerView.visibility = View.VISIBLE
     }
 
     private fun setUpRecyclerView(treasureList: List<Treasures>) {
