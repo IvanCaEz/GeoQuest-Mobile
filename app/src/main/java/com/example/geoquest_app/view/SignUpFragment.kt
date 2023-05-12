@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +41,8 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as MainActivity
         activity.setBottomNavigationVisible(false)
+
+        registerAnimation()
 
         binding.signup.setOnClickListener {
             val dialog = Dialog(requireContext())
@@ -98,6 +102,43 @@ class SignUpFragment : Fragment() {
             }
 
         }
+
+    private fun registerAnimation(){
+        val slideConstraint = binding.registerConstraintSlider
+        val mainText = binding.loginTitle
+        val firstEditText = binding.nickname
+        val emailEditText = binding.email
+        val secondEditText = binding.password
+        val confPassEditText = binding.confPassword
+        val firstTextSignUp = binding.text
+        val secondTextSignUp = binding.signup
+        val logInButton = binding.login
+        val logoImage = binding.logo
+
+        mainText.alpha = 0.0f
+        firstEditText.alpha = 0.0f
+        emailEditText.alpha = 0.0f
+        confPassEditText.alpha = 0.0f
+        secondEditText.alpha = 0.0f
+        firstTextSignUp.alpha = 0.0f
+        secondTextSignUp.alpha = 0.0f
+        logInButton.alpha = 0.0f
+        logoImage.alpha = 0.0f
+
+        slideConstraint.y = 2500.0f
+        slideConstraint.animate().translationY(0.0f).duration = 1500
+        Handler(Looper.getMainLooper()).postDelayed({
+            mainText.animate().alpha(1.0f).duration = 350
+            firstEditText.animate().alpha(1.0f).duration = 350
+            secondEditText.animate().alpha(1.0f).duration = 350
+            firstTextSignUp.animate().alpha(1.0f).duration = 350
+            secondTextSignUp.animate().alpha(1.0f).duration = 350
+            logInButton.animate().alpha(1.0f).duration = 350
+            logoImage.animate().alpha(1.0f).duration = 350
+            emailEditText.animate().alpha(1.0f).duration = 350
+            confPassEditText.animate().alpha(1.0f).duration = 350
+        }, 1800)
+    }
 
 
 

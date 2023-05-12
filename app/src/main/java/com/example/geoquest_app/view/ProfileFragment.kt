@@ -111,25 +111,28 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                 when (i) {
                     0 -> {
                         when (list[i]) {
-                            in 0..5 -> solvedAchievements.setImageResource(R.drawable.medalla_de_bronce)
-                            in 6..10 -> solvedAchievements.setImageResource(R.drawable.medalla_de_plata)
-                            in 11..20 -> solvedAchievements.setImageResource(R.drawable.medalla_de_oro)
+                            in 0..4 -> solvedAchievements.setImageResource(R.drawable.medalla_sin_fondo)
+                            in 5..10 -> solvedAchievements.setImageResource(R.drawable.medalla_de_bronce)
+                            in 11..15 -> solvedAchievements.setImageResource(R.drawable.medalla_de_plata)
+                            in 16..25 -> solvedAchievements.setImageResource(R.drawable.medalla_de_oro)
                             else -> solvedAchievements.setImageResource(R.drawable.diamante)
                         }
                     }
                     1 -> {
                         when (list[i]) {
-                            in 0..5 -> binding.imageNST.setImageResource(R.drawable.medalla_de_bronce)
-                            in 6..10 -> binding.imageNST.setImageResource(R.drawable.medalla_de_plata)
-                            in 11..20 -> binding.imageNST.setImageResource(R.drawable.medalla_de_oro)
+                            in 0..4 -> binding.imageNST.setImageResource(R.drawable.medalla_sin_fondo)
+                            in 5..10 -> binding.imageNST.setImageResource(R.drawable.medalla_de_bronce)
+                            in 11..15 -> binding.imageNST.setImageResource(R.drawable.medalla_de_plata)
+                            in 16..25 -> binding.imageNST.setImageResource(R.drawable.medalla_de_oro)
                             else -> binding.imageNST.setImageResource(R.drawable.diamante)
                         }
                     }
                     2 -> {
                         when (list[i]) {
-                            in 0..5 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_bronce)
-                            in 6..10 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_plata)
-                            in 11..20 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_oro)
+                            in 0..4 -> binding.imageRQ.setImageResource(R.drawable.medalla_sin_fondo)
+                            in 5..10 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_bronce)
+                            in 11..15 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_plata)
+                            in 16..25 -> binding.imageRQ.setImageResource(R.drawable.medalla_de_oro)
                             else -> binding.imageRQ.setImageResource(R.drawable.diamante)
                         }
                     }
@@ -185,7 +188,7 @@ class ProfileFragment : Fragment(), OnClickListenerReviewUser {
                     }
                     Handler(Looper.getMainLooper()).postDelayed({
                         binding.emptyList.visibility = View.INVISIBLE
-                        binding.shimmerViewContainerProfile.visibility = View.VISIBLE
+                        binding.shimmerViewContainerProfile.visibility = View.INVISIBLE
                         binding.recyclerView.animate().alpha(1.0f).duration = 400
                         setUpRecyclerView(reviews.toMutableList())
                     }, 1700)
