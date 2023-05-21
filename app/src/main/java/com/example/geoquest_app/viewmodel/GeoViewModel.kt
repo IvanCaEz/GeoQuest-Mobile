@@ -231,10 +231,12 @@ class GeoViewModel : ViewModel() {
                     reviewListData.postValue(response.body())
                 }
             } else {
+                reviewListData.postValue(listOf())
                 Log.e("Error " + response.code(), response.message())
             }
         }
     }
+
 
 
     fun postReview(review: Reviews, imageFile: File) {

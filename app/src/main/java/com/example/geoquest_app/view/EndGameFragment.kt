@@ -129,7 +129,7 @@ class EndGameFragment : Fragment() {
 
                 viewModel.postReview(review, imageFile)
                 viewModel.updateTreasureScore(treasureID, treasure!!)
-
+                updateUserLevel(userID)
 
             } else {
                 val placeholderDrawable = resources.getDrawable(R.drawable.placeholder_review)
@@ -144,22 +144,27 @@ class EndGameFragment : Fragment() {
 
                 viewModel.postReview(review, imageFile)
                 viewModel.updateTreasureScore(treasureID, treasure!!)
+                updateUserLevel(userID)
             }
 
-            viewModel.getUserStats(userID)
-            var level: String
-            viewModel.userStats.observe(viewLifecycleOwner){ userStats ->
-                level = when (userStats.solved){
-                    in  0..1 -> "Noob"
-                    in 2..4 -> "Beginner"
-                    in 5 ..6 -> "Intermediate"
-                    in 7..9 -> "Advanced"
-                    else -> "Expert"
-                }
-                viewModel.updateUserLevel(userID, level)
-                findNavController().navigate(R.id.action_endGameFragment_to_listAndSearchFragment)
-            }
 
+
+        }
+    }
+
+    fun updateUserLevel(userID: Int){
+        viewModel.getUserStats(userID)
+        var level: String
+        viewModel.userStats.observe(viewLifecycleOwner){ userStats ->
+            level = when (userStats.solved){
+                in  0..1 -> "Noob"
+                in 2..4 -> "Beginner"
+                in 5 ..6 -> "Intermediate"
+                in 7..9 -> "Advanced"
+                else -> "Expert"
+            }
+            viewModel.updateUserLevel(userID, level)
+            findNavController().navigate(R.id.action_endGameFragment_to_listAndSearchFragment)
         }
     }
 

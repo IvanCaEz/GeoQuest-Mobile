@@ -19,6 +19,7 @@ class UserProfileReviewAdapter(private val viewModel: GeoViewModel, private val 
                 listener.onClick(review)
             }
             binding.buttonTrash.setOnClickListener {
+                viewModel.deleteReviewByTreasureId(review.idTreasure, review.idReview)
                 listener.onDelete(review)
             }
         }

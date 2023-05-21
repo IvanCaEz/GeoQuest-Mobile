@@ -101,6 +101,7 @@
             app:layout_constraintBottom_toBottomOf="@id/rateTheHuntText"
             android:stepSize="1.0"
             android:progressTint="#FFCA28"
+            android:secondaryProgressTint="#FFCA28"
             app:layout_constraintStart_toEndOf="@id/rateTheHuntText"
             />
 

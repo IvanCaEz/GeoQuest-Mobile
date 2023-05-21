@@ -122,7 +122,7 @@ interface ApiInterface {
 
     companion object {
         // itb -> 172.30.5.163
-        private const val BASE_URL = "http://192.168.1.73:8080/"
+        private const val BASE_URL = "http://172.30.5.163:8080/"
         fun create(token: String): ApiInterface {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor(token))
